@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace FreshBox.Database
 {
+
+    //데이터베이스 연결을 담당하는 초보자용 도우미 클래스 정의(연결 열기/ 닫기/ 동기/ 비동기 지원/ 싱글톤으로 관리(멀티스레드 고려))
+    
     /// <summary>
     /// MySQL DB 연결과 관리를 싱글턴 패턴으로 처리하는 클래스(멀티스레드 고려함)
     /// 초보자용 코드
