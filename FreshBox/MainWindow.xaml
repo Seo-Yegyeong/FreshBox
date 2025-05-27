@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Button Content="DB 연결 테스트" Click="TestDbConnection_Click" Width="200" Height="40"/>
     </Grid>
 </Window>

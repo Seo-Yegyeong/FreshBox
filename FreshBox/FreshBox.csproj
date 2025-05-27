@@ -9,16 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
     <PackageReference Include="MySql.Data" Version="9.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Assets\" />
-    <Folder Include="Repository\" />
     <Folder Include="Services\" />
-    <Folder Include="Views\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>
