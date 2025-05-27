@@ -187,6 +187,7 @@ namespace FreshBox.Database
                 throw;
             }
 
-        }
+        } // 이 메서드 호출 뒤 연결 닫아주는 것도 해야함
+        // CloseConnection(conn)호출 하던지, await using 사용해서 닫음
     }
 }
