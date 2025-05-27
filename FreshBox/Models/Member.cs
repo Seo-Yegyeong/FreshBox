@@ -13,11 +13,9 @@ namespace FreshBox.Models
     /// </summary>
     public class Member
     {
-        /// <summary>
-        /// MEMBER 테이블과 매핑되는 멤버 데이터 모델 클래스
-        /// </summary>
-        public class Member
-        {
+        // public 속성만 정의
+        //-> 컴파일러가 자동으로 내부에 private 필드를 생성
+
             /// <summary>
             /// id 컬럼과 매핑됨 (PK, Auto Increment)
             /// 타입: INT
