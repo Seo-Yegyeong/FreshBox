@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace FreshBox.Views
 {
     /// <summary>
-    /// MemberView.xaml에 대한 상호 작용 논리
+    /// SignUpView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class MemberView : UserControl
+    public partial class SignUpView : UserControl
     {
-        public MemberView()
+        public SignUpView()
         {
             InitializeComponent();
         }
