@@ -181,19 +181,56 @@ namespace FreshBox.Database
         {
             try
             {
-                // MySqlConnection 객체 생성 (연결 문자열 사용)
+                // MySqlConnection 객체 생성 (connStr: 연결 문자열 사용)
                 var conn = new MySqlConnection(connStr);
-                await conn.OpenAsync();  // 비동기 방식으로 DB 연결 열기 (OpenAsync)
+                await conn.OpenAsync();  // 비동기 방식으로 DB 연결 열기 (OpenAsync),  UI나 호출 스레드가 멈추지 않도록 함
+                // OpenAsync()는 DB에 연결하는 작업을 비동기적으로 실행
+
                 return conn; // 연결 성공 시 열린 커넥션 반환
             }
             catch (MySqlException ex)
             {    // 연결 실패 시 예외 메시지를 디버그 출력
                 Debug.WriteLine($"[DB 연결 실패] {ex.Message}");
-                // 예외를 호출한 쪽으로 다시 던짐
+
+                // 예외를 호출한 쪽으로 다시 던져서 처리하게 함
                 throw;
             }
 
-        } // 이 메서드 호출 뒤 연결 닫아주는 것도 해야함
-        // CloseConnection(conn)호출 하던지, await using 사용해서 닫음
+        } // 이 메서드 호출 후에는 반드시 연결을 닫아야 함
+          // CloseConnectionAsync 또는 await using 등
+
+
+        /// <summary>
+        /// 비동기 방식으로 MySQL 연결 닫는 메서드
+        /// </summary>
+        /// <param name="conn">닫을 MySqlConnection(연결) 객체</param>
+        /// <returns>Task (비동기 작업)</returns>
+        public async Task CloseConnectionAsync(MySqlConnection conn)
+        {
+            // 매개변수로 받은 연결 객체가 null이 아닌지 확인
+            if (conn != null)
+            {
+                try
+                {
+                    // 비동기 방식으로 연결을 닫음
+                    // ㄴ CloseAsync()는 DB와의 연결을 끊는 작업을 비동기적으로 수행
+                    // ㄴ UI가 멈추지 않고 작업을 계속할 수 있도록 돕는다
+                    await conn.CloseAsync();
+
+                    // 연결이 닫힌 후, 사용하던 리소스를 비동기 방식으로 해제
+                    // ㄴ DisposeAsync()는 해당 연결 객체가 차지하고 있던 시스템 자원 해제
+                    // ㄴ 즉, 메모리 누수 없이 깨끗하게 정리!
+                    await conn.DisposeAsync();
+
+                    // await 붙은 이유 → 비동기 흐름에서 끼어들지 않게 순서를 보장하기 위해
+                }
+                catch (MySqlException ex)
+                {
+                    // 닫는 도중 오류 발생 시, 디버그 출력으로 예외 내용 확인
+                    Debug.WriteLine($"[DB 닫기 실패] {ex.Message}");
+                }
+            }
+        }
+
     }
 }
