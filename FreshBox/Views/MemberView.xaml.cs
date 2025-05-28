@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace FreshBox.Views
 {
     /// <summary>
-    /// Interaction logic for MemberView.xaml
+    /// MemberView.xaml에 대한 상호 작용 논리
     /// </summary>
     public partial class MemberView : UserControl
     {
