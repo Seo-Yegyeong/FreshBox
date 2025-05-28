@@ -9,73 +9,43 @@ using FreshBox.Models;
 using FreshBox.Repository;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 #endregion
 
 
 namespace FreshBox.ViewModels
 {
-    internal class MemberViewModel : ViewModelBase
+    public partial class MemberViewModel : ObservableObject
     {
-        private readonly MemberRepository _MemberRepo = new MemberRepository();
-        public ObservableCollection<Member> Members { get; set; }
+        public ObservableCollection<Member> Members { get; } = new();
 
-        private Member _member = new();
-
-        public Member Member
-        {
-            get => _member;
-            set
-            {
-                _member = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Username
-        {
-            get => _member.Username;
-            set
-            {
-                if (_member.Username != value)
-                {
-                    _member.Username = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string Password
-        {
-            get => _member.Password;
-            set
-            {
-                if (_member.Password != value)
-                {
-                    _member.Password = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string Name
-        {
-            get => _member.Name;
-            set
-            {
-                if (_member.Name != value)
-                {
-                    _member.Name = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        // 다른 속성들도 같은 방식으로 구현 가능
-
+        [ObservableProperty]
+        private Member? selectedMember;
 
         public MemberViewModel()
         {
-            Members = new ObservableCollection<Member>(_MemberRepo.GetAllMembers());
+            // Null 참조 발생 -> 초기화가 필요합니다! 안 그럼 xaml에서 <vm:MemberViewModel.Members> 바인딩이 실패합니다!
+            LoadMembers();
+        }
+
+        [RelayCommand]
+        private void LoadMembers()
+        {
+            Members.Clear();
+            Members.Add(new Member
+            {
+                Id = 1,
+                Username = "johndoe",
+                Password = "hashedpassword",
+                Name = "John Doe",
+                Role = "employee",
+                Phone = "010-1234-5678",
+                Email = "john@example.com",
+                BirthDate = new System.DateTime(1990, 1, 1),
+                CreatedAt = System.DateTime.Now,
+                HireDate = System.DateTime.Today
+            });
         }
     }
 }
