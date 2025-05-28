@@ -30,7 +30,7 @@ namespace FreshBox.Repository
         /// </summary>
         /// <param name="username">사용자가 입력한 ID</param>
         /// <returns>중복이면 1, 없으면 0, 에러 -1</returns>
-        public int ReadUsername(string username) // TODO : 추후 비동기로 바꾸는 것이 좋다
+        public int FindByUsername(string username) // TODO : 추후 비동기로 바꾸는 것이 좋다
         {
             // DB 연결 객체를 담을 변수 (초기에는 null)
             MySqlConnection conn = null;
@@ -142,7 +142,7 @@ namespace FreshBox.Repository
         /// 0: username 없음 (사용 가능)  
         /// -1: 처리 중 오류 발생  
         /// </returns>
-        public async Task<int> ReadUsernameAsync(string username)
+        public async Task<int> FindByUsernameAsync(string username)
         {
             MySqlConnection conn = null;
 
