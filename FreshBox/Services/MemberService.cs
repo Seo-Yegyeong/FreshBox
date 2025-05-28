@@ -13,7 +13,7 @@ namespace FreshBox.Services
         MemberRepository memberRepo = new MemberRepository();
 
         /// <summary>
-        /// 주어진 username의 중복 여부를 확인하는 서비스 메서드입니다.
+        /// 주어진 username의 중복 여부를 확인하는 서비스 메서드입니다.(동기 방식) TODO : 추후 비동기로 바꾸기
         /// </summary>
         /// <param name="username">사용자가 입력한 사용자 ID(username)</param>
         /// <returns>
