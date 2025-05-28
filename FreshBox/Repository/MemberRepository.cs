@@ -30,10 +30,10 @@ namespace FreshBox.Repository
         /// 회원(가입)정보를 DB에 삽입, 매핑되어 있는 MEMBER테이블에 회원정보를 insert 
         /// </summary>
         /// <param name="member"></param>
-        public int InsertMember(Member member) { 
+        //public int InsertMember(Member member) { 
         
         
-        }
+        //}
 
 
 
