@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace FreshBox.Repository
         /// </summary>
         /// <param name="username">사용자가 입력한 ID</param>
         /// <returns>중복이면 1, 없으면 0, 에러 -1</returns>
-        public int ReadUsername(string username)
+        public int ReadUsername(string username) // TODO : 추후 비동기로 바꾸는 것이 좋다
         {
             // DB 연결 객체를 담을 변수 (초기에는 null)
             MySqlConnection conn = null;
@@ -114,7 +115,7 @@ namespace FreshBox.Repository
                 // 예외 타입을 명시하지 않으면 모든 예외를 다 잡는다는 의미
                 // 예외 타입 상관없이 여기로 다 들어옴
                 // 어떤 예외가 발생해도 무조건 처리 가능 // 단점 : 어떤 예외인지 알 수 없어 디버깅 어려움
-                Console.WriteLine("MemberRepository - ReadUsername() 메서드 처리 중 오류 발생" + ex.Message);
+                Debug.WriteLine($"{ex.Message} MemberRepository - ReadUsername() 메서드 처리 중 오류 발생");
                 result = -1; // 예외 발생 시 에러 신호 
                 // TODO : 서비스에서 -1 리턴 받아서 return "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
                 // 처리해서 사용자 UI에 보여주기
@@ -131,6 +132,61 @@ namespace FreshBox.Repository
         }
 
 
+        /// <summary>
+        /// 사용자가 입력한 사용자 ID(username)가 DB에 존재하는지 비동기 방식으로 확인한다.
+        /// 중복된 username이면 1, 없으면 0, 에러 발생 시 -1 반환.
+        /// </summary>
+        /// <param name="username">사용자가 입력한 ID</param>
+        /// <returns>
+        /// 1: 중복된 username 존재  
+        /// 0: username 없음 (사용 가능)  
+        /// -1: 처리 중 오류 발생  
+        /// </returns>
+        public async Task<int> ReadUsernameAsync(string username)
+        {
+            MySqlConnection conn = null;
+
+            // 사용자 이름 존재 여부를 확인하는 쿼리
+            string query = "SELECT EXISTS (SELECT 1 FROM member WHERE username = @username)";
+            int result = -1;// 기본 결과값: 에러 시 -1 반환
+
+            try
+            {
+                // 비동기 방식으로 DB 연결을 열고 연결 객체 받기
+                conn = await dbManager.GetConnectionAsync();
+
+                // MySqlCommand 객체 생성, 쿼리와 연결 객체 할당
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    // SQL 파라미터에 사용자 입력값 할당 (SQL 인젝션 방지)
+                    cmd.Parameters.AddWithValue("@username", username);
+
+                    // 비동기 쿼리 실행, 단일 결과값 반환 (중복 여부)
+                    object queryResult = await cmd.ExecuteScalarAsync();
+
+                    // 결과값을 int로 변환 (0 또는 1)
+                    result = Convert.ToInt32(queryResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                // 예외 발생 시 디버그 출력, 결과는 -1로 유지 (에러 상태)
+                Debug.WriteLine($"{ex.Message} MemberRepository - ReadUsernameAsync() 처리 중 오류 발생");
+                result = -1; // 오류 표시
+            }
+            finally
+            {
+                // DB 연결이 열려 있다면 반드시 비동기 방식으로 닫기
+                if (conn != null)
+                {
+                    await dbManager.CloseConnectionAsync(conn);
+                }
+            }
+
+            return result;// 중복 여부 또는 에러 코드 반환
+        }
+
+
 
         //phone 중복 체크
 
@@ -144,10 +200,10 @@ namespace FreshBox.Repository
         //public int InsertMember(Member member) { 
         // DB 연결 객체를 담을 변수 (초기에는 null)
         MySqlConnection conn = null;
-        // ㄴ MySqlConnection : MySQL 데이터베이스와 연결하는 C# 클래스
-        // ㄴ MySQL 데이터베이스에 연결(connection)을 열고, 명령어를 보내고, 결과를 받는 데 쓰이는 객체
-        // ㄴ MySql.Data.MySqlClient 네임스페이스에 있는 클래스이고,
-        // ㄴ MySql.Data(NuGet 패키지로 설치,MySQL 공식 .NET 커넥터) 라이브러리를 설치해야 사용할 수 있다.
+            // ㄴ MySqlConnection : MySQL 데이터베이스와 연결하는 C# 클래스
+            // ㄴ MySQL 데이터베이스에 연결(connection)을 열고, 명령어를 보내고, 결과를 받는 데 쓰이는 객체
+            // ㄴ MySql.Data.MySqlClient 네임스페이스에 있는 클래스이고,
+            // ㄴ MySql.Data(NuGet 패키지로 설치,MySQL 공식 .NET 커넥터) 라이브러리를 설치해야 사용할 수 있다.
 
         //}
 
