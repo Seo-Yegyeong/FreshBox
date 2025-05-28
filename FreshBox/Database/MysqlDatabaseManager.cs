@@ -141,6 +141,7 @@ namespace FreshBox.Database
 
         /// <summary>
         /// 외부에서 받은 MySqlConnection을 안전하게 닫아주는 메서드
+        /// 호출 시 아규먼트로 보내는 MySqlConnection 객체가 null이 아니고 열려 있으면 연결을 닫고 리소스를 해제합니다.
         /// </summary>
         public void CloseConnection(MySqlConnection conn)
         {
