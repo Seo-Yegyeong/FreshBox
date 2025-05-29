@@ -13,11 +13,11 @@
     <UserControl.DataContext>
         <!-- xmlns: vm 작성하기-->
         <!-- ViewModel 객체 생성 및 연결 -->
-        <vm:MemberViewModel />
+        <vm:MemberViewModel/>
     </UserControl.DataContext>
     <Grid Background="White">
         <Label Content="ID" FontSize="25" HorizontalAlignment="Left" Margin="45,62,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="textBoxUsername" HorizontalAlignment="Left" Margin="112,69,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="178" Height="34"/>
-        <TextBlock x:Name="textBlockDuplicateCheckResult" HorizontalAlignment="Left" Margin="52,110,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="25" Width="383"/>
+        <TextBlock x:Name="textBlockDuplicateCheckResult" HorizontalAlignment="Left" Margin="52,110,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="33" Width="278"/>
     </Grid>
 </UserControl>

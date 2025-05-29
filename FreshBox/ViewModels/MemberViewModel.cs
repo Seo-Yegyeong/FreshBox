@@ -55,7 +55,7 @@ namespace FreshBox.ViewModels
          * ㄴ 일반 List<T>는 데이터가 바뀌어도 UI가 모름.
          */
 
-
+        
 
 
     }
