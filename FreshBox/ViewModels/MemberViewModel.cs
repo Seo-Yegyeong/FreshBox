@@ -39,7 +39,7 @@ namespace FreshBox.ViewModels
                 Username = "johndoe",
                 Password = "hashedpassword",
                 Name = "John Doe",
-                Role = "employee",
+                Role = new Enums.Role(),
                 Phone = "010-1234-5678",
                 Email = "john@example.com",
                 BirthDate = new System.DateTime(1990, 1, 1),

@@ -8,5 +8,6 @@ namespace FreshBox.Repository
 {
     internal class MySqlDatabaseRepository
     {
+
     }
 }
