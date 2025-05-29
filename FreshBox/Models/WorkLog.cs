@@ -56,4 +56,4 @@ namespace FreshBox.Models
         public WorkStatus Status { get; set; }
     }
 }
-}
+
