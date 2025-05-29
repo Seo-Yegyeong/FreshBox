@@ -7,6 +7,7 @@ using FreshBox.Models;
 using FreshBox.Repository;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+#endregion
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -109,5 +110,6 @@ namespace FreshBox.ViewModels
          * Interaction.Behaviors : 이벤트(예: LostFocus)를 ViewModel의 명령(Command)과 연결해주는 중간 장치
          */
 
+                
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FreshBox.Models
 {
-    public class WarehouseTemperatureLog
+    public class WarehouseTempLog
     {
         public int Id { get; set; }
         public int WarehouseId { get; set; }
