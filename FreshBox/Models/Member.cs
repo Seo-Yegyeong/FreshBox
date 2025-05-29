@@ -9,7 +9,7 @@ using FreshBox.Enums; // Role enum이 정의된 네임스페이스
 namespace FreshBox.Models
 {
     /// <summary>
-    /// MEMBER 테이블과 매핑되는 멤버 데이터 모델 클래스
+    /// 데이터베이스의 MEMBER 테이블과 매핑되는 멤버 데이터 모델 클래스
     /// </summary>
     public class Member
     {
