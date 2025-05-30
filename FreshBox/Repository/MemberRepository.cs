@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using FreshBox.Database; // MysqlDatabaseManager 싱글톤 인스턴스를 사용하기 위해 필요
 using FreshBox.Models;
 using MySql.Data.MySqlClient; // MySqlConnection, MySqlCommand 등 MySQL 데이터베이스 작업 관련 클래스 사용 위해 필요
@@ -54,11 +56,11 @@ namespace FreshBox.Repository
             int result = -1; // 리턴값을 저장할 변수
 
             try
-            { 
+            {
                 
                 conn = dbManager.GetConnection(); // 연결 열기(주의 : 사용 후 닫아야 함) 
                                                   // new MySqlCommand(query, conn) : 쿼리 실행 객체 생성
-                
+
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 // 이 객체를 통해 SQL 쿼리를 DB에 실행
                 // MySqlCommand : SQL 쿼리를 날리는 역할을 하는 객체
@@ -86,7 +88,6 @@ namespace FreshBox.Repository
                 // 예를 들어, SQL 쿼리에 직접 글자를 넣으면 위험하니까, 변수 자리를 만들어서 거기에 값 넣는다
                 // .AddWithValue("키", 값)
                 #endregion
-
 
                 // 쿼리 실행 후 결과 받아오기
                 // ExecuteScalar() : 쿼리 실행 후 첫 번째 행의 첫 번째 열의 값을 반환

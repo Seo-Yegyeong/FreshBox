@@ -7,7 +7,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-using System.Configuration; // ConfigurationManager 사용을 위해 추가
+
 
 namespace FreshBox.Database
 {
@@ -43,7 +43,7 @@ namespace FreshBox.Database
         /// </summary>
 
 
-        //private readonly string connStr = "Server=localhost; Database=FreshBox; Uid=sqc; Pwd=spc1234!; Port=3306; Charset=utf8; Pooling=true;";
+        //private readonly string connStr = "Server=; Database=; Uid=; Pwd=; Port=; Charset=; Pooling=;";
 
         // 마리님! 보안을 보완하기 위해서 다음과 같이 작업을 수행했습니다.
         //
@@ -55,7 +55,7 @@ namespace FreshBox.Database
                 <configuration>
 	                <connectionStrings>
 		                <add name = "MySqlConnection"
-                             connectionString="Server=localhost; Database=FreshBox; Uid=spc; Pwd=spc1234!; Port=3306; Charset=utf8;"
+                             connectionString="연결 문자열(DB정보)" <-민감정보라서 주석에서 지웠습니다.
 			                 providerName="MySql.Data.MySqlClient" />
 	                </connectionStrings>
                 </configuration>
@@ -74,6 +74,7 @@ namespace FreshBox.Database
         // [3] System.Configuration.ConfigurationManager 패키지 사용해서 DB 연결 정보(문자열)을 읽어옴
         //     - NuGet에서 System.Configuration.ConfigurationManager 패키지 설치
         //     - 다음과 같이 사용
+
 
         private readonly string connStr = ConfigurationManager.ConnectionStrings["MySqlConnection"]?.ConnectionString ?? throw new InvalidOperationException("MySqlConnection 설정을 찾을 수 없습니다.");
 
@@ -129,6 +130,7 @@ namespace FreshBox.Database
             }
             catch (MySqlException ex)
             {
+                //MessageBox.Show($"DB 연결 실패: {ex.Message}");
                 Debug.WriteLine($"[DB 연결 실패] {ex.Message}");
                 throw; // 나중에 필요하면 예외 래핑해서 재던지기(#region 참고)
             }
@@ -248,7 +250,7 @@ namespace FreshBox.Database
         public async Task CloseConnectionAsync(MySqlConnection conn)
         {
             // 매개변수로 받은 연결 객체가 null이 아닌지 확인
-            if (conn != null)
+            if (conn != null && conn.State != System.Data.ConnectionState.Closed)
             {
                 try
                 {
