@@ -16,11 +16,53 @@ namespace FreshBox.Models
         // public 속성만 정의
         //-> 컴파일러가 자동으로 내부에 private 필드를 생성
 
-            /// <summary>
-            /// id 컬럼과 매핑됨 (PK, Auto Increment)
-            /// 타입: INT
-            /// </summary>
-            public int Id { get; set; }
+        public static int LoggedInMemberId { get; set; } = -1;  // 로그인 안 된 상태 초기값
+                                                                // -> 로그인 성공 시 LoggedInMemberId 저장
+
+        #region (예시)
+        // LoginService.cs 로그인 성공 시 LoggedInMemberId 저장 (예시)
+        // 로그인 처리 메서드 예시
+        /*
+        public bool Login(string username, string password)
+        {
+            // DB에서 username, password 검사 후 멤버 정보 가져오기 (가정)
+            Member loggedInMember = memberRepository.GetMemberByUsernameAndPassword(username, password);
+
+            if (loggedInMember != null)
+            {
+                Member.LoggedInMemberId = loggedInMember.Id;  // 로그인 성공 시 static 변수 저장
+                return true;
+            }
+            return false;
+        }
+
+        //입출고 로그 Insert 시 사용 예시
+        public void InsertInventoryLog(int orderId, int productId, int quantity)
+        {
+            int memberId = Member.LoggedInMemberId;  // 로그인한 사원 ID 사용
+
+            if (memberId == -1)
+            {
+                throw new InvalidOperationException("로그인하지 않은 상태에서 입출고 기록 불가");
+            }
+
+            // DB Insert 쿼리 예시
+            string query = @"INSERT INTO INBOUND_LOG 
+                   (order_id, product_id, quantity, member_id, inbound_at) 
+                   VALUES 
+                   (@orderId, @productId, @quantity, @memberId, NOW())";
+
+            // DB 커넥션, 파라미터 세팅 후 실행 (생략)
+
+            // 예를 들어, 파라미터에 memberId 넣기
+        }*/
+        #endregion
+
+        /// <summary>
+        /// id 컬럼과 매핑됨 (PK, Auto Increment)
+        /// 타입: INT
+        /// </summary>
+        public int Id { get; set; }
 
             /// <summary>
             /// username 컬럼과 매핑됨 (NN, UQ), 사용자 로그인 ID
@@ -35,10 +77,10 @@ namespace FreshBox.Models
             public string Password { get; set; } = string.Empty;
 
             /// <summary>
-            /// name 컬럼과 매핑됨 (NN), 사용자 이름
-            /// 타입: VARCHAR(100)
+            /// member_name 컬럼과 매핑됨 (NN), 사용자 이름
+            /// 타입: VARCHAR(30)
             /// </summary>
-            public string Name { get; set; } = string.Empty;
+            public string MemberName { get; set; } = string.Empty;
 
             /// <summary>
             /// role 컬럼과 매핑됨 (NN), 사용자 권한 (employee 또는 admin)
@@ -78,13 +120,13 @@ namespace FreshBox.Models
 
 
         // 뷰 모델에서 객체 생성할때 이 생성자를 호출해서 초기화시키고 그 객체를 서비스에 아규먼트로 넣어줄거임
-        public Member(string username, string password, string name, Role role,
+        public Member(string username, string password, string memberName, Role role,
               string phone, string email, DateTime birthDate,
               DateTime? hireDate = null)
         {
             this.Username = username;
             this.Password = password;
-            this.Name = name;
+            this.MemberName = memberName;
             this.Role = role;
             this.Phone = phone;
             this.Email = email;
