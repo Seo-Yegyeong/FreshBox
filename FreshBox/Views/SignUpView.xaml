@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:FreshBox.Views"
-             xmlns:vm="clr-namespace:FreshBox.ViewModels"
+             xmlns:vm="clr-namespace:FreshBox.ViewModels"        
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <!-- UserControl : 화면에 보이는 UI 조각(작은 화면 부품) 하나를 만드는 틀 -->
@@ -17,7 +18,14 @@
     </UserControl.DataContext>
     <Grid Background="White">
         <Label Content="ID" FontSize="25" HorizontalAlignment="Left" Margin="45,62,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBoxUsername" HorizontalAlignment="Left" Margin="112,69,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="178" Height="34"/>
-        <TextBlock x:Name="textBlockDuplicateCheckResult" HorizontalAlignment="Left" Margin="52,110,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="33" Width="278"/>
+        <!-- 사용자가 입력한 값을 뷰모델의 Username 속성과 연결 -->
+        <TextBox x:Name="textBoxUsername" HorizontalAlignment="Left" Margin="112,69,0,0" 
+                 TextWrapping="Wrap" VerticalAlignment="Top" Width="178" Height="34"
+                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}">
+            <!-- Username 속성을 바인딩 , UpdateSourceTrigger=PropertyChanged 한글자 입력할때마다 실시간으로 뷰모델의 Username속성에 값이 들어감
+                생략 시 포커스를 잃을 때 한 번 반영, 설정 시 한 글자 입력할 때마다 바로 반영됨
+                실시간 유효성 검사할 때 필수로 사용됨-->
+        </TextBox>
+        <TextBlock x:Name="textBlockDuplicateCheckResult" HorizontalAlignment="Left" Margin="52,110,0,0" TextWrapping="Wrap" Text="{Binding DuplicateCheckResult}" VerticalAlignment="Top" Height="33" Width="278" />
     </Grid>
 </UserControl>
