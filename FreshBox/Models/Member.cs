@@ -17,7 +17,7 @@ namespace FreshBox.Models
         //-> 컴파일러가 자동으로 내부에 private 필드를 생성
 
         public static int LoggedInMemberId { get; set; } = -1;  // 로그인 안 된 상태 초기값
-                                                                // -> 로그인 성공 시 LoggedInMemberId 저장
+        // -> 로그인 성공 시 LoggedInMemberId 저장
 
         #region (예시)
         // LoginService.cs 로그인 성공 시 LoggedInMemberId 저장 (예시)
