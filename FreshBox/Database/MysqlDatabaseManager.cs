@@ -1,10 +1,13 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration; // ConfigurationManager 사용을 위해 추가
 
 namespace FreshBox.Database
 {
@@ -38,7 +41,44 @@ namespace FreshBox.Database
         ///    ㄴ 요약 : Pooling=true;는 DB 연결을 미리 만들어두고 재사용해서 성능을 높여주는 옵션
         /// 실제 배포 시에는 보안을 위해 이 값은 appsettings나 환경변수 등 외부에서 관리하는 게 좋음!
         /// </summary>
-        private readonly string connStr = "Server=localhost; Database=FreshBox; Uid=sqc; Pwd=spc1234!; Port=3306; Charset=utf8; Pooling=true;";
+
+
+        //private readonly string connStr = "Server=localhost; Database=FreshBox; Uid=sqc; Pwd=spc1234!; Port=3306; Charset=utf8; Pooling=true;";
+
+        // 마리님! 보안을 보완하기 위해서 다음과 같이 작업을 수행했습니다.
+        //
+        // [1] App.config에 연결 문자열을 넣음.
+        //    ** 참고: App.config 파일은 .NET 애플리케이션의 설정 정보를 저장하는 XML 파일로, 프로젝트 루트 폴더(솔루션 폴더 아님)에 위치합니다.
+        //            원래 있는 파일이 아니기 때문에 새로 생성해주셔야 합니다. (프로젝트 우클릭 -> Add -> New Item -> Application Configuration File 선택)
+        //    ** 다음과 같이 작성해주시면 됩니다.
+        /*
+                <configuration>
+	                <connectionStrings>
+		                <add name = "MySqlConnection"
+                             connectionString="Server=localhost; Database=FreshBox; Uid=spc; Pwd=spc1234!; Port=3306; Charset=utf8;"
+			                 providerName="MySql.Data.MySqlClient" />
+	                </connectionStrings>
+                </configuration>
+        */
+        // [2] FreshBox.csproj에 코드 추가
+        //     - 이 파일은 루트 폴더 내에 위치합니다. 프로젝트 이름 더블클릭하면 열립니다.
+        //     - 다음과 같이 작성해주시면 됩니다.
+        //      <ItemGroup>
+        //          <None Update = "App.config">
+        //              <CopyToOutputDirectory> PreserveNewest </CopyToOutputDirectory>
+        //          </None>
+        //      </ItemGroup>
+        //
+        //      - 위 코드 역할: App.config 파일이 출력 디렉터리 (예: bin\Debug\net8.0-windows)로 복사됩니다. 따라서 ConfigurationManager로 DB 연결 문자열을 읽을 수 있습니다.
+        //
+        // [3] System.Configuration.ConfigurationManager 패키지 사용해서 DB 연결 정보(문자열)을 읽어옴
+        //     - NuGet에서 System.Configuration.ConfigurationManager 패키지 설치
+        //     - 다음과 같이 사용
+
+        private readonly string connStr = ConfigurationManager.ConnectionStrings["MySqlConnection"]?.ConnectionString ?? throw new InvalidOperationException("MySqlConnection 설정을 찾을 수 없습니다.");
+
+
+
         // ㄴ DB 연결 정보 입력
 
         // 싱글턴 인스턴스(객체)를 저장할 static 변수 (처음에는 null)

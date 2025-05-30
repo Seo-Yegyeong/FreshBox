@@ -1,25 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
-    <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
-    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageReference Include="MySql.Data" Version="9.3.0" />
-  </ItemGroup>
+	
+	<!--
+	아래 설정을 하게 되면, App.config 파일이 출력 디렉터리 (예: bin\Debug\net8.0-windows) 로 복사됩니다.
+    따라서 ConfigurationManager로 DB 연결 문자열을 읽을 수 있습니다!
+	-->
+	<ItemGroup>
+		<None Update="App.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	
+	
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+        <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
+        <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
+        <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+        <PackageReference Include="MySql.Data" Version="9.3.0" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.5" />
+    </ItemGroup>
+	
 
-  <ItemGroup>
-    <Folder Include="Assets\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Assets\" />
+        <Folder Include="Services\" />
+    </ItemGroup>
 
 </Project>
