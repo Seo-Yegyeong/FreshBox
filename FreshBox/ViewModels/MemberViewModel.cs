@@ -62,14 +62,15 @@ namespace FreshBox.ViewModels
          * ㄴ 일반 List<T>는 데이터가 바뀌어도 UI가 모름.
          */
 
+        // 서비스 객체 생성
         private readonly MemberService memberSvc = new MemberService();
 
         // MVVM Toolkit 방식: 자동으로 PropertyChanged 발생시켜주는 속성
         // [ObservableProperty]를 쓰면 이 필드와 연결된 속성이 자동 생성됨
-        // // 1. Username이라는 값을 바인딩해서 사용할 수 있게 만들어준다
+        // // Username이라는 값을 바인딩해서 사용할 수 있게 만들어준다
         [ObservableProperty]
-        private string username; // 이 필드를 바탕으로 자동으로 속성 만들어줘라는 뜻
-        // ㄴ 뷰의 textBoxusername과 바인딩됨
+        private string username = string.Empty; // 이 필드를 바탕으로 자동으로 속성 만들어줘라는 뜻
+        // ㄴ 뷰의 textBoxusername의 text속성과 바인딩됨
         // 사용자가 입력할 때 마다 자동으로 바인딩된 속성(ViewModel의 Username이 바뀜) 값이 변경됨
         /*
          [ObservableProperty]
@@ -77,21 +78,30 @@ namespace FreshBox.ViewModels
          */
 
         [ObservableProperty]
-        private string duplicateCheckResult; 
+        private string duplicateCheckResult = "";
+        // ㄴ textBlockDuplicateCheckResult의 text속성과 바인딩 되어있음(중복 확인 결과 출력)
 
         // 흐름 요약
         /*
             1. 사용자가 textBoxusername에 값을 입력
-            2. 사용자가 커서를 다른 곳을 클릭함 -> LostFocus 이벤트 발생
-            3. LostFocus 이벤트가  ViewModel의 CheckDuplicateCommand를 호출함
-            4. ViewModel이 현재 Username 값을 기준으로 중복체크
-            5. 중복 여부에 따라 결과를 DuplicateCheckResult에 표시
+            2. 사용자가 커서를 다른 곳을 클릭함 -> 값이 변경될 때마다 중복 체크 함수 자동 호출
+            3. 중복 여부에 따라 결과를 DuplicateCheckResult에 표시
          */
-        // 2. LostFocus 시 실행할 명령(textBoxusername이 포커스를 잃었을때 실행할 명령
-        [RelayCommand]
+
+
+        //[ObservableProperty] 속성을 쓰면, 빌드 시 Source Generator가 자동으로 코드를 생성
+        partial void OnUsernameChanged(string value)
+        {
+            checkDulicateUsername();
+        }
+
         private void checkDulicateUsername() {
+            if (string.IsNullOrWhiteSpace(username)) { 
+                DuplicateCheckResult = string.Empty; 
+                // textBoxUsername이 비어있으면 중복 결과를 비움
+            }
             string resultText = memberSvc.CheckUsernameDuplicate(username);
-            duplicateCheckResult = resultText;
+            DuplicateCheckResult = resultText;
 
         }
         /* [RelayCommand]

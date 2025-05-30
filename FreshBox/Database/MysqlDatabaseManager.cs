@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace FreshBox.Database
 {
@@ -89,6 +90,7 @@ namespace FreshBox.Database
             }
             catch (MySqlException ex)
             {
+                //MessageBox.Show($"DB 연결 실패: {ex.Message}");
                 Debug.WriteLine($"[DB 연결 실패] {ex.Message}");
                 throw; // 나중에 필요하면 예외 래핑해서 재던지기(#region 참고)
             }
