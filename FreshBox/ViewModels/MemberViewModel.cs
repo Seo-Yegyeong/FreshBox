@@ -7,7 +7,6 @@ using FreshBox.Models;
 using FreshBox.Repository;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-#endregion
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -43,21 +42,8 @@ using FreshBox.Services;
 namespace FreshBox.ViewModels
 {
     public partial class MemberViewModel : ObservableObject
-    { // ㄴ ObservableObject 상속받는 이유 : 속성과 UI 사이의 데이터 바인딩이 자동으로 동작하게 만들기 위해서.
-      // ㄴ 꼭, partial class 이여야 함.
-
+    { 
         public ObservableCollection<Member> member { get; } = new();
-        // get; => 읽기 전용 속성
-        // 이 컬렉션을 생성자에서 따로 초기화하지 않고, 바로 선언과 동시에 인스턴스 생성.
-        /*
-         * ObservableCollection
-         * ㄴ UI와 연결될 수 있는 컬렉션(List)
-         * ㄴ 변화가 있을 시 UI에 자동 반영되도록 설계된 클래스
-         * ㄴ 일반 List<T>는 데이터가 바뀌어도 UI가 모름.
-         */
-
-        
-
 
                 
     }

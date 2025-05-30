@@ -82,7 +82,7 @@ namespace FreshBox.Database
         // ㄴ DB 연결 정보 입력
 
         // 싱글턴 인스턴스(객체)를 저장할 static 변수 (처음에는 null)
-        private static MysqlDatabaseManager instance = null;
+        private static MysqlDatabaseManager? instance = null;
 
         // 멀티스레드에서 동시에 접근하지 못하도록 잠금 객체 생성
         private static readonly object lockObject = new object();
