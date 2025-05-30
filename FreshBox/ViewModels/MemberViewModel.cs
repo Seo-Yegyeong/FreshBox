@@ -84,7 +84,7 @@ namespace FreshBox.ViewModels
         // 흐름 요약
         /*
             1. 사용자가 textBoxusername에 값을 입력
-            2. 사용자가 커서를 다른 곳을 클릭함 -> 값이 변경될 때마다 중복 체크 함수 자동 호출
+            2. 사용자가 값을 변경할 때마다 중복 체크 함수 자동 호출
             3. 중복 여부에 따라 결과를 DuplicateCheckResult에 표시
          */
 
