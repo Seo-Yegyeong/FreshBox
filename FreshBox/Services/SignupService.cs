@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FreshBox.Services
 {
-    public class SignupService
+    public class SignUpService
     {
 
         MemberRepository memberRepo = new MemberRepository();
