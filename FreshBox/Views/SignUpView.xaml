@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:FreshBox.Views"
-             xmlns:vm="clr-namespace:FreshBox.ViewModels"        
+             xmlns:vm="clr-namespace:FreshBox.ViewModels" 
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1000">
     <!-- UserControl : 화면에 보이는 UI 조각(작은 화면 부품) 하나를 만드는 틀 -->
@@ -14,7 +14,7 @@
     <UserControl.DataContext>
         <!-- xmlns: vm 작성하기-->
         <!-- ViewModel 객체 생성 및 연결 -->
-        <vm:SignupViewModel/>
+        <vm:SignUpViewModel/>
     </UserControl.DataContext>
     <Grid Background="White">
         <Label Content="회원가입" HorizontalAlignment="Left" Margin="462,33,0,0" VerticalAlignment="Top"/>
@@ -27,36 +27,42 @@
                 생략 시 포커스를 잃을 때 한 번 반영, 설정 시 한 글자 입력할 때마다 바로 반영됨
                 실시간 유효성 검사할 때 필수로 사용됨-->
         </TextBox>
-        <TextBlock x:Name="DuplicateCheckResultTextBlock" HorizontalAlignment="Center" Margin="0,144,0,0" TextWrapping="Wrap" Text="{Binding DuplicateCheckResult}" VerticalAlignment="Top" Height="33" Width="278" />
-        
+        <TextBlock x:Name="UsernameValidationMessageTextBlock" HorizontalAlignment="Center" Margin="0,144,0,0" TextWrapping="Wrap" Text="{Binding UsernameValidationMessage}" VerticalAlignment="Top" Height="33" Width="278" />
+
+        <!-- 비밀번호는 WPF에서 직접 바인딩이 안됨 -->
+        <!-- hp:PasswordBoxBindingHelper.BoundPassword를 통해 ViewModel의 Pwd 속성과 양방향 바인딩 설정 -->
         <Label Content="비밀번호*" HorizontalAlignment="Left" Margin="340,190,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="PwdTextBox" Text="{Binding Pwd, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="462,194,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="346,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
-        
+        <PasswordBox x:Name="PwdBox" PasswordChanged="PwdBox_PasswordChanged" HorizontalAlignment="Left" Margin="462,194,0,0" VerticalAlignment="Top" Width="120" />
+        <!-- 비밀번호 입력 유효성 메시지 영역 -->
+        <TextBlock Text="{Binding PwdValidationMessage}" HorizontalAlignment="Left" Margin="346,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+
         <Label Content="비밀번호 확인*" HorizontalAlignment="Left" Margin="340,250,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="CheckPwdTextBox" Text="TextBox" HorizontalAlignment="Left" Margin="462,254,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,277,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
-        
+        <PasswordBox x:Name="ConfirmPwdBox" PasswordChanged="ConfirmPwdBox_PasswordChanged" HorizontalAlignment="Left" Margin="462,254,0,0" VerticalAlignment="Top" Width="120" />
+        <!-- 비밀번호 확인 유효성 메시지 영역 -->
+        <TextBlock Text="{Binding PwdConfirmValidationMessage}" HorizontalAlignment="Left" Margin="340,277,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+
         <Label Content="이름*" HorizontalAlignment="Left" Margin="340,305,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="462,309,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,332,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
-        
+        <TextBox Text="{Binding MemberName}" HorizontalAlignment="Left" Margin="462,309,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Text="{Binding MemberNameValidationMessage}" HorizontalAlignment="Left" Margin="340,332,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+
+        <!--DatePicker의 SelectedDate와 바인딩하면, 사용자가 날짜를 선택할 때 자동으로 BirthDate에 값이 들어감(BirthDate가 바뀌면 DatePicker가 자동으로 업데이트, Mode=TwoWay 양방향 동기화) -->
         <Label Content="생년월일*" HorizontalAlignment="Left" Margin="340,367,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="462,371,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,393,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
-        
-        <Label Content="휴대폰 번호*" HorizontalAlignment="Left" Margin="340,424,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="462,428,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,450,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
-        
-        <Label Content="이메일*" HorizontalAlignment="Left" Margin="340,483,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="462,487,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,513,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
-        
-        <Label Content="입사일(선택사항)" HorizontalAlignment="Left" Margin="340,543,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="462,547,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        
-        <Button Content="회원가입" HorizontalAlignment="Left" Margin="380,612,0,0" VerticalAlignment="Top"/>
-        <Button Content="취소" HorizontalAlignment="Left" Margin="500,612,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding BirthDateString}" HorizontalAlignment="Left" Margin="462,375,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Text="{Binding BirthDateValidationMessage}" HorizontalAlignment="Left" Margin="340,402,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+
+        <Label Content="휴대폰 번호*" HorizontalAlignment="Left" Margin="340,433,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding PhoneNumber}" HorizontalAlignment="Left" Margin="462,437,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <TextBlock Text="{Binding PhoneNumValidationMessage}" HorizontalAlignment="Left" Margin="340,471,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+
+        <Label Content="이메일*" HorizontalAlignment="Left" Margin="340,500,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding Email}" HorizontalAlignment="Left" Margin="462,504,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Text="{Binding EmailValidationMessage}" HorizontalAlignment="Left" Margin="340,534,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+
+        <Label Content="입사일(선택사항)" HorizontalAlignment="Left" Margin="340,564,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding HireDateString}" HorizontalAlignment="Left" Margin="462,568,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Text="{Binding HireDateValidationMessage}" HorizontalAlignment="Left" Margin="340,534,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+
+        <Button Content="회원가입" HorizontalAlignment="Left" Margin="380,633,0,0" VerticalAlignment="Top"/>
+        <Button Content="취소" HorizontalAlignment="Left" Margin="500,633,0,0" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>
