@@ -100,7 +100,10 @@ namespace FreshBox.ViewModels
         private string memberName = string.Empty; // 사용자 이름
 
         [ObservableProperty]
-        private string birthDateString = string.Empty;  // 생년월일
+        private DateTime birthDate;
+
+        [ObservableProperty]
+        private string birthDateString = string.Empty;  // 생년월일문자열
 
         [ObservableProperty]
         private string phoneNumber = string.Empty; // 연락처
@@ -319,8 +322,8 @@ namespace FreshBox.ViewModels
         private void ValidatePassword(string value)
         {
 
-            // 빈 값인지 검사
-            if (string.IsNullOrEmpty(value))
+            // 빈문자열 또는 공백으로만 이루어졌는지 검사
+            if (string.IsNullOrWhiteSpace(value))
             {
                 IsPwdValid = false;
                 PwdValidationMessage = "비밀번호를 입력해주세요.";
@@ -373,7 +376,7 @@ namespace FreshBox.ViewModels
         partial void OnConfirmPwdChanged(string value)
         {
             
-            // 공백, 빈문자열로만 이루어졌는지 검사
+            // 빈문자열 또는 공백으로만 이루어졌는지 검사
             if (string.IsNullOrWhiteSpace(value))
             {
                 IsConfirmPwdValid = false;
@@ -430,7 +433,7 @@ namespace FreshBox.ViewModels
         private void ValidateMemberName(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-            { // value가 빈문자열 또는 공백일 경우 실행
+            { // value가 빈문자열 또는 공백으로만 이루어졌을 경우 실행
                 IsMemberNameValid = false; // 유효하지 않음
                 MemberNameValidationMessage = "이름을 입력해주세요.";
                 return;
@@ -484,5 +487,77 @@ namespace FreshBox.ViewModels
              ㄴ 용도: 텍스트에서 특정 단어가 몇 번 등장하는지 세고 싶을 때 사용
          */
         #endregion
+
+        /// <summary>
+        /// 뷰에 바인딩 된 BirthDateString값이 변할 때마다 자동으로 호출되는 메서드
+        /// </summary>
+        /// <param name="value">사용자가 입력한 생년월일</param>
+        partial void OnBirthDateStringChanged(string value)
+        {
+            // 입력 제한 8자
+            if (value.Length > 8) {  // 8자 이상 입력 시 실행
+                IsBirthDateValid = false;
+                BirthDateString = value.Substring(0,8);
+                // 원본 문자열 인덱스 0부터 8까지의 새 문자열을 만들어 BirthDateString저장
+                // BirthDateString저장 시 값 변경되므로 재귀호출되지만,
+                // 8자로 된 값이 저장되므로 해당 스코프의 검사는 실행되지 않음
+                return;
+            }
+
+            ValidateBirthDateString(value); // 유효성 검사 메서드 호출
+        }
+
+        private void ValidateBirthDateString(string value) {
+            
+            // 빈문자열 또는 공백으로만 이루어졌는지 검사(공백 포함된것은 못잡음)
+            if (string.IsNullOrWhiteSpace(value)) { 
+                IsBirthDateValid= false; // 유효하지 않음
+                BirthDateValidationMessage = "생년월일을 입력해주세요. (예시) 19980801";
+                //사용자 UI에 안내 메세지 띄움
+                return;
+            }
+
+            // 공백을 포함하는지 검사
+            if (value.Contains(' ')) {
+                IsBirthDateValid = false;
+                BirthDateValidationMessage = "공백을 포함할 수 없습니다.";
+                return;
+            }
+
+            // 형식 검사, 문자열 전체가 숫자 8자리인지 검사
+            // ^ : 문자열 시작, $ : 문자열 끝, \d : 숫자 0~9, {8} : 8자리
+            if (!Regex.IsMatch(value, @"^\d{8}$")) {
+                IsBirthDateValid = false;
+                BirthDateValidationMessage = "8자리의 년월일 형식으로 입력해주세요. (예 19980801)";
+                return;
+            }
+
+            // 날짜 유효성 검사(yyyyMMdd 형식에 맞는지, 실제 존재하는 날짜인지 검사)
+            // 시간 분(mm)과 구분하기 위해 날짜의 월 부분은 대문자 MM으로 표시
+            // TryParseExact은 입력 문자열이 "yyyyMMdd" 형식에 맞는지 시도
+            // 성공하면 birthDate에 DateTime 객체로 변환해 저장
+            // 실패하면 false 반환 (실패 시 birthDate는 기본값 저장 0001-01-01 00:00:00)
+            // 이상한 값이 birthDate에 저장되지만, 어차피 이 경우 return으로 빠져나가므로 문제가 되진 않음
+            // 제대로 입력한 경우 ture반환하고 birthDate에 변환된 날짜가 저장되고
+            // if (!true) → if (false)가 되므로 해당 if문은 실행 되지 않음
+            if (!DateTime.TryParseExact(value, "yyyyMMdd", null,
+                System.Globalization.DateTimeStyles.None, out DateTime birthDate)) {
+
+                IsBirthDateValid = false; // 유효하지 않음
+                BirthDateValidationMessage = "유효하지 않은 생년월일입니다.";
+                return; // 유효하지 않으면 메시지 출력 후 종료
+            }
+
+            // 현재 날짜 기준으로 미래 날짜인지 검사( || 사용시 단축평가 되므로 따로 분리함)
+            if (birthDate > DateTime.Today) {
+                IsBirthDateValid = false; // 유효하지 않음
+                BirthDateValidationMessage = "유효하지 않은 생년월일입니다.(미래날짜불가)";
+                return; // 유효하지 않으면 메시지 출력 후 종료
+            }
+
+            BirthDateValidationMessage = "";
+            BirthDate = birthDate; // 유효성 처리 끝낸 입력문자열을 생년월일 필드에 저장시킴 
+            IsBirthDateValid = true; // 유효처리
+        }
     }
 }
