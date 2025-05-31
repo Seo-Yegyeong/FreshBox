@@ -12,6 +12,8 @@ using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FreshBox.Services;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 
 #region #3. CommunityToolkit.Mvvm 라이브러리
@@ -90,18 +92,65 @@ namespace FreshBox.ViewModels
 
 
         //[ObservableProperty] 속성을 쓰면, 빌드 시 Source Generator가 자동으로 코드를 생성
+        // 값이 바뀔 때마다 이 함수를 자동으로 호출 시켜줌
         partial void OnUsernameChanged(string value)
         {
-            checkDulicateUsername();
+            // 12자 넘으면 잘라내기
+            if (value.Length > 12) 
+            {
+                Username = value.Substring(0, 12); // 재할당되며 OnUsernameChanged 재호출됨
+                return; // 뒤에 로직 실행 안 하도록 바로 종료
+            }
+
+            // 아이디 유효성 검사
+            // @를 붙이는 이유 : \(백슬레시) 이스케이프 문자 이런것 때문에 사용함
+            // 이스케이프를 무시하고 문자 그대로 인식하라고 컴파일러에게 알려주는 역할
+            
+            string pattern = @"^[A-Za-z0-9]{6,12}$";
+            // ㄴ 정규표현식 : 6~12자의 영문 대소문자와 숫자사용
+
+            if (string.IsNullOrWhiteSpace(Username)) // username textBox가 비어있으면 실행
+            {
+                DuplicateCheckResult = "아이디를 입력해주세요.";
+            }
+            else if (Regex.IsMatch(Username, pattern)) {
+                CheckUsernameDuplicate(); // DB에 같은 username 있는지 중복 검사 메서드 호출
+            }
+            else
+            {
+                DuplicateCheckResult = "❌ 6~12자의 영문 대소문자와 숫자만 사용할 수 있습니다.";
+            }
+
+
         }
 
-        private void checkDulicateUsername() {
-            if (string.IsNullOrWhiteSpace(username)) { 
-                DuplicateCheckResult = string.Empty; 
-                // textBoxUsername이 비어있으면 중복 결과를 비움
+        /// <summary>
+        /// 입력한 Username의 중복 여부를 검사하는 메서드
+        /// </summary>
+        private void CheckUsernameDuplicate() {
+            try {
+
+                bool isDuplicate = memberSvc.IsUsernameDuplicate(Username);
+
+                if (isDuplicate) // 중복 된 아이디 있음
+                {
+                    //UI에 중복 메시지 처리
+                    DuplicateCheckResult = "사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.";
+                }
+                else // 중복된 아이디 없음
+                {
+                    //UI에 사용 가능 메시지 처리
+                    DuplicateCheckResult = "사용하실 수 있는 ID입니다.";
+                }
+            } 
+            
+            catch (Exception ex) { // 에러
+                Debug.WriteLine($"Service error: {ex.Message}");
+                // UI에 네트워크, DB 연결 문제 등 예외 상황에 대한 사용자 안내 메시지
+                DuplicateCheckResult = "Error : 서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
             }
-            string resultText = memberSvc.CheckUsernameDuplicate(username);
-            DuplicateCheckResult = resultText;
+            
+           
 
         }
         /* [RelayCommand]
