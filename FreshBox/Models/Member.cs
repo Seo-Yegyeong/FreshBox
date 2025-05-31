@@ -122,7 +122,7 @@ namespace FreshBox.Models
         // 뷰 모델에서 객체 생성할때 이 생성자를 호출해서 초기화시키고 그 객체를 서비스에 아규먼트로 넣어줄거임
         public Member(string username, string password, string memberName, Role role,
               string phone, string email, DateTime birthDate,
-              DateTime? hireDate)
+              DateTime? hireDate = null)
         {
             this.Username = username;
             this.Password = password;
