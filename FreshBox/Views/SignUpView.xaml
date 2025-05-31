@@ -52,7 +52,7 @@
         <TextBlock Text="{Binding BirthDateValidationMessage}" HorizontalAlignment="Left" Margin="340,402,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
 
         <Label Content="휴대폰 번호*" HorizontalAlignment="Left" Margin="340,433,0,0" VerticalAlignment="Top"/>
-        <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="462,437,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" MaxLength="11" HorizontalAlignment="Left" Margin="462,437,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
         <TextBlock Text="{Binding PhoneNumValidationMessage}" HorizontalAlignment="Left" Margin="340,471,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
 
         <Label Content="이메일*" HorizontalAlignment="Left" Margin="340,500,0,0" VerticalAlignment="Top"/>
