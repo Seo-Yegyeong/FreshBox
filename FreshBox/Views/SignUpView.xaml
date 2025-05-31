@@ -8,47 +8,55 @@
              xmlns:vm="clr-namespace:FreshBox.ViewModels"        
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1000">
-    <!-- UserControl : 화면에 보이는 UI 조각(작은 화면 부     품) 하나를 만드는 틀 -->
+    <!-- UserControl : 화면에 보이는 UI 조각(작은 화면 부품) 하나를 만드는 틀 -->
     <!-- DataContext : 이 UserControl에서 "사용할 데이터와 기능들이 있는 곳"을 연결하는 역할. 
             예를 들어, 뷰모델(화면 뒤에 데이터를 처리하는 클래스)이 어디인지 연결해주는 '배선' 같은 역할 -->
     <UserControl.DataContext>
         <!-- xmlns: vm 작성하기-->
         <!-- ViewModel 객체 생성 및 연결 -->
-        <vm:MemberViewModel/>
+        <vm:SignupViewModel/>
     </UserControl.DataContext>
     <Grid Background="White">
         <Label Content="회원가입" HorizontalAlignment="Left" Margin="462,33,0,0" VerticalAlignment="Top"/>
         <Label Content="아이디*" FontSize="25" HorizontalAlignment="Left" Margin="318,99,0,0" VerticalAlignment="Top"/>
         <!-- 사용자가 입력한 값을 뷰모델의 Username 속성과 연결 -->
-        <TextBox x:Name="textBoxUsername" HorizontalAlignment="Left" Margin="462,103,0,0" 
+        <TextBox x:Name="UsernameTextBox" HorizontalAlignment="Left" Margin="462,103,0,0" 
                  TextWrapping="Wrap" VerticalAlignment="Top" Width="178" Height="34"
                  Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}">
             <!-- Username 속성을 바인딩 , UpdateSourceTrigger=PropertyChanged 한글자 입력할때마다 실시간으로 뷰모델의 Username속성에 값이 들어감
                 생략 시 포커스를 잃을 때 한 번 반영, 설정 시 한 글자 입력할 때마다 바로 반영됨
                 실시간 유효성 검사할 때 필수로 사용됨-->
         </TextBox>
-        <TextBlock x:Name="textBlockDuplicateCheckResult" HorizontalAlignment="Center" Margin="0,144,0,0" TextWrapping="Wrap" Text="{Binding DuplicateCheckResult}" VerticalAlignment="Top" Height="33" Width="278" />
+        <TextBlock x:Name="DuplicateCheckResultTextBlock" HorizontalAlignment="Center" Margin="0,144,0,0" TextWrapping="Wrap" Text="{Binding DuplicateCheckResult}" VerticalAlignment="Top" Height="33" Width="278" />
+        
         <Label Content="비밀번호*" HorizontalAlignment="Left" Margin="340,190,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="462,194,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="PwdTextBox" Text="{Binding Pwd, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="462,194,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="346,216,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+        
         <Label Content="비밀번호 확인*" HorizontalAlignment="Left" Margin="340,250,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="CheckPwdTextBox" Text="TextBox" HorizontalAlignment="Left" Margin="462,254,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,277,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
-        <TextBox HorizontalAlignment="Left" Margin="462,254,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        
         <Label Content="이름*" HorizontalAlignment="Left" Margin="340,305,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Margin="462,309,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,332,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+        
         <Label Content="생년월일*" HorizontalAlignment="Left" Margin="340,367,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Margin="462,371,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,393,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+        
         <Label Content="휴대폰 번호*" HorizontalAlignment="Left" Margin="340,424,0,0" VerticalAlignment="Top"/>
-        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,450,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
         <TextBox HorizontalAlignment="Left" Margin="462,428,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,450,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+        
         <Label Content="이메일*" HorizontalAlignment="Left" Margin="340,483,0,0" VerticalAlignment="Top"/>
-        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,513,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
         <TextBox HorizontalAlignment="Left" Margin="462,487,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,513,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
+        
         <Label Content="입사일(선택사항)" HorizontalAlignment="Left" Margin="340,543,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Margin="462,547,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        
         <Button Content="회원가입" HorizontalAlignment="Left" Margin="380,612,0,0" VerticalAlignment="Top"/>
         <Button Content="취소" HorizontalAlignment="Left" Margin="500,612,0,0" VerticalAlignment="Top"/>
-        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,332,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
-        <TextBlock Text="TextBlock" HorizontalAlignment="Left" Margin="340,393,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
     </Grid>
 </UserControl>
