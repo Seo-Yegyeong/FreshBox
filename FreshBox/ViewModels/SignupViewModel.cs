@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using MySql.Data.MySqlClient;
 
 
 #region #3. CommunityToolkit.Mvvm 라이브러리
@@ -56,7 +57,7 @@ namespace FreshBox.ViewModels
           즉, 속성이 바뀌면 화면에 자동 반영이 가능해짐
          */
 
-       // public ObservableCollection<Member> Members { get; } = new();
+        // public ObservableCollection<Member> Members { get; } = new();
         // get; => 읽기 전용 속성만 있음
         // 이 컬렉션을 생성자에서 따로 초기화하지 않고, 바로 선언과 동시에 인스턴스 생성.
         // Member 객체들을 담는 리스트
@@ -101,10 +102,10 @@ namespace FreshBox.ViewModels
         [ObservableProperty]
         private string birthDateString = string.Empty;  // 생년월일
 
-        [ObservableProperty] 
+        [ObservableProperty]
         private string phoneNumber = string.Empty; // 연락처
 
-        [ObservableProperty] 
+        [ObservableProperty]
         private string email = string.Empty; // 이메일
 
         [ObservableProperty]
@@ -206,28 +207,44 @@ namespace FreshBox.ViewModels
         // username이 바뀔때마다 자동으로 호출되는 메서드
         partial void OnUsernameChanged(string value)
         {
+
             // 12자 넘으면 잘라내기
-            if (value.Length > 12) 
+            if (value.Length > 12)
             {
-                Username = value.Substring(0, 12); // 재할당되며 OnUsernameChanged 재호출됨
+                IsUsernameValid = false;
+                Username = value.Substring(0, 12).Trim(); // 재할당되며 OnUsernameChanged 재호출됨
                 return; // 뒤에 로직 실행 안 하도록 바로 종료
             }
 
             // 아이디 유효성 검사
             // @를 붙이는 이유 : \(백슬레시) 이스케이프 문자 이런것 때문에 사용함
             // 이스케이프를 무시하고 문자 그대로 인식하라고 컴파일러에게 알려주는 역할
-            
+
             string pattern = @"^[A-Za-z0-9]{6,12}$";
             // ㄴ 정규표현식 : 6~12자의 영문 대소문자와 숫자사용
+            //^가 붙으면 문자열 맨 처음부터 딱 맞아야 한다는 의미
+            // ^ 없으면, 문자열 중간에 영어 10~20자가 있으면 매칭될 수 있음
+            // ^와 $를 함께 쓰면 "전체 문자열이 이 패턴이어야 한다"는 뜻
 
+            // 빈 문자열 또는 공백만 있는지 검사
             if (string.IsNullOrWhiteSpace(value))
             {
+                IsUsernameValid = false;
                 UsernameValidationMessage = "아이디를 입력해주세요.";
                 return; // 뒤에 로직 실행 안 하도록 바로 종료
             }
 
+            // 공백이 포함되었는지 검사
+            if (value.Contains(' '))
+            {
+                IsUsernameValid = false;
+                UsernameValidationMessage = "아이디에는 공백이 포함될 수 없습니다.";
+                return;
+            }
+
             if (!Regex.IsMatch(value, pattern))
             {
+                IsUsernameValid = false;
                 UsernameValidationMessage = "❌ 6~12자의 영문 대소문자와 숫자만 사용할 수 있습니다.";
                 return; // 뒤에 로직 실행 안 하도록 바로 종료
             }
@@ -241,8 +258,10 @@ namespace FreshBox.ViewModels
         /// <summary>
         /// 입력한 Username의 중복 여부를 검사하는 메서드
         /// </summary>
-        private void CheckUsernameDuplicate() {
-            try {
+        private void CheckUsernameDuplicate()
+        {
+            try
+            {
 
                 bool isDuplicate = signUpSvc.IsUsernameDuplicate(Username);
 
@@ -258,9 +277,10 @@ namespace FreshBox.ViewModels
                     //UI에 사용 가능 메시지 처리
                     UsernameValidationMessage = "✅ 사용하실 수 있는 ID입니다.";
                 }
-            } 
-            
-            catch (Exception ex) { // 에러
+            }
+
+            catch (Exception ex)
+            { // 에러
                 Debug.WriteLine($"Service error: {ex.Message}");
                 IsUsernameValid = false; // 에러 시, DB 확인 불가하므로)) username이 유효하지 않음으로 처리
                 // UI에 네트워크, DB 연결 문제 등 예외 상황에 대한 사용자 안내 메시지
@@ -273,11 +293,13 @@ namespace FreshBox.ViewModels
         {
             // value가 20자를 초과하면, 앞 20자만 남긴 뒤 Pwd에 재할당
             // → 이때 다시 OnPwdChanged가 호출되므로 무한루프 방지
-            if (value.Length > 20) { // 비밀번호 입력이 20자를 초과하면 실행
-                Pwd = value.Substring(0, 20);
-                // 원본 문자열로 부터 0번째 인덱스부터 시작해서 20글자를 복사해
+            if (value.Length > 20)
+            { // 비밀번호 입력이 20자를 초과하면 실행
+                IsPwdValid = false; // 유효성 검사 결과 : 유효하지 않음
+                Pwd = value.Substring(0, 20).Trim();
+                // 원본 문자열로 부터 0번째 인덱스부터 시작해서 20글자를 복사해, 앞 뒤 공백 제거후
                 // 새 문자열을 만들어서 pwd에 저장
-                return; // 해당 메서드 종료
+                return; // 뒤에 로직 실행 안 하도록 바로 종료
             }
 
             // 글자 수 20 이하일 때 실행됨, 유효성 검사 실행
@@ -294,52 +316,75 @@ namespace FreshBox.ViewModels
         /// - 영문, 숫자, 특수문자 중 최소 2가지 조합
         /// </summary>
         /// <param name="value">검사할 비밀번호 문자열</param>
-        private void ValidatePassword(string value) {
+        private void ValidatePassword(string value)
+        {
 
             // 빈 값인지 검사
-            if (string.IsNullOrEmpty(value)) {
-                PwdValidationMessage = "비밀번호를 입력해주세요.";
+            if (string.IsNullOrEmpty(value))
+            {
                 IsPwdValid = false;
-                return;
+                PwdValidationMessage = "비밀번호를 입력해주세요.";
+                return; // 뒤에 로직 실행 안 하도록 바로 종료
+            }
+
+            // 공백이 포함 되는지 검사
+            if (value.Contains(' '))
+            {
+                IsPwdValid = false;
+                PwdValidationMessage = "비밀번호에 공백이 포함될 수 없습니다.";
+                return; 
             }
 
             //길이 조건 검사(10 ~ 20자)
-            if (value.Length < 10 || value.Length > 20) {
-                PwdValidationMessage = "비밀번호는 10자 이상 20자 이하로 입력해주세요.";
+            if (value.Length < 10 || value.Length > 20)
+            {
                 IsPwdValid = false;
+                PwdValidationMessage = "비밀번호는 10자 이상 20자 이하로 입력해주세요.";
                 return; // 해당 메서드 종료
             }
 
             // 조합 조건 검사(영문, 숫자, 특수문자 중 2가지 이상 포함)
             int typeCount = 0;
-            if (Regex.IsMatch(value, "[A-Za-z]")) 
+
+            if (Regex.IsMatch(value, "[A-Za-z]"))
                 typeCount++;       // 영문
-            if (Regex.IsMatch(value, "[0-9]")) 
+            if (Regex.IsMatch(value, "[0-9]"))
                 typeCount++;           // 숫자
-            if (Regex.IsMatch(value, "[^A-Za-z0-9]")) 
+            if (Regex.IsMatch(value, "[^A-Za-z0-9]"))
                 typeCount++;    // 특수문자
 
             if (typeCount < 2)
             {
-                PwdValidationMessage = "영문, 숫자, 특수문자 중 최소 2가지 조합이 필요합니다.";
                 IsPwdValid = false;
-                return; // 해당 메서드 종료
+                PwdValidationMessage = "영문, 숫자, 특수문자 중 최소 2가지 조합이 필요합니다.";
+                return; // 뒤에 로직 실행 안 하도록 바로 종료
             }
 
             // 모든 조건을 만족할 경우 실행 됨
             PwdValidationMessage = "✅ 사용 가능한 비밀번호입니다.";
             IsPwdValid = true;
-            
+
         }
 
         /// <summary>
-        /// 비밀번호 확인 속성값이 변경 될 때마다 자동 호출 되는 메서드
+        /// ConfirmPwd 속성 값이 변경될 때마다 자동으로 호출되는 partial 메서드
         /// </summary>
-        /// <param name="value">비밀번호 확인</param>
+        /// <param name="value">사용자가 비밀번호 확인 입력란에 입력한 새 값</param>
         partial void OnConfirmPwdChanged(string value)
         {
-            if (string.IsNullOrWhiteSpace(value)) {
+            
+            // 공백, 빈문자열로만 이루어졌는지 검사
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                IsConfirmPwdValid = false;
                 PwdConfirmValidationMessage = "비밀번호를 다시 한번 입력해주세요.";
+                return;
+            }
+
+            // 공백이 포함 되었는지 검사
+            if (value.Contains(' ')) {
+                IsConfirmPwdValid = false;
+                PwdConfirmValidationMessage = "공백은 포함될 수 없습니다.";
                 return;
             }
 
@@ -354,8 +399,8 @@ namespace FreshBox.ViewModels
         {
             if (Pwd != ConfirmPwd)
             {
-                PwdConfirmValidationMessage = "비밀번호가 일치하지 않습니다.";
                 IsConfirmPwdValid = false;
+                PwdConfirmValidationMessage = "비밀번호가 일치하지 않습니다.";
             }
             else
             {
@@ -364,5 +409,80 @@ namespace FreshBox.ViewModels
             }
         }
 
+        /// <summary>
+        /// MemberName 속성 값이 변경될 때마다 자동으로 호출되는 partial 메서드
+        /// </summary>
+        /// <param name="value">변경된 MemberName의 새 값</param>
+        partial void OnMemberNameChanged(string value)
+        {
+            if (value.Length > 10) // 입력값이 10자 이상이면 실행
+            {
+                IsMemberNameValid = false; // 유효하지 않음
+                MemberName = value.Substring(0, 10).Trim(); // 원본 문자열의 인덱스0~10까지의 새 문자열을 만들어 MemberName에 저장
+                return; // 뒤의 로직 실행 되지 않도록 종료
+            }
+
+            ValidateMemberName(value);
+
+        }
+
+        // 이름 유효성 검사
+        private void ValidateMemberName(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            { // value가 빈문자열 또는 공백일 경우 실행
+                IsMemberNameValid = false; // 유효하지 않음
+                MemberNameValidationMessage = "이름을 입력해주세요.";
+                return;
+            }
+
+            //공백을 포함하는지 검사
+            if (value.Contains(' ')) {
+                IsMemberNameValid= false;
+                MemberNameValidationMessage = "이름에 공백을 포함할 수 없습니다.";
+                return;
+            }
+
+            string pattern = @"^[가-힣A-Za-z]{1,10}$";
+            // 한글(가-힣) 또는 영문 대/소문자,최소 1글자, 최대 10글자
+            // 전체가 이 문자들로만 구성되어야 함(^,$사용)
+
+            //Regular Expression(정규 표현식), 유효성 검사
+            if (!Regex.IsMatch(value,pattern)) {
+                IsMemberNameValid = false;
+                MemberNameValidationMessage = "이름은 한글, 영문자만 가능합니다(최대 10자까지)";
+                return; // 뒤의 로직 실행되지 않도록 종료함
+            }
+
+            MemberNameValidationMessage = "";
+            IsMemberNameValid = true;
+
+        }
+        #region  Regex(정규 표현식) 주요 메서드
+        /*
+            Regex.IsMatch(string input, string pattern)
+             ㄴ 입력 문자열이 패턴에 맞는지 참/거짓으로 반환
+             ㄴ 용도: 입력값 유효성 검사할 때 가장 많이 씀
+
+            Regex.Matches(string input, string pattern)
+             ㄴ 입력 문자열에서 패턴과 일치하는 모든 부분 문자열을 컬렉션으로 반환
+             ㄴ 용도: 여러 개 매칭되는 부분 전부 다 뽑아내고 싶을 때
+             ㄴ 예) 문서에서 모든 이메일 주소 추출, 모든 숫자 찾기
+
+            Regex.Replace(string input, string pattern, string replacement)
+             ㄴ 패턴과 일치하는 부분 문자열을 대체하여 새로운 문자열 반환
+             ㄴ 용도: 민감 정보 마스킹, 문자열 포맷 변환, 불필요 문자 제거할 때
+             ㄴ 예) 전화번호 형식 통일, 주민번호 일부 * 처리
+
+            Regex.Split(string input, string pattern)
+             ㄴ 패턴을 기준으로 입력 문자열을 분할하여 문자열 배열 반환
+             ㄴ 용도: 복잡한 구분자(콤마+세미콜론 등)로 문자열 분할할 때
+             ㄴ 예) CSV 등 파일 파싱, 로그 라인 분리
+            
+            Regex.Count(string input, string pattern)
+             ㄴ .NET 7부터 도입, 정규 표현식에 매칭되는 부분의 개수를 반환
+             ㄴ 용도: 텍스트에서 특정 단어가 몇 번 등장하는지 세고 싶을 때 사용
+         */
+        #endregion
     }
 }
