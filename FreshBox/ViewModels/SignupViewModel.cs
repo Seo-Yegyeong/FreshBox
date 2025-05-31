@@ -197,6 +197,10 @@ namespace FreshBox.ViewModels
 
         // 메서드 정의 ---------------------------------------
 
+        // 유효성 검사는 || 단축 평가로 인해 각 조건을 if문으로 분리해서 각각 개별 검사 로직으로 진행됨
+        // 이렇게 해야 각각의 조건이 실패했을 때 적절한 처리가 가능하고,
+        // 어떤 조건에서 실패했는지 명확히 알 수 있다.
+
         // 사용자 아이디(username) 유효성 & 중복 검사 흐름 요약
         /*
             1. 사용자가 UsernameTextBox에 값을 변경할 때마다 메서드 자동 호출
@@ -295,7 +299,7 @@ namespace FreshBox.ViewModels
         partial void OnPwdChanged(string value)
         {
             // value가 20자를 초과하면, 앞 20자만 남긴 뒤 Pwd에 재할당
-            // → 이때 다시 OnPwdChanged가 호출되므로 무한루프 방지
+            // → 이때 다시 OnPwdChanged가 호출되지만 20자이므로 무한루프되지 않는다.
             if (value.Length > 20)
             { // 비밀번호 입력이 20자를 초과하면 실행
                 IsPwdValid = false; // 유효성 검사 결과 : 유효하지 않음
@@ -499,14 +503,15 @@ namespace FreshBox.ViewModels
                 IsBirthDateValid = false;
                 BirthDateString = value.Substring(0,8);
                 // 원본 문자열 인덱스 0부터 8까지의 새 문자열을 만들어 BirthDateString저장
-                // BirthDateString저장 시 값 변경되므로 재귀호출되지만,
-                // 8자로 된 값이 저장되므로 해당 스코프의 검사는 실행되지 않음
+                // BirthDateString저장 시 값 변경되므로 재귀 호출되지만,
+                // 8자로 된 값이 저장되므로 해당 if문의 내부는 실행되지 않음(무한루프 되지 않음)
                 return;
             }
 
             ValidateBirthDateString(value); // 유효성 검사 메서드 호출
         }
 
+        // 생년월일 유효성 검사 
         private void ValidateBirthDateString(string value) {
             
             // 빈문자열 또는 공백으로만 이루어졌는지 검사(공백 포함된것은 못잡음)
@@ -559,5 +564,69 @@ namespace FreshBox.ViewModels
             BirthDate = birthDate; // 유효성 처리 끝낸 입력문자열을 생년월일 필드에 저장시킴 
             IsBirthDateValid = true; // 유효처리
         }
-    }
-}
+
+        /// <summary>
+        /// 뷰에 바인딩 된 PhoneNumber 값 변경 시 자동으로 호출되는 메서드
+        /// </summary>
+        /// <param name="value">사용자 입력값</param>
+        partial void OnPhoneNumberChanged(string value)
+        {
+            // 입력 제한(최대 11자)
+            if (value.Length > 11) { 
+                IsPhoneNumberValid = false;
+                PhoneNumber = value.Substring(0, 11).Trim();
+                // 원본 문자열의 인덱스 0부터 11까지 새문자열로 만들고 앞뒤 공백을 제거하여
+                // PhoneNumber에 저장 // PhoneNumber 값 변경되어 재귀호출 되지만
+                // 11자이기 때문에 해당 if문의 내부는 실행되지 않음
+                return;
+            }
+
+            // 유효성 검사 메서드 호출
+            ValidatePhoneNum(value);
+
+        }
+
+        // 휴대폰 번호 유효성 검사
+        private void ValidatePhoneNum(string value) {
+            // 빈문자열 또는 공백으로만 이루어졌는지 검사
+            if (string.IsNullOrWhiteSpace(value)) {
+                IsPhoneNumberValid = false;
+                PhoneNumValidationMessage = "연락처를 입력해주세요.";
+                return;
+            }
+            // 공백을 포함하는지 검사
+            if (value.Contains(' ')) {
+                IsPhoneNumberValid = false;
+                PhoneNumValidationMessage = "연락처는 공백을 포함할 수 없습니다.";
+                return;
+            }
+
+            // 숫자만 추출 (하이픈, 공백 등 제거)
+            string digitsOnly = Regex.Replace(value, @"[^\d]", "");
+            // ㄴ value 문자열에서 숫자(0-9)가 아닌 모든 문자를 제거
+            // ㄴ 숫자가 아닌 문자를 모두 빈 문자열 ""로 바꿔버림
+            //  @"[^\d]" 정규식은 숫자가 아닌(^가 부정) 
+            // "010-1234-5678" → "01012345678" 이렇게 숫자만 추출
+
+            // 한국 휴대폰 번호 길이 제한 (10자리 또는 11자리)
+            if (digitsOnly.Length != 10 && digitsOnly.Length != 11) {
+                // 입력 번호가 10자리 또는 11자리가 아닌 경우 실행
+                IsPhoneNumberValid = false; // 유효하지 않음
+                PhoneNumValidationMessage = "휴대폰 번호는 10자리 또는 11자리의 숫자만 입력이 가능합니다.";
+                return; // 유효하지 않으므로 밑의 로직이 실행되지 않도록 종료 시킴
+            }
+
+            // 휴대폰 번호 시작 패턴 (010, 011, 016, 017, 018, 019)
+            // 이 뒤로 숫자 7자리 또는 8자리가 뒤따라야 함(즉, 전체 길이는 10자리 또는 11자리)
+            if (!Regex.IsMatch(digitsOnly, @"^(010|011|016|017|018|019)\d{7,8}$")) {
+                IsPhoneNumberValid = false; // 유효하지 않음
+                PhoneNumValidationMessage = "유효하지 않는 번호입니다.";
+                return;
+            }
+
+            // DB에 중복된 번호가 있는지 검사 
+
+        }
+
+    }// 클래스 끝
+}// 네임스페이스 끝
