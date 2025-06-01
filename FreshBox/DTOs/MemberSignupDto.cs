@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace FreshBox.DTOs
 {
-    // DTO : 데이터 전송용 클래스
+    // DTO(Data Transfer Object) : 데이터 전송용 클래스
+    // (중요) 데이터 전송에 필요한 프로퍼티만 선언해서 사용한다!!
     /*
      ViewModel (MemberSignupDto 생성, 유효성 검사)
         -> Service (DTO -> Model 변환, Repository 호출)
@@ -17,11 +18,27 @@ namespace FreshBox.DTOs
         ViewModel에서 생성 및 유효성 검사 후 Service로 전달
         Service에서 DTO를 Entity로 변환하고 Repository 호출
      */
+
+    // DTO를 사용하는 이유
+    /*
+        1. 계층 간 의존성 분리
+            ㄴ 필요한 데이터만 딱 정해서 전달하므로 느슨한 결합 유지됨.
+        2. 불필요한 데이터 차단 (보안 + 성능)
+            ㄴ Entity에 있는 비밀번호, 권한 같은 민감 정보를 클라이언트에 보내면 큰일
+            ㄴ DTO에는 그런 민감 정보 안 넣음으로써 정보 노출 차단.
+        3. 입력/출력 구조 명확히 분리
+            ㄴ DB에 입력시에는 Dto -> Entity타입으로
+            ㄴ DB에서 가져와서 사용할 때는 Entity -> Dto타입으로 변환해서 사용
+        4. 유효성 검사를 ViewModel 따로 처리
+            ㄴ MVVM 구조에서 ViewModel에서 DTO 생성 → 검증 → 서비스 전달까지 
+        5. API 스펙 유지 용이
+            ㄴ Entity가 바뀌어도 DTO는 그대로 유지할 수 있음 → API 깨지지 않음
+     */
     public class MemberSignupDto
     {
         // 데이터 전송에 필요한 프로퍼티만 선언해서 사용함
-        public string UserName { get; }
-        public string Password { get; }
+        public string Username { get; }
+        public string Password { get; } 
         public string MemberName { get; }
         public Role Role { get; }
         public string Phone { get; }
@@ -32,10 +49,10 @@ namespace FreshBox.DTOs
 
         // 모든 속성을 초기화 시키는 아규먼트가 있는 생성자(권한은 외부에서 값을 받지 않음)
         // // Role은 외부에서 입력받지 않고 Employee로 고정
-        public MemberSignupDto(string userName, string password, string memberName,
+        public MemberSignupDto(string username, string password, string memberName,
             string phone, string email, DateTime birthDate, DateTime? hireDate)
         {
-            UserName = userName;
+            Username = username;
             Password = password;
             MemberName = memberName;
             Role = Role.Employee; // 강제로 employee 지정해서 초기화
@@ -51,8 +68,9 @@ namespace FreshBox.DTOs
         // C#에서는 빌더패턴 잘 안쓴다고 그래서 생성자 호출해서 초기화함
         public Member ToEntity()
         {
+            // 서비스에서 DTO를 Entity로 변환할 때 암호화된 비밀번호로 넣어주기
             return new Member
-                (UserName, Password, MemberName, Role, Phone, Email, BirthDate, HireDate);
+                (Username, Password, MemberName, Role, Phone, Email, BirthDate, HireDate);
         }
     }
 }
