@@ -594,11 +594,13 @@ namespace FreshBox.ViewModels
                 PhoneNumValidationMessage = "연락처를 입력해주세요.";
                 return;
             }
-            // 공백을 포함하는지 검사
-            if (value.Contains(' ')) {
+
+            // 공백이나 하이픈이 포함되어 있으면 유효하지 않다고 판단
+            if (value.Contains(' ') || value.Contains('-')) {
                 IsPhoneNumberValid = false;
-                PhoneNumValidationMessage = "연락처는 공백을 포함할 수 없습니다.";
-                return;
+                PhoneNumValidationMessage = 
+                    "휴대폰 번호는 숫자만 입력해주세요. 하이픈(-), 공백은 사용할 수 없습니다.";
+                return; // 밑의 로직이 실행되지 않도록 해당 메서드를 종료함
             }
 
             // 숫자만 추출 (하이픈, 공백 등 제거)
@@ -625,7 +627,18 @@ namespace FreshBox.ViewModels
             }
 
             // DB에 중복된 번호가 있는지 검사 
+            bool isDuplicate = signUpSvc.IsPhoneDuplicate(digitsOnly);
+            // true : 중복있음(사용불가) , false : 중복 없음(사용가능)
 
+            if (isDuplicate) { // 중복이라 사용불가 
+               IsPhoneNumberValid = false; // 유효하지 않음
+               PhoneNumValidationMessage = "입력하신 전화번호가 이미 등록되어 있습니다. \n" +
+                    "문제가 지속되면 고객센터로 문의해 주세요.";
+                return;
+            }
+
+            PhoneNumValidationMessage = "사용 가능한 번호 입니다.";
+            IsPhoneNumberValid = true;
         }
 
     }// 클래스 끝
