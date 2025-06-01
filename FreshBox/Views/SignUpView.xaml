@@ -59,8 +59,8 @@
         <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" MaxLength="80" HorizontalAlignment="Left" Margin="462,504,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBlock Text="{Binding EmailValidationMessage}" HorizontalAlignment="Left" Margin="340,534,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
 
-        <Label Content="입사일(선택사항)" HorizontalAlignment="Left" Margin="340,564,0,0" VerticalAlignment="Top"/>
-        <TextBox Text="{Binding HireDateString, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="462,568,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="입사일(선택)" HorizontalAlignment="Left" Margin="340,564,0,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding HireDateString, UpdateSourceTrigger=PropertyChanged}" MaxLength="8" HorizontalAlignment="Left" Margin="462,568,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBlock Text="{Binding HireDateValidationMessage}" HorizontalAlignment="Left" Margin="340,534,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
 
         <Button Content="회원가입" HorizontalAlignment="Left" Margin="380,633,0,0" VerticalAlignment="Top"/>
