@@ -63,7 +63,8 @@
         <TextBox Text="{Binding HireDateString, UpdateSourceTrigger=PropertyChanged}" MaxLength="8" HorizontalAlignment="Left" Margin="462,568,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBlock Text="{Binding HireDateValidationMessage}" HorizontalAlignment="Left" Margin="340,534,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="29"/>
 
-        <Button Content="회원가입" HorizontalAlignment="Left" Margin="380,633,0,0" VerticalAlignment="Top"/>
-        <Button Content="취소" HorizontalAlignment="Left" Margin="500,633,0,0" VerticalAlignment="Top"/>
+        <!-- ViewModel에 [RelayCommand]로 정의된 메서드에 연결 -->
+        <Button Content="회원가입" Command="{Binding SignUpCommand}" HorizontalAlignment="Left" Margin="380,633,0,0" VerticalAlignment="Top"/>
+        <Button Content="취소" Command="{Binding CancelCommand}" HorizontalAlignment="Left" Margin="500,633,0,0" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>
