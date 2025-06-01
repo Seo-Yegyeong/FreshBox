@@ -35,7 +35,7 @@ namespace FreshBox.Repository
         public int FindByUsername(string username) // TODO : 추후 비동기로 바꾸는 것이 좋다
         {
             // DB 연결 객체를 담을 변수 (초기에는 null)
-            MySqlConnection conn = null;
+            MySqlConnection? conn = null;
             // ㄴ MySqlConnection : MySQL 데이터베이스와 연결하는 C# 클래스
             // ㄴ MySQL 데이터베이스에 연결(connection)을 열고, 명령어를 보내고, 결과를 받는 데 쓰이는 객체
             // ㄴ MySql.Data.MySqlClient 네임스페이스에 있는 클래스이고,
@@ -145,7 +145,7 @@ namespace FreshBox.Repository
         /// </returns>
         public async Task<int> FindByUsernameAsync(string username)
         {
-            MySqlConnection conn = null;
+            MySqlConnection? conn = null;
 
             // 사용자 이름 존재 여부를 확인하는 쿼리
             string query = "SELECT EXISTS (SELECT 1 FROM member WHERE username = @username)";
@@ -200,7 +200,7 @@ namespace FreshBox.Repository
             int result = -1; // 리턴값을 저장할 변수
 
             //DB 연결 객체를 담을 변수(초기에는 null)
-            MySqlConnection conn = null;
+            MySqlConnection? conn = null;
 
             // DB로 보내서 실행 시킬 SQL문
             string query = "SELECT EXISTS (SELECT 1 FROM member WHERE phone = @phone)";
