@@ -221,6 +221,7 @@ namespace FreshBox.Repository
 
                 result = Convert.ToInt32(queryResult);
                 // ㄴ 아규먼트로 넣은 값을 32비트(4바이트)의 int로 변환
+                Debug.WriteLine($"[MemberRepository.FindByPhoneNum()] result = {result}");
 
             }
             catch (Exception ex)
