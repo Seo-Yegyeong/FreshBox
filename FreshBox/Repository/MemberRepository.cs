@@ -239,7 +239,11 @@ namespace FreshBox.Repository
             return result;
         }
 
-        //email 중복 체크
+        /// <summary>
+        /// email 중복 체크
+        /// </summary>
+        /// <param name="email">검사할 email 문자열</param>
+        /// <returns>-1(예외), 1(중복), 0(중복되지 않음)</returns>
         public int FindByEmail(string email) {
             int result = -1; // 결과값 담을 변수
 
