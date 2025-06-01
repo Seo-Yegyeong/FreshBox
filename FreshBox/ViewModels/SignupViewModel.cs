@@ -17,7 +17,8 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using MySql.Data.MySqlClient;
-
+using System.Net.Mail;  // 이메일 주소 유효성 검사를 위한 클래스가 들어있는 네임스페이스
+// email 유효성 검사에 .NET 내장 MailAddress 클래스 사용 
 
 #region #3. CommunityToolkit.Mvvm 라이브러리
 /*
@@ -100,19 +101,27 @@ namespace FreshBox.ViewModels
         private string memberName = string.Empty; // 사용자 이름
 
         [ObservableProperty]
-        private DateTime birthDate;
+        private DateTime birthDate;// 전처리된 최종값 (DB 저장용, 바인딩 X)
 
         [ObservableProperty]
-        private string birthDateString = string.Empty;  // 생년월일문자열
+        private string birthDateString = string.Empty;  // 생년월일문자열,입력값 (바인딩 O)
 
         [ObservableProperty]
-        private string phoneNumber = string.Empty; // 연락처
+        private string phone;// 전처리된 최종값 (DB 저장용, 바인딩 X)
+
+        [ObservableProperty]
+        private string phoneNumber = string.Empty; // 연락처,입력값 (바인딩 O)
 
         [ObservableProperty]
         private string email = string.Empty; // 이메일
 
         [ObservableProperty]
-        private string hireDateString = string.Empty;  // "yyyy-MM-dd" 형식으로 받는다고 가정
+        private DateTime? hireDate; // 전처리된 최종값 (DB 저장용, 바인딩 X)
+
+        [ObservableProperty]
+        private string hireDateString = string.Empty;  
+        // "yyyy-MM-dd" 형식으로 받는다고 가정
+        //입력값 (바인딩 O)
 
 
         //유효성 결과 메세지를 담는 속성(UI에 표시용)-------------------------------
@@ -561,8 +570,8 @@ namespace FreshBox.ViewModels
             }
 
             BirthDateValidationMessage = "";
-            BirthDate = birthDate; // 유효성 처리 끝낸 입력문자열을 생년월일 필드에 저장시킴 
             IsBirthDateValid = true; // 유효처리
+            BirthDate = birthDate; // 유효성 처리 끝낸 입력문자열을 생년월일 필드에 저장시킴 
         }
 
         /// <summary>
@@ -581,7 +590,7 @@ namespace FreshBox.ViewModels
                 return;
             }
 
-            // 유효성 검사 메서드 호출
+            // 유효성 검사 메서드 호출(-> 중복체크 포함)
             ValidatePhoneNum(value);
 
         }
@@ -627,18 +636,155 @@ namespace FreshBox.ViewModels
             }
 
             // DB에 중복된 번호가 있는지 검사 
-            bool isDuplicate = signUpSvc.IsPhoneDuplicate(digitsOnly);
-            // true : 중복있음(사용불가) , false : 중복 없음(사용가능)
+            try {
+                // 서비스 계층의 메서드를 호출해서 전화번호 중복 여부 확인
+                bool isDuplicate = signUpSvc.IsPhoneDuplicate(digitsOnly);
+                // true : 중복있음(사용불가) , false : 중복 없음(사용가능)
+                
+                if (isDuplicate)
+                { // 중복이라 사용불가 
+                    IsPhoneNumberValid = false; // 유효하지 않음
+                    PhoneNumValidationMessage = "입력하신 전화번호가 이미 등록되어 있습니다. \n" +
+                         "문제가 지속되면 고객센터로 문의해 주세요.";
+                    return; // 밑의 로직이 실행되지 않도록 해당 메서드 종료시킴
+                }
+            }
+            catch { // 예외 받음
+                IsPhoneNumberValid = false;
+                PhoneNumValidationMessage = "⚠️ Error : 서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+                return;
+            }   
 
-            if (isDuplicate) { // 중복이라 사용불가 
-               IsPhoneNumberValid = false; // 유효하지 않음
-               PhoneNumValidationMessage = "입력하신 전화번호가 이미 등록되어 있습니다. \n" +
-                    "문제가 지속되면 고객센터로 문의해 주세요.";
+            PhoneNumValidationMessage = "사용 가능한 번호 입니다.";
+            IsPhoneNumberValid = true; // 유효함
+            
+            // 유효성 & 중복체크 끝난 입력값(-이 제거된)을 필드에 저장 
+            Phone = digitsOnly; 
+        }
+
+        /// <summary>
+        /// 뷰에 바인딩 된 Email값이 변경될 때마다 자동 호출되는 메서드
+        /// </summary>
+        /// <param name="value">사용자 입력값</param>
+        partial void OnEmailChanged(string value)
+        {
+            // 입력 제한(이메일 최대 80자로 제한), (DB VARCHAR(100) 범위 내 안전하게 설정)
+            if (value.Length > 80) { // 80자 이상이면 실행 
+                IsEmailValid = false; // 유효하지 않음
+                value = value.Substring(0, 80).Trim();// 80자 초과 시 앞에서부터 80자만 잘라내고 앞뒤 공백 제거
+                // 원본 문자열의 인덱스 0부터 80까지의 새 문자열을 만들어 앞뒤 공백을 제거한 뒤 리턴
+                // 그 값을 사용자 입력값에 반영
+                // setter에 다시 대입되며 재귀 호출되지만,
+                // 80자로 변경된 값이 들어가기 때문에 무한 루프 없음
+                return; // 밑의 로직 실행되지 않도록 종료
+            }
+
+            // 유효성 검사(-> 중복체크 포함)
+            ValidateEmail(value);
+        }
+
+        /// <summary>
+        /// email 유효성 검사 메서드
+        /// </summary>
+        /// <param name="value">검사할 이메일 문자열</param>
+        private void ValidateEmail(string value) {
+
+            // 빈 문자열 또는 공백으로만 이루어졌는지 검사
+            if (string.IsNullOrWhiteSpace(value)) {
+                IsEmailValid = false;// 유효하지 않음
+                EmailValidationMessage = "이메일을 입력해 주세요.";
+                return; // 밑의 로직 실행되지 않도록 해당 메서드 종료시킴
+            }
+
+            // 공백이 포함되어 있는지 검사
+            if (value.Contains(' ')) {
+                IsEmailValid = false;
+                EmailValidationMessage = "이메일에는 공백이 포함될 수 없습니다.";
                 return;
             }
 
-            PhoneNumValidationMessage = "사용 가능한 번호 입니다.";
-            IsPhoneNumberValid = true;
+            string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            /*
+                ^                 : 문자열 시작
+                [a-zA-Z0-9._%+-]+ : 영어 대소문자(a-zA-Z), 숫자(0-9), 그리고 . _ % + - 특수문자 중 1개 이상 반복허용
+                @                 : 반드시 @ 문자 1개
+                [a-zA-Z0-9.-]+    : 영어 대소문자, 숫자, 점(.)과 하이픈(-) 중 1개 이상 반복허용 (도메인명)
+                \.                : 도메인과 최상위 도메인 구분용 점(.) 문자
+                [a-zA-Z]{2,}      : 영어 대소문자 2글자 이상
+                $                 : 문자열 끝
+             */
+
+            if (!Regex.IsMatch(value, pattern)) { 
+                // 패턴에 맞지 않으면 실행됨
+                IsEmailValid = false; // 유효하지 않음
+                EmailValidationMessage = "유효하지 않은 형식의 Email입니다.";
+                return;
+            }
+
+            //.NET 내장 MailAddress 클래스 사용
+            try
+            {
+                // MailAddress 객체 생성 시도
+                // 생성자가 이메일 형식을 자동으로 검증함.
+                // 이 과정에서 이메일 주소를 파싱(parsing)하고 내부적으로 표준화된 형식으로 변환함.
+                MailAddress addr = new MailAddress(value);
+                // MailAddress는 이메일 주소를 파싱하고 표준화된 문자열을 addr에 저장
+                // 그래서 사용자 입력값과 다를 수 있기 때문에 확인을 거쳐야함
+
+                // System.Net.Mail.MailAddress 생성자는 유효하지 않은 이메일 형식이면 예외를 발생시킴
+                /* <예외를 발생시키는 주요 케이스>
+                    이메일 전체 또는 중간에 공백이 있으면 예외 발생,
+                    @ 문자가 없거나 2개 이상일 때,
+                    도메인에 마침표(.)가 없거나 잘못된 형식일 경우,
+                    허용되지 않는 특수문자나 제어문자가 포함될 때,
+                    빈 문자열이나 null도 예외,
+                    시작이나 끝이 . 이거나 연속된 .. 등이 있을 때
+                    MailAddress 생성자는 RFC 5322에 근거해 
+                    이메일 문법을 엄격하게 검사해서, 규칙 위반 시 예외를 던진다고 함
+                 */
+                if (addr.Address == value)
+                {
+                    // MailAddress가 표준화한 이메일 주소와
+                    // 사용자가 입력한 원래 이메일 문자열이 같은 경우 실행됨
+                    // 유효한 이메일 형식으로 판단함.
+                    // Email 중복체크(DB에 중복된 Email이 저장되어 있는지 확인함)
+                    try {
+                        
+                        bool isDuplicate = signUpSvc.IsEmailDuplicate(value);
+                        if (isDuplicate) { // 중복이면 실행(사용불가)
+                            IsEmailValid = false;
+                            EmailValidationMessage = "이미 사용 중인 이메일입니다.";
+                            return; // 밑의 로직 실행되지 못하도록 종료시킴
+                        }
+
+                        EmailValidationMessage = "✅ 사용 가능한 이메일 입니다.";
+                        IsEmailValid = true; // 유효함
+                    }
+                    catch { 
+                        IsEmailValid = false;
+                        EmailValidationMessage = "⚠️ Error : 서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+                        return;
+                    }
+                    
+                }
+                else
+                { // 표준화된 주소와 입력값이 달라서 유효하지 않은 경우
+                    IsEmailValid = false;
+                    EmailValidationMessage = "유효하지 않은 형식의 Email입니다.";
+                    return;
+                }
+
+            }
+            catch {
+                // MailAddress 생성자가 이메일 형식 검증 중 예외를 발생시키면 여기로 옴.
+                // 즉, 유효하지 않은 Email 형식일 때 예외 발생
+                // catch문으로 넘어옴
+                IsEmailValid = false;
+                EmailValidationMessage = "유효하지 않은 형식의 Email입니다.";
+                return;
+            }
+
+
         }
 
     }// 클래스 끝
