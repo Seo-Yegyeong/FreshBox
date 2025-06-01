@@ -26,6 +26,7 @@ namespace FreshBox.Views
             InitializeComponent();
         }
 
+        // 뒷코드 쓰고 싶지 않았지만,, PasswordBox가 직접 바인딩 지원하지 않아서..
         private void PwdBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             // DataContext가 YourViewModel 타입인지 확인
