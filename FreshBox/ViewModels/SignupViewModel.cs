@@ -934,6 +934,7 @@ namespace FreshBox.ViewModels
                 // 호출된 서비스 메서드에서 비밀번호 해시처리(BCrypt) 후에
                 // Entity타입(Model)으로 변환 -> 레파지토리 계층의 메서드 호출 
                 // 레파지토리에서 Entity타입으로 DB의 member테이블에 insert시킴
+                // 비밀번호 암호화 하려고 BCrypt.Net-Next(라이브러리) 설치함
             }
         }
 
