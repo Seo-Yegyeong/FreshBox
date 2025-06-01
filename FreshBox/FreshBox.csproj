@@ -33,6 +33,7 @@
 
     <ItemGroup>
         <Folder Include="Assets\" />
+        <Folder Include="DTOs\" />
     </ItemGroup>
 
 </Project>
