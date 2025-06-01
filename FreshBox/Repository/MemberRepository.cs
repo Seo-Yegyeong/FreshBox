@@ -189,7 +189,54 @@ namespace FreshBox.Repository
 
 
 
-        //phone 중복 체크
+        /// <summary>
+        /// phone 중복 체크
+        /// member 테이블에서 전달된 전화번호가 존재하는지 확인합니다.
+        /// 해당 번호가 존재하면 1, 존재하지 않으면 0을 반환합니다.
+        /// </summary>
+        /// <param name="phoneNum">유효성 검사를 마친 사용자 입력 휴대폰 번호</param>
+        /// <returns>중복 여부를 나타내는 정수 (1: 존재함, 0: 존재하지 않음)</returns>
+        public int FindByPhoneNum(string phoneNum) {
+            int result = -1; // 리턴값을 저장할 변수
+
+            //DB 연결 객체를 담을 변수(초기에는 null)
+            MySqlConnection conn = null;
+
+            // DB로 보내서 실행 시킬 SQL문
+            string query = "SELECT EXISTS (SELECT 1 FROM member WHERE phone = @phone)";
+
+            try
+            {
+                conn = dbManager.GetConnection(); // 연결 열기
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                // ㄴ 커맨드 객체 생성(SQL 쿼리를 DB에 날리는 역할)
+
+                cmd.Parameters.AddWithValue("@phone", phoneNum);
+                // ㄴ @phone 파라미터 자리에 phoneNum값을 넣겠다는 뜻
+
+                object queryResult = cmd.ExecuteScalar();
+                // ㄴ 쿼리를 실행한 결과를 리턴 받아 저장
+                // EXISTS 쿼리라서 true(1) 또는 false(0)를 반환함
+                // 중복이면(행이 있으면) 1 , 중복 없으면 0 
+
+                result = Convert.ToInt32(queryResult);
+                // ㄴ 아규먼트로 넣은 값을 32비트(4바이트)의 int로 변환
+
+            }
+            catch (Exception ex)
+            {
+                // try 실행하다 예외 발생 시 catch문으로 넘어옴(정상 실행 시 catch문 실행 되지 않음)
+                Debug.WriteLine($"{ex.Message}MemberRepository의 FindByPhoneNum()에서 예외 발생");
+                result = -1;
+            }
+            finally { // 예외 발생 여부와 상관없이 무조건 실행됨
+
+                if (conn != null) { // 연결 객체가 null일 땐 닫을 필요없으니까,
+                    dbManager.CloseConnection(conn);
+                }
+            }
+            return result;
+        } 
 
         //email 중복 체크
 
@@ -200,7 +247,7 @@ namespace FreshBox.Repository
         /// <param name="member"></param>
         //public int InsertMember(Member member) { 
         // DB 연결 객체를 담을 변수 (초기에는 null)
-        MySqlConnection conn = null;
+        //MySqlConnection conn = null;
             // ㄴ MySqlConnection : MySQL 데이터베이스와 연결하는 C# 클래스
             // ㄴ MySQL 데이터베이스에 연결(connection)을 열고, 명령어를 보내고, 결과를 받는 데 쓰이는 객체
             // ㄴ MySql.Data.MySqlClient 네임스페이스에 있는 클래스이고,
