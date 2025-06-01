@@ -17,7 +17,8 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using MySql.Data.MySqlClient;
-using System.Net.Mail;  // 이메일 주소 유효성 검사를 위한 클래스가 들어있는 네임스페이스
+using System.Net.Mail;
+using FreshBox.DTOs;  // 이메일 주소 유효성 검사를 위한 클래스가 들어있는 네임스페이스
 // email 유효성 검사에 .NET 내장 MailAddress 클래스 사용 
 
 #region #3. CommunityToolkit.Mvvm 라이브러리
@@ -873,6 +874,75 @@ namespace FreshBox.ViewModels
             HireDate = hireDate; // 유효성 처리 끝낸 입력문자열을 HireDate 필드에 저장시킴 
 
         }
+
+        //뷰에 연결된 버튼과 바인딩 --------------------------------------------
+
+        [RelayCommand]
+        private void SignUp() {
+            /* 회원가입 버튼 클릭시 실행 될 로직 */
+
+            // 유효성 검사: 하나라도 false면 메시지 박스 띄우고 종료
+            if (!IsUsernameValid) {
+                MessageBox.Show("아이디를 확인하세요.","입력 확인");
+                return;
+            }
+
+            if (!IsPwdValid) {
+                MessageBox.Show("비밀번호를 확인하세요.", "입력 확인");
+                return;
+            }
+
+            if (!IsConfirmPwdValid) {
+                MessageBox.Show("비밀번호 확인이 일치하지 않습니다.", "입력 확인");
+                return;
+            }
+
+            if (!IsMemberNameValid) {
+                MessageBox.Show("이름을 확인하세요.", "입력 확인");
+                return;
+            }
+
+            if (!IsBirthDateValid) {
+                MessageBox.Show("생년월일을 확인하세요.", "입력 확인");
+                return;
+            }
+
+            if (!IsPhoneNumberValid) {
+                MessageBox.Show("휴대폰 번호를 확인하세요.", "입력 확인");
+                return;
+            }
+
+            if (!IsEmailValid) {
+                MessageBox.Show("이메일을 확인하세요.", "입력 확인");
+                return;
+            }
+
+            if (!IsHireDateValid) {
+                MessageBox.Show("입사일을 확인하세요.", "입력 확인");
+                return;
+            }
+                
+            // 모든 유효성이 ture이면 실행
+            if (CanRegister)
+            {
+                // ViewModel에 보관된 입력값을 이용해 Dto객체 생성
+                MemberSignupDto memberSignupDto 
+                    = new MemberSignupDto(Username, Pwd, MemberName,
+        Phone, Email, BirthDate, HireDate);
+                // 흐름 정리
+                // TODO : 서비스 계층의 메서드를 호출
+                // 호출된 서비스 메서드에서 비밀번호 해시처리(BCrypt) 후에
+                // Entity타입(Model)으로 변환 -> 레파지토리 계층의 메서드 호출 
+                // 레파지토리에서 Entity타입으로 DB의 member테이블에 insert시킴
+            }
+        }
+
+        [RelayCommand]
+        private void Cancel() {
+            /* 취소 버튼 클릭시 실행 될 로직 */
+
+        }
+
 
     }// 클래스 끝
 }// 네임스페이스 끝
