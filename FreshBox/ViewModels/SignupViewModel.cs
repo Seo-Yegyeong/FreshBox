@@ -622,7 +622,7 @@ namespace FreshBox.ViewModels
             // 이 뒤로 숫자 7자리 또는 8자리가 뒤따라야 함(즉, 전체 길이는 10자리 또는 11자리)
             if (!Regex.IsMatch(digitsOnly, @"^(010|011|016|017|018|019)\d{7,8}$")) {
                 IsPhoneNumberValid = false; // 유효하지 않음
-                PhoneNumValidationMessage = "유효하지 않는 번호입니다.";
+                PhoneNumValidationMessage = "유효하지 않는 형식의 휴대폰 번호입니다.";
                 return;
             }
 
