@@ -151,6 +151,7 @@ namespace FreshBox.ViewModels
         private string hireDateValidationMessage = string.Empty;
 
         // 유효 여부 (true -> 유효) --------------------------------
+        // 기본값 false(초기화 해놓지 않아도 됨)
         // 사용자 ID 유효 여부
         [ObservableProperty]
         private bool isUsernameValid;
@@ -784,6 +785,92 @@ namespace FreshBox.ViewModels
                 return;
             }
 
+
+        }
+
+        /// <summary>
+        /// 뷰에 바인딩 시킨 HireDateString값이 변할 때 마다 자동으로 호출되는 메서드
+        /// 선택값이라 null을 허용함
+        /// </summary>
+        /// <param name="value">사용자 입력값</param>
+        partial void OnHireDateStringChanged(string value)
+        {
+
+            // 빈 문자열 또는 공백으로만 이루어진 경우 실행 
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                // 선택값이라서 유효함
+                HireDateValidationMessage = "";
+                IsHireDateValid = true; // 유효함
+                HireDate = null;// 필드에 null 저장함
+                return;
+            }
+
+            // 입력 제한(최대 8글자)
+            if (value.Length > 8) { 
+                IsHireDateValid = false; // 유효하지 않음
+                value = value.Substring(0, 8).Trim();
+                return;
+            }
+
+            // 유효성 검사
+            ValidateHireDate(value);
+        }
+
+        private void ValidateHireDate(string value) {
+            
+            // 길이 검사
+            if (value.Length != 8) //8자 입력이 아닌 경우
+            {
+                IsHireDateValid = false; // 유효하지 않음
+                HireDateValidationMessage = "년월일 형식의 8자리로 입력해주세요 (예) 20230806";
+                return;
+            }
+
+            // 형식 검사, 문자열 전체가 숫자 8자리인지 검사
+            // ^ : 문자열 시작, $ : 문자열 끝, \d : 숫자 0~9, {8} : 8자리
+            if (!Regex.IsMatch(value, @"^\d{8}$"))
+            {
+                IsHireDateValid = false; // 유효하지 않음
+                HireDateValidationMessage = "년월일 형식의 8자리로 입력해주세요 (예) 20230806";
+                return;
+            }
+
+            // 날짜 유효성 검사(yyyyMMdd 형식에 맞는지, 실제 존재하는 날짜인지 검사)
+            // 시간 분(mm)과 구분하기 위해 날짜의 월 부분은 대문자 MM으로 표시
+            // TryParseExact은 입력 문자열이 "yyyyMMdd" 형식에 맞는지 시도
+            // 성공하면 hireDate에 DateTime 객체로 변환해 저장
+            // 실패하면 false 반환 (실패 시 birthDate는 기본값 저장 0001-01-01 00:00:00)
+            // 이상한 값이 hireDate에 저장되지만, 어차피 이 경우 return으로 빠져나가므로 문제가 되진 않음
+            // 제대로 입력한 경우 ture반환하고 hireDate에 변환된 날짜가 저장되고
+            // if (!true) → if (false)가 되므로 해당 if문은 실행 되지 않음
+            if (!DateTime.TryParseExact(value, "yyyyMMdd", null,
+                System.Globalization.DateTimeStyles.None, out DateTime hireDate))
+            {
+
+                IsHireDateValid = false; // 유효하지 않음
+                HireDateValidationMessage = "년월일 형식의 8자리로 입력해주세요 (예) 20230806";
+                return; // 유효하지 않으면 메시지 출력 후 종료
+            }
+
+            // 말도 안되게 오래된 과거를 막음
+            if (hireDate.Year < 1900) {
+                IsHireDateValid = false;
+                HireDateValidationMessage = "유효하지 않은 입사일입니다.";
+                return;
+            }
+
+            // 현재 날짜 기준으로 미래 날짜인지 검사( || 사용시 단축평가 되므로 따로 분리함)
+            if (hireDate > DateTime.Today)
+            {
+                IsHireDateValid = false; // 유효하지 않음
+                HireDateValidationMessage = "유효하지 않은 입사일입니다.(미래날짜불가)";
+                return; // 유효하지 않으면 메시지 출력 후 종료
+            }
+
+            HireDateValidationMessage = "";
+            IsHireDateValid = true; // 유효처리
+            HireDate = hireDate; // 유효성 처리 끝낸 입력문자열을 HireDate 필드에 저장시킴 
 
         }
 
