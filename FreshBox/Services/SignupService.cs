@@ -84,6 +84,44 @@ namespace FreshBox.Services
             }
         }
 
+        /// <summary>
+        /// email 중복 검사 메서드
+        /// 데이터베이스에 중복된 email이 저장되어 있는 지 검사합니다.
+        /// </summary>
+        /// <param name="email">검사할 email문자열</param>
+        /// <returns>true(중복), false(중복되지 않음)</returns>
+        public bool IsEmailDuplicate(string email)
+        {
+            bool isDuplicate; // 이해하기 쉬우라고 일부러 변수에 한번 더 담음
+
+            try { 
+                int result = memberRepo.FindByEmail(email);
+                // 리턴값 : -1 예외발생, 0 중복없음(사용가능), 1 중복(사용불가)
+
+                if (result == 0)
+                {
+                    isDuplicate = false; // 중복입니까? 아니요
+                    return isDuplicate;
+                }
+                else if (result == 1) {
+                    isDuplicate = true; // 중복입니까? 예
+                    return isDuplicate;
+                }
+                else 
+                {
+                    throw new Exception($"[예외] [SignUpService.IsEmailDuplicate]" +
+                        $" Unexpected DB result in FindByEmail: {result}");
+                    // 호출부로 예외 던짐
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[예외 발생][SignUpService.IsEmailDuplicate()] {ex.Message}");
+                throw; //호출했던 곳으로 예외를 던짐
+            }
+              
+        }
+
 
     }
 }
