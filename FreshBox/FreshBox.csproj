@@ -8,6 +8,10 @@
         <UseWPF>true</UseWPF>
     </PropertyGroup>
 
+    <ItemGroup>
+      <None Remove="Assets\Logo.png" />
+    </ItemGroup>
+
 	
 	<!--
 	아래 설정을 하게 되면, App.config 파일이 출력 디렉터리 (예: bin\Debug\net8.0-windows) 로 복사됩니다.
@@ -31,9 +35,11 @@
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.5" />
     </ItemGroup>
 	
-
+	
     <ItemGroup>
-        <Folder Include="Assets\" />
+      <Resource Include="Assets\Logo.png">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
 </Project>
