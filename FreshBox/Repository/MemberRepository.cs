@@ -35,7 +35,7 @@ namespace FreshBox.Repository
         public int FindByUsername(string username) // TODO : 추후 비동기로 바꾸는 것이 좋다
         {
             // DB 연결 객체를 담을 변수 (초기에는 null)
-            MySqlConnection conn = null;
+            MySqlConnection? conn = null;
             // ㄴ MySqlConnection : MySQL 데이터베이스와 연결하는 C# 클래스
             // ㄴ MySQL 데이터베이스에 연결(connection)을 열고, 명령어를 보내고, 결과를 받는 데 쓰이는 객체
             // ㄴ MySql.Data.MySqlClient 네임스페이스에 있는 클래스이고,
@@ -145,7 +145,7 @@ namespace FreshBox.Repository
         /// </returns>
         public async Task<int> FindByUsernameAsync(string username)
         {
-            MySqlConnection conn = null;
+            MySqlConnection? conn = null;
 
             // 사용자 이름 존재 여부를 확인하는 쿼리
             string query = "SELECT EXISTS (SELECT 1 FROM member WHERE username = @username)";
@@ -189,10 +189,107 @@ namespace FreshBox.Repository
 
 
 
-        //phone 중복 체크
+        /// <summary>
+        /// phone 중복 체크
+        /// member 테이블에서 전달된 전화번호가 존재하는지 확인합니다.
+        /// 해당 번호가 존재하면 1, 존재하지 않으면 0을 반환합니다.
+        /// </summary>
+        /// <param name="phoneNum">유효성 검사를 마친 사용자 입력 휴대폰 번호</param>
+        /// <returns>중복 여부를 나타내는 정수 (1: 존재함, 0: 존재하지 않음)</returns>
+        public int FindByPhoneNum(string phoneNum) {
+            int result = -1; // 리턴값을 저장할 변수
 
-        //email 중복 체크
+            //DB 연결 객체를 담을 변수(초기에는 null)
+            MySqlConnection? conn = null;
 
+            // DB로 보내서 실행 시킬 SQL문
+            string query = "SELECT EXISTS (SELECT 1 FROM member WHERE phone = @phone)";
+
+            try
+            {
+                conn = dbManager.GetConnection(); // 연결 열기
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                // ㄴ 커맨드 객체 생성(SQL 쿼리를 DB에 날리는 역할)
+
+                cmd.Parameters.AddWithValue("@phone", phoneNum);
+                // ㄴ @phone 파라미터 자리에 phoneNum값을 넣겠다는 뜻
+
+                object queryResult = cmd.ExecuteScalar();
+                // ㄴ 쿼리를 실행한 결과를 리턴 받아 저장
+                // EXISTS 쿼리라서 true(1) 또는 false(0)를 반환함
+                // 중복이면(행이 있으면) 1 , 중복 없으면 0 
+
+                result = Convert.ToInt32(queryResult);
+                // ㄴ 아규먼트로 넣은 값을 32비트(4바이트)의 int로 변환
+                Debug.WriteLine($"[MemberRepository.FindByPhoneNum()] result = {result}");
+
+            }
+            catch (Exception ex)
+            {
+                // try 실행하다 예외 발생 시 catch문으로 넘어옴(정상 실행 시 catch문 실행 되지 않음)
+                Debug.WriteLine($"{ex.Message}MemberRepository의 FindByPhoneNum()에서 예외 발생");
+                result = -1;
+            }
+            finally { // 예외 발생 여부와 상관없이 무조건 실행됨
+
+                if (conn != null) { // 연결 객체가 null일 땐 닫을 필요없으니까,
+                    dbManager.CloseConnection(conn);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// email 중복 체크
+        /// </summary>
+        /// <param name="email">검사할 email 문자열</param>
+        /// <returns>-1(예외), 1(중복), 0(중복되지 않음)</returns>
+        public int FindByEmail(string email) {
+            int result = -1; // 결과값 담을 변수
+
+            //연결 객체 생성
+            MySqlConnection? conn = null;// 이 변수는 null이 될 수 있다고 명시함
+
+            // DB로 보낼 실행 시킬 쿼리문 작성
+            string query = "SELECT EXISTS (SELECT 1 FROM member WHERE email = @email)";
+
+            try {           
+                conn = dbManager.GetConnection(); // 연결 열기
+
+                //DB 명령문 실행시켜주는 커맨드 객체생성
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                // SQL 인젝션 방지용 파라미터 추가
+                cmd.Parameters.AddWithValue("@email",email);
+                // 쿼리문의 @email 자리에 email을 넣겠다는 뜻
+                // AddWithValue()는 값에 따라 데이터 타입을 자동 추론
+                // 자동 타입 추론이 틀릴때도 있으니 주의해서 사용하기!
+                // 안전하게 쓰려면 Add() + 명시적 타입 지정 방식으로 사용
+                // cmd.Parameters.Add(parameterName, MySqlDbType).Value = 실제값;
+                // 예시: 가입일(join_date)는 날짜(DATETIME) 타입
+                // cmd.Parameters.Add("@join_date", MySqlDbType.DateTime).Value = joinDate;
+                // 여러 개 파라미터는? 그냥 파라미터별로 Add() 호출을 여러 번 하면 된다(한 줄씩 추가)
+
+                // 쿼리 실행
+                object queryResult = cmd.ExecuteScalar();
+
+                // 결과값 변환
+                result = Convert.ToInt32(queryResult);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[예외] [MemberRepository.FindByEmail] {ex.GetType().Name}: {ex.Message}");
+                result = -1;
+            }
+            finally { // 예외 여부에 상관없이 항상 실행되는 코드
+                // 열었던 연결 객체를 닫아줌 + 리소스 정리
+                if (conn != null) { // null이면 닫아줄 필요 자체가 없기 때문에 
+                    dbManager.CloseConnection(conn);
+                }
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// 회원(가입)정보를 DB에 삽입, 매핑되어 있는 MEMBER테이블에 회원정보를 insert 
@@ -200,7 +297,7 @@ namespace FreshBox.Repository
         /// <param name="member"></param>
         //public int InsertMember(Member member) { 
         // DB 연결 객체를 담을 변수 (초기에는 null)
-        MySqlConnection conn = null;
+        //MySqlConnection conn = null;
             // ㄴ MySqlConnection : MySQL 데이터베이스와 연결하는 C# 클래스
             // ㄴ MySQL 데이터베이스에 연결(connection)을 열고, 명령어를 보내고, 결과를 받는 데 쓰이는 객체
             // ㄴ MySql.Data.MySqlClient 네임스페이스에 있는 클래스이고,

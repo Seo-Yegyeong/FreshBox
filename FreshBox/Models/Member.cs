@@ -17,7 +17,7 @@ namespace FreshBox.Models
         //-> 컴파일러가 자동으로 내부에 private 필드를 생성
 
         public static int LoggedInMemberId { get; set; } = -1;  // 로그인 안 된 상태 초기값
-                                                                // -> 로그인 성공 시 LoggedInMemberId 저장
+        // -> 로그인 성공 시 LoggedInMemberId 저장
 
         #region (예시)
         // LoginService.cs 로그인 성공 시 LoggedInMemberId 저장 (예시)
@@ -64,62 +64,62 @@ namespace FreshBox.Models
         /// </summary>
         public int Id { get; set; }
 
-            /// <summary>
-            /// username 컬럼과 매핑됨 (NN, UQ), 사용자 로그인 ID
-            /// 타입: VARCHAR(50)
-            /// </summary>
-            public string Username { get; set; } = string.Empty;
+        /// <summary>
+        /// username 컬럼과 매핑됨 (NN, UQ), 사용자 로그인 ID
+        /// 타입: VARCHAR(50)
+        /// </summary>
+        public string Username { get; set; } = string.Empty;
 
-            /// <summary>
-            /// password 컬럼과 매핑됨 (NN), 암호화된 비밀번호
-            /// 타입: VARCHAR(255)
-            /// </summary>
-            public string Password { get; set; } = string.Empty;
+        /// <summary>
+        /// password 컬럼과 매핑됨 (NN), 암호화된 비밀번호
+        /// 타입: VARCHAR(255)
+        /// </summary>
+        public string Password { get; set; } = string.Empty;
 
-            /// <summary>
-            /// member_name 컬럼과 매핑됨 (NN), 사용자 이름
-            /// 타입: VARCHAR(30)
-            /// </summary>
-            public string MemberName { get; set; } = string.Empty;
+        /// <summary>
+        /// member_name 컬럼과 매핑됨 (NN), 사용자 이름
+        /// 타입: VARCHAR(30)
+        /// </summary>
+        public string MemberName { get; set; } = string.Empty;
 
-            /// <summary>
-            /// role 컬럼과 매핑됨 (NN), 사용자 권한 (employee 또는 admin)
-            /// 타입: ENUM('employee', 'admin')
-            /// </summary>
-            public Role Role { get; set; }
+        /// <summary>
+        /// role 컬럼과 매핑됨 (NN), 사용자 권한 (employee 또는 admin)
+        /// 타입: ENUM('employee', 'admin')
+        /// </summary>
+        public Role Role { get; set; }
 
-            /// <summary>
-            /// phone 컬럼과 매핑됨 (NN, NQ), 사용자 전화번호
-            /// 타입: VARCHAR(20)
-            /// </summary>
-            public string Phone { get; set; } = string.Empty;
+        /// <summary>
+        /// phone 컬럼과 매핑됨 (NN, NQ), 사용자 전화번호
+        /// 타입: VARCHAR(20)
+        /// </summary>
+        public string Phone { get; set; } = string.Empty;
 
-            /// <summary>
-            /// email 컬럼과 매핑됨 (NN, NQ), 사용자 이메일
-            /// 타입: VARCHAR(100)
-            /// </summary>
-            public string Email { get; set; } = string.Empty;
+        /// <summary>
+        /// email 컬럼과 매핑됨 (NN, NQ), 사용자 이메일
+        /// 타입: VARCHAR(100)
+        /// </summary>
+        public string Email { get; set; } = string.Empty;
 
-            /// <summary>
-            /// birth_date 컬럼과 매핑됨 (NN), 생년월일
-            /// 타입: DATE
-            /// </summary>
-            public DateTime BirthDate { get; set; }
+        /// <summary>
+        /// birth_date 컬럼과 매핑됨 (NN), 생년월일
+        /// 타입: DATE
+        /// </summary>
+        public DateTime BirthDate { get; set; }
 
-            /// <summary>
-            /// created_at 컬럼과 매핑됨, 회원가입일
-            /// 타입: DATETIME, 기본값 CURRENT_TIMESTAMP
-            /// </summary>
-            public DateTime CreatedAt { get; set; } = DateTime.Now;
+        /// <summary>
+        /// created_at 컬럼과 매핑됨, 회원가입일
+        /// 타입: DATETIME, 기본값 CURRENT_TIMESTAMP
+        /// </summary>
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-            /// <summary>
-            /// hire_date 컬럼과 매핑됨, 입사일 (nullable)
-            /// 타입: DATE
-            /// </summary>
-            public DateTime? HireDate { get; set; }
+        /// <summary>
+        /// hire_date 컬럼과 매핑됨, 입사일 (nullable)
+        /// 타입: DATE
+        /// </summary>
+        public DateTime? HireDate { get; set; }
 
 
-        // 뷰 모델에서 객체 생성할때 이 생성자를 호출해서 초기화시키고 그 객체를 서비스에 아규먼트로 넣어줄거임
+        // C#에서는 빌더 패턴 잘 안쓴다고 그러네..
         public Member(string username, string password, string memberName, Role role,
               string phone, string email, DateTime birthDate,
               DateTime? hireDate = null)
@@ -137,4 +137,4 @@ namespace FreshBox.Models
         public Member() { }
 
     }
-    }
+}
