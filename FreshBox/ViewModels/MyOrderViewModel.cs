@@ -8,16 +8,18 @@ using CommunityToolkit.Mvvm.Input;
 using FreshBox.Models;
 using System.Collections.ObjectModel;
 using FreshBox.Repository;
+using System.Windows;
 
 namespace FreshBox.ViewModels
 {
     public partial class MyOrderViewModel : ObservableObject
     {
+        //[ObservableProperty]
         private readonly MyOrderRepository _repository;
 
         // 사용자가 View(xaml)쪽에서 입력한 값을 바인딩하는 속성
         [ObservableProperty]
-        private ObservableCollection<MyOrder> myOrders = new();
+        public ObservableCollection<MyOrder> myOrders = new();
 
         [ObservableProperty]
         private MyOrder? selectedOrder = new();
@@ -45,9 +47,12 @@ namespace FreshBox.ViewModels
 
 
         [RelayCommand]
-        private void LoadMyOrders() // 이때 ProductID를 가지고 Product_name을 가져와서 출력해주자!
+        public void LoadMyOrders() // 이때 ProductID를 가지고 Product_name을 가져와서 출력해주자!
         {
-            MyOrders = new ObservableCollection<MyOrder>(_repository.GetAllOrders());
+            MessageBox.Show("Hello");
+            MyOrders = [.. _repository.GetAllOrders()];
+            // 여기서 [.. ] 문법은 컬렉션 표현식이며, spread 연산자라고 한다.
+            // _repository.GetAllOrders()에서 얻은 컬렉션을 새로운 List로 복사하여 대입하는 효과
         }
 
         [RelayCommand]

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FreshBox.Models
 {
-    class MyOrder
+    public class MyOrder
     {
         public int Id { get; set; }
         public DateTime Order_date { get; set; }
