@@ -292,18 +292,75 @@ namespace FreshBox.Repository
         }
 
         /// <summary>
-        /// 회원(가입)정보를 DB에 삽입, 매핑되어 있는 MEMBER테이블에 회원정보를 insert 
+        /// 회원(가입)정보를 DB에 삽입, 매핑되어 있는 member테이블에 회원정보를 insert 
         /// </summary>
-        /// <param name="member"></param>
-        //public int InsertMember(Member member) { 
-        // DB 연결 객체를 담을 변수 (초기에는 null)
-        //MySqlConnection conn = null;
+        /// <param name="member">회원정보를 가지고 있는 member객체(비밀번호는 암호화 처리됨)</param>
+        /// <returns>성공 시 1 , 실패 시 0, 예외 발생 시 -1을 리턴</returns>
+        public int InsertMember(Member member)
+        {
+            int result = -1; // 리턴값을 저장할 변수
+
+            //DB 연결 객체를 담을 변수(초기에는 null)
+            MySqlConnection conn = null;
             // ㄴ MySqlConnection : MySQL 데이터베이스와 연결하는 C# 클래스
             // ㄴ MySQL 데이터베이스에 연결(connection)을 열고, 명령어를 보내고, 결과를 받는 데 쓰이는 객체
             // ㄴ MySql.Data.MySqlClient 네임스페이스에 있는 클래스이고,
-            // ㄴ MySql.Data(NuGet 패키지로 설치,MySQL 공식 .NET 커넥터) 라이브러리를 설치해야 사용할 수 있다.
+            // ㄴ MySql.Data(NuGet 패키지로 설치, MySQL 공식.NET 커넥터) 라이브러리를 설치해야 사용할 수 있다.
 
-        //}
+            // DB로 보내서 실행 시킬 sql문
+            string query = @"INSERT INTO member (username, password, member_name, role, 
+                                    phone, email, birth_date, hire_date)
+                                VALUES (@username, @password, @memberName, @role, 
+                                    @phone, @email, @birthDate, @hireDate)";
+
+            try {
+                conn = dbManager.GetConnection(); // 연결 열기
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                // MySql DB에 쿼리 날려주는 커맨드 객체 생성
+
+                // 파라미터 추가
+                cmd.Parameters.Add("@username", MySqlDbType.VarChar).Value = member.Username;
+                // ㄴ AddWithValue()는 값에 따라 데이터 타입을 자동 추론 방식이여서 틀릴 수도 있음
+                // ㄴ add()메서드로 MySqlDbType을 명시적으로 지정
+                // ㄴ @username 파라미터 타입은 DB에서 VarChar타입이라고 알려주는 것.
+                // .Value = member.Username 객체에서 가져온 값(member.Username)을 이 파라미터에 대입
+
+                cmd.Parameters.Add("@password", MySqlDbType.VarChar).Value = member.Password;
+                cmd.Parameters.Add("@memberName", MySqlDbType.VarChar).Value = member.MemberName;
+                cmd.Parameters.Add("@role", MySqlDbType.Enum).Value = member.Role.ToString().ToLower();
+                // ㄴ MySQL의 ENUM은 문자열 기반, C#의 Enum은 내부적으로 정수값
+                // ㄴ 그래서 문자열로 변환해서 넘겨야 에러가 안 생긴다!
+                // ㄴ C#의 Enum을 .ToString().ToLower()로 문자열+소문자 변환해서 DB에 저장
+                cmd.Parameters.Add("@phone", MySqlDbType.VarChar).Value = member.Phone;
+                cmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = member.Email;
+                cmd.Parameters.Add("@birthDate", MySqlDbType.Date).Value = member.BirthDate;
+                cmd.Parameters.Add("@hireDate", MySqlDbType.Date).Value
+                    = member.HireDate.HasValue ? member.HireDate.Value : DBNull.Value;
+                // ㄴ C#의 null은 그냥 없는 것 이지만
+                // ㄴ DB로 넘길 땐 명시적으로 DB용 null 객체로 줘야 MySQL이 이해한다고 함
+                // 그래서 삼항 연산자를 사용해서 HireDate에 값이 들어 있으면 member.HireDate.Value
+                // 없으면 DBNull.Value을 저장해서 DB로 보냄
+
+                //쿼리 실행
+                int queryResult = cmd.ExecuteNonQuery();
+
+                result = queryResult;
+
+                return result;
+
+            }
+            catch (Exception ex) {
+                result = -1;
+                Debug.WriteLine($"[예외][MemberRepository.InsertMember]{ex.Message}");
+            }
+            finally {
+                if (conn != null) {
+                    dbManager.CloseConnection(conn); // 연결 닫기 + 리소스 정리
+                }
+            }
+
+            return result;
+        }
 
 
 
