@@ -11,7 +11,7 @@ namespace FreshBox.DTOs
     // DTO(Data Transfer Object) : 데이터 전송용 클래스
     // (중요) 데이터 전송에 필요한 프로퍼티만 선언해서 사용한다!!
     /*
-     ViewModel (MemberSignupDto 생성, 유효성 검사)
+     ViewModel (MemberSignUpDto 생성, 유효성 검사)
         -> Service (DTO -> Model 변환, Repository 호출)
         -> Repository (DB Insert 실행)
 
@@ -34,7 +34,7 @@ namespace FreshBox.DTOs
         5. API 스펙 유지 용이
             ㄴ Entity가 바뀌어도 DTO는 그대로 유지할 수 있음 → API 깨지지 않음
      */
-    public class MemberSignupDto
+    public class MemberSignUpDto
     {
         // 데이터 전송에 필요한 프로퍼티만 선언해서 사용함
         // { get; } 읽기 전용 프로퍼티 -> 생성자에서만 값을 설정할 수 있음.
@@ -50,7 +50,7 @@ namespace FreshBox.DTOs
 
         // 모든 속성을 초기화 시키는 아규먼트가 있는 생성자(권한은 외부에서 값을 받지 않음)
         // // Role은 외부에서 입력받지 않고 Employee로 고정
-        public MemberSignupDto(string username, string password, string memberName,
+        public MemberSignUpDto(string username, string password, string memberName,
             string phone, string email, DateTime birthDate, DateTime? hireDate)
         {
             Username = username;
@@ -67,11 +67,20 @@ namespace FreshBox.DTOs
         // DTO → Entity 변환 메서드(dto타입을 Member타입의 객체로 변환해서 리턴)
         // DB에 insert시킬 땐 Member타입으로 변환해서 넣음
         // C#에서는 빌더패턴 잘 안쓴다고 그래서 생성자 호출해서 초기화함
-        public Member ToEntity()
+        public Member ToEntity(string hashedPwd)
         {
             // 서비스에서 DTO를 Entity로 변환할 때 암호화된 비밀번호로 넣어주기
             return new Member
-                (Username, Password, MemberName, Role, Phone, Email, BirthDate, HireDate);
+            {
+                Username = this.Username,
+                Password = hashedPwd,
+                MemberName = this.MemberName,
+                Role = this.Role,
+                Phone = this.Phone,
+                Email = this.Email,
+                BirthDate = this.BirthDate,
+                HireDate = this.HireDate
+            };
         }
     }
 }
