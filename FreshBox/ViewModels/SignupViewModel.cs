@@ -610,7 +610,7 @@ namespace FreshBox.ViewModels
             // 빈문자열 또는 공백으로만 이루어졌는지 검사
             if (string.IsNullOrWhiteSpace(value)) {
                 IsPhoneNumberValid = false;
-                PhoneNumValidationMessage = "연락처를 입력해주세요.";
+                PhoneNumValidationMessage = "휴대폰 번호를 입력해주세요.";
                 return;
             }
 
@@ -665,7 +665,7 @@ namespace FreshBox.ViewModels
                 return;
             }   
 
-            PhoneNumValidationMessage = "사용 가능한 번호 입니다.";
+            PhoneNumValidationMessage = "✅ 사용 가능한 번호 입니다.";
             IsPhoneNumberValid = true; // 유효함
             
             // 유효성 & 중복체크 끝난 입력값(-이 제거된)을 필드에 저장 
@@ -929,7 +929,26 @@ namespace FreshBox.ViewModels
                 MessageBox.Show("입사일을 확인하세요.", "입력 확인");
                 return;
             }
-                
+
+            #region WPF MVVM에서 회원가입 처리 흐름 정리
+            /*
+                ViewModel - 사용자 입력 수집, 유효성 검사, Dto 생성
+                뷰에서 받은 입력값들에 대한 유효성 검사를 진행,
+                전처리를 끝낸 데이터를 바탕으로 MemberSignupDto 객체 생성
+
+                Service 계층 - 비즈니스 로직 처리 (암호화, Entity 변환)
+                MemberSignupDto를 받아서,
+                Pwd를 BCrypt로 해시 처리
+                (비밀번호 암호화를 위해 BCrypt.Net-Next 라이브러리 설치함)
+                Dto → Entity(Model타입)로 변환
+                레파지토리 계층의 메서드 호출
+
+                Repository 계층 - DB 처리 (Insert)
+                받은 Entity(Model)를 DB에 INSERT
+                MySqlCommand를 이용해 INSERT INTO member ... 쿼리를 DB에 보내 실행함
+             */
+            #endregion
+
             // 모든 유효성이 ture이면 실행
             if (CanRegister)
             {
@@ -937,12 +956,9 @@ namespace FreshBox.ViewModels
                 MemberSignupDto memberSignupDto 
                     = new MemberSignupDto(Username, Pwd, MemberName,
         Phone, Email, BirthDate, HireDate);
-                // 흐름 정리
-                // TODO : 서비스 계층의 메서드를 호출
-                // 호출된 서비스 메서드에서 비밀번호 해시처리(BCrypt) 후에
-                // Entity타입(Model)으로 변환 -> 레파지토리 계층의 메서드 호출 
-                // 레파지토리에서 Entity타입으로 DB의 member테이블에 insert시킴
-                // 비밀번호 암호화 하려고 BCrypt.Net-Next(라이브러리) 설치함
+
+
+
             }
         }
 
