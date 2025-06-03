@@ -1,4 +1,6 @@
-﻿using FreshBox.Repository;
+﻿using FreshBox.DTOs;
+using FreshBox.Models;
+using FreshBox.Repository;
 using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
@@ -120,6 +122,60 @@ namespace FreshBox.Services
                 throw; //호출했던 곳으로 예외를 던짐
             }
               
+        }
+
+        /// <summary>
+        /// 회원가입 로직을 처리하는 서비스 메서드
+        /// </summary>
+        /// <param name="dto"> 유효성 검사를 마친 회원가입 정보를 담은 MemberSignUpDto 객체</param>
+        /// <returns>
+        /// 회원가입 성공 시 true, 실패 시 false를 반환
+        /// </returns>
+        public bool MemberSignUp(MemberSignUpDto dto) {
+            try
+            {
+                //비밀번호 해시 처리 (BCrypt 사용)
+                string hashedPwd = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+                // ㄴ HashPassword(...): dto.Password를 BCrypt 해시로 변환
+                /* 
+                    BCrypt란?
+                    해킹당해도 비밀번호 못 알아보게 만드는 일방향 암호화 알고리즘.
+                    느리게 설계되어서 무차별 대입 공격에 강함
+                    내부적으로 Salt를 자동 추가해서 같은 비밀번호라도 해시값이 매번 다르게 나옴
+                    인증할 때는 CheckPassword()로 비교
+                 */
+
+                // dto.Password = hashedPwd; -> dto 속성은 읽기전용으로 선언했기 때문에 set이 없음
+                // Entity타입으로 변환 시에 아규먼트로 넘겨서 Member객체 받기로 설정 
+
+                // Dto → Entity 변환
+                Member member = dto.ToEntity(hashedPwd);
+
+                // 레퍼지토리로 넘겨서 DB에 insert
+                int result = memberRepo.InsertMember(member);
+
+                if (result == 1) // insert성공 시 실행
+                {
+                    return true; 
+                }
+                else if (result == 0) // insert실패 시 실행
+                {
+                    return false;
+
+                }
+                else
+                { // result == -1 (예외 발생)
+                    throw new Exception($"[예외] [SignUpService.MemberSignUp]");
+                    // 호출부로 예외 던짐
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[예외] [SignUpService.MemberSignUp] {ex.Message}");
+                throw; // 호출부로 예외던짐
+            }
+
         }
 
 
