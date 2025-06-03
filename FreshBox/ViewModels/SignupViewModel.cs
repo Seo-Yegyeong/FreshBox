@@ -953,11 +953,32 @@ namespace FreshBox.ViewModels
             if (CanRegister)
             {
                 // ViewModel에 보관된 입력값을 이용해 Dto객체 생성
-                MemberSignupDto memberSignupDto 
-                    = new MemberSignupDto(Username, Pwd, MemberName,
-        Phone, Email, BirthDate, HireDate);
+                MemberSignUpDto memberSignupDto 
+                    = new MemberSignUpDto(Username, Pwd, MemberName,
+                                            Phone, Email, BirthDate, HireDate);
 
-
+                try {
+                    bool result = signUpSvc.MemberSignUp(memberSignupDto);
+                    if (result)
+                    {
+                        MessageBox.Show("회원가입이 완료되었습니다!", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                        
+                        // TODO : 회원가입 완료 뷰로 화면 전환 하든지, 로그인 뷰로 이동 시키든 해야함
+                    }
+                    else
+                    {
+                        MessageBox.Show("회원가입에 실패했습니다. 다시 시도해 주세요.", "실패", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                catch (Exception ex) { 
+                    Debug.WriteLine($"[예외][SignUpViewModel.SignUp] {ex.Message}");
+                    MessageBox.Show(
+                        "⚠️ Error : 서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+                        "오류",
+                        MessageBoxButton.OK, 
+                        MessageBoxImage.Error);
+                    return;
+                }
 
             }
         }
