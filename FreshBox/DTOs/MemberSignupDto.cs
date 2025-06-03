@@ -37,6 +37,7 @@ namespace FreshBox.DTOs
     public class MemberSignupDto
     {
         // 데이터 전송에 필요한 프로퍼티만 선언해서 사용함
+        // { get; } 읽기 전용 프로퍼티 -> 생성자에서만 값을 설정할 수 있음.
         public string Username { get; }
         public string Password { get; } 
         public string MemberName { get; }
