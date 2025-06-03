@@ -50,35 +50,44 @@ namespace FreshBox.ViewModels
 
 
         [RelayCommand]
-        public void LoadMyOrders() // 이때 ProductID를 가지고 Product_name을 가져와서 출력해주자!
+        private void LoadMyOrders() // 이때 ProductID를 가지고 Product_name을 가져와서 출력해주자!
         {
-            MessageBox.Show("Hello");
+            MessageBox.Show("LoadMyOrders() called");
             MyOrders = [.. _repository.GetAllOrders()];
             // 여기서 [.. ] 문법은 컬렉션 표현식이며, spread 연산자라고 한다.
             // _repository.GetAllOrders()에서 얻은 컬렉션을 새로운 List로 복사하여 대입하는 효과
         }
 
         [RelayCommand]
-        public void AddMyOrder()
+        private void AddMyOrder()
         {
-            if(string.IsNullOrWhiteSpace(InputProductName) || InputQuantity <= 0)
+            
+            MessageBox.Show("AddMyOrder() called");
+            if (SelectedOrder == null)
             {
-                // 입력값이 유효하지 않으면 경고 메시지 표시
-                Console.WriteLine("상품 이름과 수량을 올바르게 입력해주세요.");
+                MessageBox.Show("주문을 선택해주세요.");
                 return;
             }
+            MessageBox.Show($"{SelectedOrder.Id}, {SelectedOrder.Order_date}, {SelectedOrder.ProductId}, {SelectedOrder.Quantity}");
 
-            MyOrder newOrder = new MyOrder
-            {
-                Order_date = DateTime.Now,
-                ProductId = 0, // 실제 ProductId는 선택된 제품에 따라 설정해야 함!!
-                Quantity = InputQuantity
-            };
+            //if (string.IsNullOrWhiteSpace(InputProductName) || InputQuantity <= 0)
+            //{
+            //    // 입력값이 유효하지 않으면 경고 메시지 표시
+            //    Console.WriteLine("상품 이름과 수량을 올바르게 입력해주세요.");
+            //    return;
+            //}
 
-            _repository.AddMyOrder(newOrder);
-            LoadMyOrders(); // 새로 추가한 주문을 반영하기 위해 목록을 다시 불러옴
-            InputProductName = string.Empty; // 주문 추가 후 입력 필드 초기화
-            InputQuantity = 0; // 주문 추가 후 입력 필드 초기화
+            //MyOrder newOrder = new MyOrder
+            //{
+            //    Order_date = DateTime.Now,
+            //    ProductId = 0, // 실제 ProductId는 선택된 제품에 따라 설정해야 함!!
+            //    Quantity = InputQuantity
+            //};
+
+            //_repository.InsertMyOrder(newOrder);
+            //LoadMyOrders(); // 새로 추가한 주문을 반영하기 위해 목록을 다시 불러옴
+            //InputProductName = string.Empty; // 주문 추가 후 입력 필드 초기화
+            //InputQuantity = 0; // 주문 추가 후 입력 필드 초기화
         }
     }
 }

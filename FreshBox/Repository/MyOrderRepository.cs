@@ -60,7 +60,7 @@ namespace FreshBox.Repository
             return myOrders;
         }
 
-        public void AddMyOrder(MyOrder order)
+        public void InsertMyOrder(MyOrder order)
         {
             MySqlConnection conn = new();
             string query = "INSERT INTO my_order (order_date, product_id, quantity) VALUES (@order_date, @product_id, @quantity)";
@@ -88,7 +88,7 @@ namespace FreshBox.Repository
         public void UpdateMyOrder(MyOrder order)
         {
             MySqlConnection conn = new();
-            string query = "UPDATE my_order SET order_date = @order_date, product_id= @product_id, quantity = @quantity WHERE id = @id";
+            string query = "UPDATE my_order SET order_date = @order_date, product_id = @product_id, quantity = @quantity WHERE id = @id";
             try
             {
                 conn = _dbManager.GetConnection();

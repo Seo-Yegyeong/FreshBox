@@ -31,8 +31,8 @@
             </DataGrid>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Load Data" Command="{Binding LoadMyOrdersCommand}"/>
-                <Button Content="Add" Command="{Binding AddMyOrderCommand}" />
+                <Button Content="Load Data" Command="{Binding LoadMyOrdersCommand}" Margin="10"/>
+                <Button Content="Add" Command="{Binding AddMyOrderCommand}" Margin="10"/>
                 <!--
                 <Button Content="Update" Command="{Binding UpdateMyOrderCommand}" />
                 <Button Content="Delete" Command="{Binding DeleteMyOrderCommand}" />
