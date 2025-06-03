@@ -118,8 +118,7 @@ namespace FreshBox.Repository
                 // 어떤 예외가 발생해도 무조건 처리 가능 // 단점 : 어떤 예외인지 알 수 없어 디버깅 어려움
                 Debug.WriteLine($"{ex.Message} MemberRepository - ReadUsername() 메서드 처리 중 오류 발생");
                 result = -1; // 예외 발생 시 에러 신호 
-                // TODO : 서비스에서 -1 리턴 받아서 return "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
-                // 처리해서 사용자 UI에 보여주기
+                
             }
             finally { // 예외가 발생하든 안하든 무조건 실행됨
                 if (conn != null) { // DB연결 객체(conn)이 null이 아니면 실행함
