@@ -544,7 +544,7 @@ namespace FreshBox.ViewModels
             // ^ : 문자열 시작, $ : 문자열 끝, \d : 숫자 0~9, {8} : 8자리
             if (!Regex.IsMatch(value, @"^\d{8}$")) {
                 IsBirthDateValid = false;
-                BirthDateValidationMessage = "8자리의 년월일 형식으로 입력해주세요. (예 19980801)";
+                BirthDateValidationMessage = "년월일 형식의 8자리로 입력해주세요. (예시) 19980801";
                 return;
             }
 
@@ -559,6 +559,14 @@ namespace FreshBox.ViewModels
             if (!DateTime.TryParseExact(value, "yyyyMMdd", null,
                 System.Globalization.DateTimeStyles.None, out DateTime birthDate)) {
 
+                IsBirthDateValid = false; // 유효하지 않음
+                BirthDateValidationMessage = "유효하지 않은 생년월일입니다.";
+                return; // 유효하지 않으면 메시지 출력 후 종료
+            }
+
+            // 말도 안되는 과거 날짜인지 검사
+            if (birthDate.Year < 1990) // 1990년 보다 작으면 실행
+            {
                 IsBirthDateValid = false; // 유효하지 않음
                 BirthDateValidationMessage = "유효하지 않은 생년월일입니다.";
                 return; // 유효하지 않으면 메시지 출력 후 종료
