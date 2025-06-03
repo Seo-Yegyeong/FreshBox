@@ -61,33 +61,63 @@ namespace FreshBox.ViewModels
         [RelayCommand]
         private void AddMyOrder()
         {
-            
-            MessageBox.Show("AddMyOrder() called");
-            if (SelectedOrder == null)
-            {
-                MessageBox.Show("주문을 선택해주세요.");
-                return;
-            }
-            MessageBox.Show($"{SelectedOrder.Id}, {SelectedOrder.Order_date}, {SelectedOrder.ProductId}, {SelectedOrder.Quantity}");
 
-            //if (string.IsNullOrWhiteSpace(InputProductName) || InputQuantity <= 0)
+            //MessageBox.Show("AddMyOrder() called");
+            //if (SelectedOrder == null)
             //{
-            //    // 입력값이 유효하지 않으면 경고 메시지 표시
-            //    Console.WriteLine("상품 이름과 수량을 올바르게 입력해주세요.");
+            //    MessageBox.Show("주문을 선택해주세요.");
             //    return;
             //}
+            //MessageBox.Show($"{SelectedOrder.Id}, {SelectedOrder.Order_date}, {SelectedOrder.ProductId}, {SelectedOrder.Quantity}");
 
-            //MyOrder newOrder = new MyOrder
+            if (string.IsNullOrWhiteSpace(InputProductName) || InputQuantity <= 0)
+            {
+                // 입력값이 유효하지 않으면 경고 메시지 표시
+                Console.WriteLine("상품 이름과 수량을 올바르게 입력해주세요.");
+                return;
+            }
+
+            MyOrder newOrder = new MyOrder
+            {
+                Order_date = DateTime.Now,
+                ProductId = 0, // 실제 ProductId는 선택된 제품에 따라 설정해야 함!!
+                Quantity = InputQuantity
+            };
+
+            _repository.InsertMyOrder(newOrder);
+            LoadMyOrders(); // 새로 추가한 주문을 반영하기 위해 목록을 다시 불러옴
+            InputProductName = string.Empty; // 주문 추가 후 입력 필드 초기화
+            InputQuantity = 0; // 주문 추가 후 입력 필드 초기화
+        }
+
+        [RelayCommand]
+        private void InboundMyOrder()
+        {
+            // 여기에 InboundMyOrder 로직을 구현하세요.
+            // 예를 들어, 주문을 추가하는 로직을 작성할 수 있습니다.
+            MessageBox.Show("InboundMyOrder() called");
+            if (SelectedOrder == null)
+            {
+                MessageBox.Show("어떤 주문에 대한 입고인지 항목을 선택해주세요.");
+                return;
+            }
+
+            // 사용자가 입력한 입고 건의 ID를 찾아야 합니다.
+            //int inputProductId = _repository.GetProductIdByName(InputProductName!);
+
+            // 선택한 입고 주문과 입고 건을 비교합니다.
+            //if (SelectedOrder.Id == inputProductId && SelectedOrder.Quantity == InputQuantity && SelectedOrder.)
             //{
-            //    Order_date = DateTime.Now,
-            //    ProductId = 0, // 실제 ProductId는 선택된 제품에 따라 설정해야 함!!
-            //    Quantity = InputQuantity
-            //};
 
-            //_repository.InsertMyOrder(newOrder);
-            //LoadMyOrders(); // 새로 추가한 주문을 반영하기 위해 목록을 다시 불러옴
-            //InputProductName = string.Empty; // 주문 추가 후 입력 필드 초기화
-            //InputQuantity = 0; // 주문 추가 후 입력 필드 초기화
+            //}
+
+
+
+            //string message = $"주문 ID: {SelectedOrder.Id}\n" +
+            //                 $"주문 날짜: {SelectedOrder.Order_date}\n" +
+            //                 $"상품 ID: {SelectedOrder.ProductId}\n" +
+            //                 $"수량: {SelectedOrder.Quantity}\n" +
+            //                 "입고 처리를 진행합니다.";
         }
     }
 }

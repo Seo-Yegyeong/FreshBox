@@ -10,28 +10,33 @@
     <Grid Margin="10">
         <StackPanel Margin="10">
             <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                <TextBlock Text="Product ID:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                <TextBox Width="100" Text="{Binding InputProductId, Mode=TwoWay}" />
-                <TextBlock Text="Quantity:" VerticalAlignment="Center" Margin="20,0,5,0"/>
-                <TextBox Width="100" Text="{Binding InputQuantity, Mode=TwoWay}" />
+                <TextBlock Text="상품명:" VerticalAlignment="Center" Margin="10"/>
+                <TextBox Width="100" Text="{Binding InputProductName, Mode=TwoWay}" Margin="10"/>
+                <TextBlock Text="수량:" VerticalAlignment="Center" Margin="10"/>
+                <TextBox Width="100" Text="{Binding InputQuantity, Mode=TwoWay}" Margin="10"/>
+                <Button x:Name="입고" Content="입고" Background="#9EDE55" MinWidth="100" Margin="20, 10, 10, 10" Command="{Binding InboundMyOrderCommand}"/>
+                <Button Content="Reload Data" Command="{Binding LoadMyOrdersCommand}" Margin="20, 10, 10, 10" />
             </StackPanel>
 
-            <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding MyOrders}" 
-              SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
-              Height="300" Margin="0 0 0 10">
-                <!--
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
-                    <DataGridTextColumn Header="Order Date" Binding="{Binding InputOrderDate}" />
-                    <DataGridTextColumn Header="Product ID" Binding="{Binding InputProductId}" />
-                    <DataGridTextColumn Header="Product Name" Binding="{Binding InputProductName}" />
-                    <DataGridTextColumn Header="Quantity" Binding="{Binding InputQuantity}" />
-                </DataGrid.Columns>
-                -->
-            </DataGrid>
+            <StackPanel>
+                <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding MyOrders}" 
+                    SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
+                    Height="300" Margin="0 0 0 10">
+                    <!--
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                        <DataGridTextColumn Header="Order Date" Binding="{Binding InputOrderDate}" />
+                        <DataGridTextColumn Header="Product ID" Binding="{Binding InputProductId}" />
+                        <DataGridTextColumn Header="Product Name" Binding="{Binding InputProductName}" />
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding InputQuantity}" />
+                    </DataGrid.Columns>
+                    -->
+                </DataGrid>
+            </StackPanel>
+            
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Load Data" Command="{Binding LoadMyOrdersCommand}" Margin="10"/>
+                
                 <Button Content="Add" Command="{Binding AddMyOrderCommand}" Margin="10"/>
                 <!--
                 <Button Content="Update" Command="{Binding UpdateMyOrderCommand}" />

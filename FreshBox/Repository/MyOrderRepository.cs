@@ -129,5 +129,27 @@ namespace FreshBox.Repository
                 _dbManager.CloseConnection(conn);
             }
         }
+
+        public int GetProductIdByName(string productName)
+        {
+            MySqlConnection conn = new();
+            string query = "SELECT id FROM product WHERE name = @name";
+            try
+            {
+                conn = _dbManager.GetConnection();
+                using var command = new MySqlCommand(query, conn);
+                command.Parameters.AddWithValue("@name", productName);
+                return Convert.ToInt32(command.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"<Error>\r\n- location: MyOrderRepository.cs -> GetProductIdFromName()\r\n- message: {ex.Message}");
+                return -1; // 오류 발생 시 -1 반환
+            }
+            finally
+            {
+                _dbManager.CloseConnection(conn);
+            }
+        }
     }
 }
