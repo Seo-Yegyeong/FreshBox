@@ -134,6 +134,7 @@ namespace FreshBox.Services
         /// <exception cref="Exception">
         /// DB 작업 중 예기치 못한 오류가 발생했을 경우 예외를 호출부로 던집니다.
         /// 호출부에서 받아서 처리해야 함
+        /// 예) 이 예외를 받아 UI에서 사용자에게 오류 메시지를 출력하기
         /// </exception>
         public bool MemberSignUp(MemberSignUpDto dto) {
             try
