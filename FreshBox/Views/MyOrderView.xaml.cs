@@ -10,6 +10,7 @@ namespace FreshBox.Views
         public MyOrderView()
         {
             InitializeComponent();
+            this.DataContext = new ViewModels.MyOrderViewModel();
         }
     }
 }

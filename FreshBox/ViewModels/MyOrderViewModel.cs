@@ -18,11 +18,14 @@ namespace FreshBox.ViewModels
         private readonly MyOrderRepository _repository;
 
         // 사용자가 View(xaml)쪽에서 입력한 값을 바인딩하는 속성
-        [ObservableProperty]
-        public ObservableCollection<MyOrder> myOrders = new();
+        public ObservableCollection<MyOrder> MyOrders { get; set; } = new();
+
 
         [ObservableProperty]
-        private MyOrder? selectedOrder = new();
+        private MyOrder? newOrder; // 새로 추가할 주문을 위한 속성
+
+        [ObservableProperty]
+        private MyOrder? selectedOrder;
         // 이때 ?(Question Mark)를 사용하는 이유? 초기에는 아무 것도 선택되지 않았을 수 있기 때문에, Nullable 타입으로 선언한 거야!
 
         [ObservableProperty]
