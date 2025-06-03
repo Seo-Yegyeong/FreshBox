@@ -883,6 +883,55 @@ namespace FreshBox.ViewModels
 
         }
 
+
+        // 입력 필드 & 유효성 검사 초기화 메서드
+        private void ClearAllFieldsAndValidation()
+        {
+            // 입력 필드 초기화
+            Username = string.Empty;
+            Pwd = string.Empty;
+            ConfirmPwd = string.Empty;
+            MemberName = string.Empty;
+            BirthDate = default;  // DateTime 기본값 = 0001-01-01
+            BirthDateString = string.Empty;
+            Phone = string.Empty;
+            PhoneNumber = string.Empty;
+            Email = string.Empty;
+            HireDate = null;      // Nullable<DateTime>
+            HireDateString = string.Empty;
+
+            // 유효성 메시지 초기화
+            UsernameValidationMessage = string.Empty;
+            PwdValidationMessage = string.Empty;
+            PwdConfirmValidationMessage = string.Empty;
+            MemberNameValidationMessage = string.Empty;
+            BirthDateValidationMessage = string.Empty;
+            PhoneNumValidationMessage = string.Empty;
+            EmailValidationMessage = string.Empty;
+            HireDateValidationMessage = string.Empty;
+
+            // 유효성 상태 초기화 (기본값 false)
+            IsUsernameValid = false;
+            IsPwdValid = false;
+            IsConfirmPwdValid = false;
+            IsMemberNameValid = false;
+            IsBirthDateValid = false;
+            IsPhoneNumberValid = false;
+            IsEmailValid = false;
+            IsHireDateValid = false;
+        }
+
+        // 회원가입 완료 시 뷰에게 "비밀번호 박스 초기화 해줘!" 신호를 보내는 이벤트 선언
+        public event Action? ClearPasswordsRequested;
+
+        // 이 메서드를 호출하면 이벤트가 실행되고 뷰에서 처리할 수 있게 된다.
+        public void ClearPasswords()
+        {
+            // 이벤트가 구독되어 있으면 실행시킨다.
+            ClearPasswordsRequested?.Invoke();
+        }
+
+
         //뷰에 연결된 버튼과 바인딩 --------------------------------------------
 
         [RelayCommand]
@@ -925,6 +974,13 @@ namespace FreshBox.ViewModels
                 return;
             }
 
+            // 입사일(사용자가 입력칸 자체를 안 건드렸을 경우가 있어서)
+            if (string.IsNullOrWhiteSpace(HireDateString))
+            {
+                IsHireDateValid = true; // 입력 안 했으면 유효한 것으로 간주 (선택 항목이므로)
+                HireDateValidationMessage = string.Empty;
+            }
+
             if (!IsHireDateValid) {
                 MessageBox.Show("입사일을 확인하세요.", "입력 확인");
                 return;
@@ -962,10 +1018,12 @@ namespace FreshBox.ViewModels
                     if (result)
                     {
                         MessageBox.Show("회원가입이 완료되었습니다!", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
-                        
+                        ClearAllFieldsAndValidation();//초기화
+                        ClearPasswords(); 
+
                         // TODO : 회원가입 완료 뷰로 화면 전환 하든지, 로그인 뷰로 이동 시키든 해야함
                     }
-                    else
+                    else 
                     {
                         MessageBox.Show("회원가입에 실패했습니다. 다시 시도해 주세요.", "실패", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
@@ -986,7 +1044,10 @@ namespace FreshBox.ViewModels
         [RelayCommand]
         private void Cancel() {
             /* 취소 버튼 클릭시 실행 될 로직 */
+            ClearAllFieldsAndValidation();//초기화
+            ClearPasswords();
 
+            // TODO : 로그인창으로 화면 전환
         }
 
 
