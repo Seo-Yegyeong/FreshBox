@@ -131,6 +131,10 @@ namespace FreshBox.Services
         /// <returns>
         /// 회원가입 성공 시 true, 실패 시 false를 반환
         /// </returns>
+        /// <exception cref="Exception">
+        /// DB 작업 중 예기치 못한 오류가 발생했을 경우 예외를 호출부로 던집니다.
+        /// 호출부에서 받아서 처리해야 함
+        /// </exception>
         public bool MemberSignUp(MemberSignUpDto dto) {
             try
             {
