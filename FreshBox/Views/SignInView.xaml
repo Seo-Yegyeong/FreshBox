@@ -17,13 +17,13 @@
             <Image Source="/Assets/Logo.png" Width="350" Height="250" Margin="0 0 0 30" />
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
-               <TextBlock Text="ID" Foreground="Black" FontSize="36" FontWeight="Bold"  Margin="10,0,20,0"  />
+               <TextBlock Text="ID" Foreground="Black" FontSize="36" FontWeight="Bold"  Margin="10,0,25,0"  />
                 <Border CornerRadius="25" BorderBrush="#ccc" BorderThickness="1" Background="Transparent" Padding="5">
-                    <TextBox x:Name="UserName" Height="30" Width="300" Grid.Column="1" Background="Transparent" BorderThickness="0" VerticalAlignment="Center" FontSize="24"/>
+                    <TextBox x:Name="UserName" Height="30" Width="290" Grid.Column="1" Background="Transparent" BorderThickness="0" VerticalAlignment="Center" FontSize="24"/>
                 </Border>
             </StackPanel>
             <StackPanel  Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="PW" FontSize="36" FontWeight="Bold" Margin="10 0 10 0"/>
+                <TextBlock Text="PW" FontSize="36" FontWeight="Bold" Margin="10 0 8 0"/>
                 <Border Grid.Column="1" CornerRadius="25" Background="Transparent" BorderBrush="#ccc" BorderThickness="1" Padding="5">
                     <PasswordBox x:Name="PasswordBox" Height="30" Width="290" Background="Transparent" BorderThickness="0" VerticalAlignment="Center" FontSize="24"></PasswordBox>
                 </Border>
