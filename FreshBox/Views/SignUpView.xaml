@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:FreshBox.Views"
              xmlns:vm="clr-namespace:FreshBox.ViewModels" 
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="1000">
+             d:DesignHeight="800" d:DesignWidth="1440">
     <!-- UserControl : 화면에 보이는 UI 조각(작은 화면 부품) 하나를 만드는 틀 -->
     <!-- DataContext : 이 UserControl에서 "사용할 데이터와 기능들이 있는 곳"을 연결하는 역할. 
             예를 들어, 뷰모델(화면 뒤에 데이터를 처리하는 클래스)이 어디인지 연결해주는 '배선' 같은 역할 -->
