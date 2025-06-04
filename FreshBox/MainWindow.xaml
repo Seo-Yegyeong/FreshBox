@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FreshBox"
+        xmlns:vm="clr-namespace:FreshBox.ViewModels"
         xmlns:v="clr-namespace:FreshBox.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1440">
     <Grid>
-        <v:SignInView/>
+        <!-- 현재 ViewModel에 연결된 UserControl 표시 -->
+        <ContentControl Content="{Binding CurrentView}" />
     </Grid>
 </Window>
