@@ -12,6 +12,9 @@ using MySql.Data.MySqlClient; // MySqlConnection, MySqlCommand 등 MySQL 데이�
 
 namespace FreshBox.Repository
 {
+    // DB 테이블 단위로 레포지토리를 관리
+    // member 테이블이 하는 일을 전부 MemberRepository가 담당
+    // 기능은 Service에서 분리
     public class MemberRepository // 외부 접근 가능하도록 public으로 변경
     {
         // MysqlDatabaseManager 싱글톤 인스턴스 저장용 변수
