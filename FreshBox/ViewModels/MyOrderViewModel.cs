@@ -31,7 +31,6 @@ namespace FreshBox.ViewModels
         [ObservableProperty]
         private DateTime inputOrderDate = DateTime.Now; // 주문 날짜는 현재 날짜로 초기화
 
-        [ObservableProperty]
         private int? inputProductId; // 상품 ID 받아서 상품 이름을 찾는 용도
 
         [ObservableProperty]
@@ -101,15 +100,60 @@ namespace FreshBox.ViewModels
                 MessageBox.Show("어떤 주문에 대한 입고인지 항목을 선택해주세요.");
                 return;
             }
+            //사용자가 입력한 입고 건의 ID를 찾아야 합니다.
+            int inputProductId = _repository.GetProductIdByName(InputProductName!);
 
-            // 사용자가 입력한 입고 건의 ID를 찾아야 합니다.
-            //int inputProductId = _repository.GetProductIdByName(InputProductName!);
+            //선택한 입고 주문과 입고 건을 비교합니다.
+            // # 일치할 경우
+            
+            if (SelectedOrder.ProductId == inputProductId && SelectedOrder.Quantity == InputQuantity)
+            {
+                MessageBox.Show("입고 정보가 일치합니다! 입고 처리를 진행합니다.");
 
-            // 선택한 입고 주문과 입고 건을 비교합니다.
-            //if (SelectedOrder.Id == inputProductId && SelectedOrder.Quantity == InputQuantity && SelectedOrder.)
-            //{
+                // #1. Inbound_log에 기록 추가하기
 
-            //}
+                // #2. my_order 테이블에서 해당 주문 삭제하기
+
+                // #3. 유통기한 생성해서 Expiration_log에 기록 추가하기
+
+                MessageBox.Show("입고 처리가 완료되었습니다.");
+                LoadMyOrders();
+            }
+            // # 상품 불일치
+            else if (SelectedOrder.ProductId != inputProductId)
+            {
+                var ans = MessageBox.Show("상품이 다릅니다! 그대로 입고 처리하시려면 Yes를, 반품 처리하시려면 No를 클릭하세요.", "상품 불일치", MessageBoxButton.YesNo);
+                if (ans == MessageBoxResult.Yes)
+                {
+                    MessageBox.Show("입고 처리를 진행합니다.");
+                    // #1. Inbound_log에 기록 추가하기
+                    // #2. Product에 stock 수량 추가하기
+                }
+                else
+                {
+                    // Nothing to do here
+                    MessageBox.Show("반품 처리가 완료되었습니다.");
+                }
+                return;
+            }
+            // # 수량 불일치
+            else if (SelectedOrder.Quantity != InputQuantity)
+            {
+
+                var ans = MessageBox.Show($"수량이 일치하지 않습니다! \r\n주문한 수량: {SelectedOrder.Quantity}\r\n입고된 수량: {InputQuantity}\r\n그대로 입고 처리하시려면 Yes를, 반품 처리하시려면 No를 클릭하세요.", "수량 불일치 알림", MessageBoxButton.YesNo);
+                if (ans == MessageBoxResult.Yes)
+                {
+                    MessageBox.Show("입고 처리를 진행합니다.");
+                    // #1. Inbound_log에 기록 추가하기
+                    // #2. Product에 stock 수량 추가하기
+                }
+                else
+                {
+                    // Nothing to do here
+                    MessageBox.Show("반품 처리가 완료되었습니다.");
+                }
+                return;
+            }
 
 
 

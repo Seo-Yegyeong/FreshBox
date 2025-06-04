@@ -133,12 +133,12 @@ namespace FreshBox.Repository
         public int GetProductIdByName(string productName)
         {
             MySqlConnection conn = new();
-            string query = "SELECT id FROM product WHERE name = @name";
+            string query = "SELECT id FROM product WHERE product_name = @name";
             try
             {
                 conn = _dbManager.GetConnection();
                 using var command = new MySqlCommand(query, conn);
-                command.Parameters.AddWithValue("@name", productName);
+                command.Parameters.AddWithValue("@name", productName.Trim());
                 return Convert.ToInt32(command.ExecuteScalar());
             }
             catch (Exception ex)
