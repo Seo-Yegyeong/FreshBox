@@ -1,209 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FreshBox.Models;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using FreshBox.Repository;
+
 
 namespace FreshBox.ViewModels
 {
-    public class ProductViewModel : ViewModelBase
+    public partial class ProductViewModel : ObservableObject
     {
-        private Product _product = new();
+        private readonly ProductRepository _repository;
+        public ObservableCollection<Product> Products { get; set; } = new();
 
-        public Product Product
+        [ObservableProperty]
+        private Product? selectedProduct;
+
+        [ObservableProperty]
+        private Product? newProduct; // 새로 추가할 상품을 위한 속성
+
+
+        [RelayCommand]
+        private void LoadProducts()
         {
-            get => _product;
-            set
-            {
-                _product = value;
-                OnPropertyChanged();
-            }
+            Products = new ObservableCollection<Product>(_repository.GetAllProducts());
         }
 
-        public string ProductName
+        private void AddNewProduct()
         {
-            get => _product.ProductName;
-            set
+            if (newProduct != null)
             {
-                if (_product.ProductName != value)
-                {
-                    _product.ProductName = value;
-                    OnPropertyChanged();
-                }
+                _repository.InsertProduct(newProduct);
+                LoadProducts(); // 새로 추가한 상품을 반영하기 위해 다시 로드
+                NewProduct = new Product(); // 새 상품 입력 필드를 초기화
             }
         }
-
-        public int CategoryId
-        {
-            get => _product.CategoryId;
-            set
-            {
-                if (_product.CategoryId != value)
-                {
-                    _product.CategoryId = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string Barcode
-        {
-            get => _product.Barcode;
-            set
-            {
-                if (_product.Barcode != value)
-                {
-                    _product.Barcode = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string Unit
-        {
-            get => _product.Unit;
-            set
-            {
-                if (_product.Unit != value)
-                {
-                    _product.Unit = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public decimal Price
-        {
-            get => _product.Price;
-            set
-            {
-                if (_product.Price != value)
-                {
-                    _product.Price = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public DateTime ExpireDate
-        {
-            get => _product.ExpireDate;
-            set
-            {
-                if (_product.ExpireDate != value)
-                {
-                    _product.ExpireDate = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public int Stock
-        {
-            get => _product.Stock;
-            set
-            {
-                if (_product.Stock != value)
-                {
-                    _product.Stock = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string Origin
-        {
-            get => _product.Origin;
-            set
-            {
-                if (_product.Origin != value)
-                {
-                    _product.Origin = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string Allergens
-        {
-            get => _product.Allergens;
-            set
-            {
-                if (_product.Allergens != value)
-                {
-                    _product.Allergens = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public bool HaccpCertified
-        {
-            get => _product.HaccpCertified;
-            set
-            {
-                if (_product.HaccpCertified != value)
-                {
-                    _product.HaccpCertified = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public DateTime? HaccpCertDate
-        {
-            get => _product.HaccpCertDate;
-            set
-            {
-                if (_product.HaccpCertDate != value)
-                {
-                    _product.HaccpCertDate = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        //public string StorageTemp
-        //{
-        //    get => _product.StorageTemp;
-        //    set
-        //    {
-        //        if (_product.StorageTemp != value)
-        //        {
-        //            _product.StorageTemp = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
-
-        //public int WarehouseId
-        //{
-        //    get => _product.WarehouseId;
-        //    set
-        //    {
-        //        if (_product.WarehouseId != value)
-        //        {
-        //            _product.WarehouseId = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
-
-        //public bool IsDefective
-        //{
-        //    get => _product.IsDefective;
-        //    set
-        //    {
-        //        if (_product.IsDefective != value)
-        //        {
-        //            _product.IsDefective = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
     }
 }
