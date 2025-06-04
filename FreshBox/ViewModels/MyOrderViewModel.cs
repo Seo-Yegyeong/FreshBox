@@ -46,8 +46,6 @@ namespace FreshBox.ViewModels
             LoadMyOrders();
         }
 
-
-
         [RelayCommand]
         private void LoadMyOrders() // 이때 ProductID를 가지고 Product_name을 가져와서 출력해주자!
         {
@@ -61,13 +59,14 @@ namespace FreshBox.ViewModels
         private void AddMyOrder()
         {
 
-            //MessageBox.Show("AddMyOrder() called");
-            //if (SelectedOrder == null)
-            //{
-            //    MessageBox.Show("주문을 선택해주세요.");
-            //    return;
-            //}
-            //MessageBox.Show($"{SelectedOrder.Id}, {SelectedOrder.Order_date}, {SelectedOrder.ProductId}, {SelectedOrder.Quantity}");
+            MessageBox.Show("AddMyOrder() called");
+            if (SelectedOrder == null)
+            {
+                MessageBox.Show("주문을 선택해주세요.");
+                return;
+            }
+            MessageBox.Show($"{SelectedOrder.Id}, {SelectedOrder.Order_date}, {SelectedOrder.ProductId}, {SelectedOrder.Quantity}");
+
 
             if (string.IsNullOrWhiteSpace(InputProductName) || InputQuantity <= 0)
             {
@@ -92,18 +91,15 @@ namespace FreshBox.ViewModels
         [RelayCommand]
         private void InboundMyOrder()
         {
-            // 여기에 InboundMyOrder 로직을 구현하세요.
-            // 예를 들어, 주문을 추가하는 로직을 작성할 수 있습니다.
-            MessageBox.Show("InboundMyOrder() called");
             if (SelectedOrder == null)
             {
                 MessageBox.Show("어떤 주문에 대한 입고인지 항목을 선택해주세요.");
                 return;
             }
-            //사용자가 입력한 입고 건의 ID를 찾아야 합니다.
+            //사용자가 입력한 입고 건의 ID를 찾기
             int inputProductId = _repository.GetProductIdByName(InputProductName!);
 
-            //선택한 입고 주문과 입고 건을 비교합니다.
+            //선택한 입고 주문과 입고 건을 비교
             // # 일치할 경우
             
             if (SelectedOrder.ProductId == inputProductId && SelectedOrder.Quantity == InputQuantity)

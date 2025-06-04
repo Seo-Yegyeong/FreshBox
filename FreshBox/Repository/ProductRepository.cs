@@ -37,7 +37,7 @@ namespace FreshBox.Repository
                         ProductName = reader.GetString("product_name"),
                         CategoryId = reader.GetInt32("category_id"),
                         Barcode = reader.GetString("barcode"),
-                        Stock = reader.GetInt32("stock"),
+                        Stock = 0,
                         StorageTemp = (StorageTemp)reader.GetInt32("storage_temp"),
                         WarehouseId = reader.GetInt32("warehouse_id")
                     });
@@ -50,11 +50,12 @@ namespace FreshBox.Repository
             return products;
         }
 
-        public void InsertProduct(Product product)
+        public int InsertProduct(Product product)
         {
             MySqlConnection conn = new();
             string query = "INSERT INTO product (product_name, category_id, barcode, stock, storage_temp, warehouse_id) " +
                            "VALUES (@ProductName, @CategoryId, @Barcode, @Stock, @StorageTemp, @WarehouseId)";
+            int isSuceeded = 0;
             try
             {
                 conn = _dbManager.GetConnection();
@@ -62,10 +63,9 @@ namespace FreshBox.Repository
                 command.Parameters.AddWithValue("@ProductName", product.ProductName);
                 command.Parameters.AddWithValue("@CategoryId", product.CategoryId);
                 command.Parameters.AddWithValue("@Barcode", product.Barcode);
-                command.Parameters.AddWithValue("@Stock", product.Stock);
                 command.Parameters.AddWithValue("@StorageTemp", (int)product.StorageTemp);
                 command.Parameters.AddWithValue("@WarehouseId", product.WarehouseId);
-                command.ExecuteNonQuery();
+                isSuceeded = command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -75,14 +75,16 @@ namespace FreshBox.Repository
             {
                 _dbManager.CloseConnection(conn);
             }
+            return isSuceeded;
         }
 
-        public void UpdateProduct(Product product)
+        public int UpdateProduct(Product product)
         {
             MySqlConnection conn = new();
             string query = "UPDATE product SET product_name = @ProductName, category_id = @CategoryId, " +
                            "barcode = @Barcode, stock = @Stock, storage_temp = @StorageTemp, warehouse_id = @WarehouseId " +
                            "WHERE id = @Id";
+            int isSuceeded = 0;
             try
             {
                 conn = _dbManager.GetConnection();
@@ -94,7 +96,7 @@ namespace FreshBox.Repository
                 command.Parameters.AddWithValue("@Stock", product.Stock);
                 command.Parameters.AddWithValue("@StorageTemp", (int)product.StorageTemp);
                 command.Parameters.AddWithValue("@WarehouseId", product.WarehouseId);
-                command.ExecuteNonQuery();
+                isSuceeded = command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -104,18 +106,22 @@ namespace FreshBox.Repository
             {
                 _dbManager.CloseConnection(conn);
             }
+
+            return isSuceeded;
         }
 
-        public void DeleteProduct(Product product)
+        public int DeleteProduct(Product product)
         {
             MySqlConnection conn = new();
             string query = "DELETE FROM product WHERE id = @Id";
+            int isSuceeded = 0;
+
             try
             {
                 conn = _dbManager.GetConnection();
                 var command = new MySqlCommand(query, conn);
                 command.Parameters.AddWithValue("@Id", product.Id);
-                command.ExecuteNonQuery();
+                isSuceeded = command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -125,6 +131,8 @@ namespace FreshBox.Repository
             {
                 _dbManager.CloseConnection(conn);
             }
+
+            return isSuceeded;
         }
 
         public Product? GetProductIDbyName(string productName)
