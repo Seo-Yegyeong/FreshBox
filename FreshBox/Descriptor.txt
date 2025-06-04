@@ -1,22 +1,20 @@
-**ÇÁ·ÎÁ§Æ® Æú´õ ±¸Á¶**
+**í”„ë¡œì íŠ¸ í´ë” êµ¬ì¡°**
 
-- Models : °´Ã¼ ¸ðµ¨ ÆÄÀÏ (»ç¿ø, »óÇ° µî)
-- Views : »ç¿ëÀÚ ÀÎÅÍÆäÀÌ½º ¹× È­¸é ±¸¼º (UI)
-- ViewModels : ºä¿Í »óÈ£ÀÛ¿ëÇÏ´Â µ¥ÀÌÅÍ ¸ðµ¨
-- Services : ºñÁî´Ï½º ·ÎÁ÷ ¹× ¼­ºñ½º °èÃþ
-- Repository : µ¥ÀÌÅÍº£ÀÌ½º Á¢±Ù ¹× CRUD ÀÛ¾÷
-	- INotifyPropertyChanged : ¼Ó¼º(Property)ÀÌ ¹Ù²î¾úÀ» ¶§ UI¿¡ ¾Ë¸²À» º¸³»ÁÖ´Â ¿ªÇÒÀ» ÇÏ´Â ÀÎÅÍÆäÀÌ½º
-- Assets : ÀÌ¹ÌÁö ÆÄÀÏ µî
+- Models : ê°ì²´ ëª¨ë¸ íŒŒì¼ (ì‚¬ì›, ìƒí’ˆ ë“±)
+- Views : ì‚¬ìš©ìž ì¸í„°íŽ˜ì´ìŠ¤ ë° í™”ë©´ êµ¬ì„± (UI)
+- ViewModels : ë·°ì™€ ìƒí˜¸ìž‘ìš©í•˜ëŠ” ë°ì´í„° ëª¨ë¸
+- Services : ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ ë° ì„œë¹„ìŠ¤ ê³„ì¸µ
+- Repository : ë°ì´í„°ë² ì´ìŠ¤ ì ‘ê·¼ ë° CRUD ìž‘ì—…
+	- INotifyPropertyChanged : ì†ì„±(Property)ì´ ë°”ë€Œì—ˆì„ ë•Œ UIì— ì•Œë¦¼ì„ ë³´ë‚´ì£¼ëŠ” ì—­í• ì„ í•˜ëŠ” ì¸í„°íŽ˜ì´ìŠ¤
+- Assets : ì´ë¯¸ì§€ íŒŒì¼ ë“±
 
-App.xaml : ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÇ ½ÃÀÛÁ¡!
-
-
+App.xaml : ì• í”Œë¦¬ì¼€ì´ì…˜ì˜ ì‹œìž‘ì !
 
 
-**»ç¿ëÇÏ´Â ¶óÀÌºê·¯¸®**
-- MySql : DB ¿¬°á
+
+
+**ì‚¬ìš©í•˜ëŠ” ë¼ì´ë¸ŒëŸ¬ë¦¬**
+- MySql : DB ì—°ê²°
   : https://www.nuget.org/packages/MySql.Data/9.3.0?_src=template
-- LiveCharts 2 : µ¥ÀÌÅÍ Â÷Æ®·Î ½Ã°¢È­
+- LiveCharts 2 : ë°ì´í„° ì°¨íŠ¸ë¡œ ì‹œê°í™”
   : https://livecharts.dev/docs/wpf/2.0.0-rc5.4/gallery
-
-
