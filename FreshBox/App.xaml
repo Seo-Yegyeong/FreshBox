@@ -2,8 +2,16 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:FreshBox"
+             xmlns:vm="clr-namespace:FreshBox.ViewModels"
+             xmlns:v="clr-namespace:FreshBox.Views"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <DataTemplate DataType="{x:Type vm:SignInViewModel}">
+            <!-- SignInViewModel에 대응하는 뷰: SignInView를 자동으로 연결 -->
+            <v:SignInView />
+        </DataTemplate>
+
+        <!-- 화면 전환할 다른 ViewModel-View 매핑도 여기에 추가 -->
+        
     </Application.Resources>
 </Application>
