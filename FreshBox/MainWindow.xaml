@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FreshBox"
-        xmlns:views="clr-namespace:FreshBox.Views"
+        xmlns:v="clr-namespace:FreshBox.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="1440">
     <Grid>
-        <v:SignUpView/>
+        <v:SignInView/>
     </Grid>
 </Window>
