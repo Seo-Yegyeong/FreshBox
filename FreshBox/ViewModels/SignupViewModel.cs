@@ -544,7 +544,7 @@ namespace FreshBox.ViewModels
             // ^ : 문자열 시작, $ : 문자열 끝, \d : 숫자 0~9, {8} : 8자리
             if (!Regex.IsMatch(value, @"^\d{8}$")) {
                 IsBirthDateValid = false;
-                BirthDateValidationMessage = "8자리의 년월일 형식으로 입력해주세요. (예 19980801)";
+                BirthDateValidationMessage = "년월일 형식의 8자리로 입력해주세요. (예시) 19980801";
                 return;
             }
 
@@ -559,6 +559,14 @@ namespace FreshBox.ViewModels
             if (!DateTime.TryParseExact(value, "yyyyMMdd", null,
                 System.Globalization.DateTimeStyles.None, out DateTime birthDate)) {
 
+                IsBirthDateValid = false; // 유효하지 않음
+                BirthDateValidationMessage = "유효하지 않은 생년월일입니다.";
+                return; // 유효하지 않으면 메시지 출력 후 종료
+            }
+
+            // 말도 안되는 과거 날짜인지 검사
+            if (birthDate.Year < 1990) // 1990년 보다 작으면 실행
+            {
                 IsBirthDateValid = false; // 유효하지 않음
                 BirthDateValidationMessage = "유효하지 않은 생년월일입니다.";
                 return; // 유효하지 않으면 메시지 출력 후 종료
@@ -602,7 +610,7 @@ namespace FreshBox.ViewModels
             // 빈문자열 또는 공백으로만 이루어졌는지 검사
             if (string.IsNullOrWhiteSpace(value)) {
                 IsPhoneNumberValid = false;
-                PhoneNumValidationMessage = "연락처를 입력해주세요.";
+                PhoneNumValidationMessage = "휴대폰 번호를 입력해주세요.";
                 return;
             }
 
@@ -657,7 +665,7 @@ namespace FreshBox.ViewModels
                 return;
             }   
 
-            PhoneNumValidationMessage = "사용 가능한 번호 입니다.";
+            PhoneNumValidationMessage = "✅ 사용 가능한 번호 입니다.";
             IsPhoneNumberValid = true; // 유효함
             
             // 유효성 & 중복체크 끝난 입력값(-이 제거된)을 필드에 저장 
@@ -875,6 +883,55 @@ namespace FreshBox.ViewModels
 
         }
 
+
+        // 입력 필드 & 유효성 검사 초기화 메서드
+        private void ClearAllFieldsAndValidation()
+        {
+            // 입력 필드 초기화
+            Username = string.Empty;
+            Pwd = string.Empty;
+            ConfirmPwd = string.Empty;
+            MemberName = string.Empty;
+            BirthDate = default;  // DateTime 기본값 = 0001-01-01
+            BirthDateString = string.Empty;
+            Phone = string.Empty;
+            PhoneNumber = string.Empty;
+            Email = string.Empty;
+            HireDate = null;      // Nullable<DateTime>
+            HireDateString = string.Empty;
+
+            // 유효성 메시지 초기화
+            UsernameValidationMessage = string.Empty;
+            PwdValidationMessage = string.Empty;
+            PwdConfirmValidationMessage = string.Empty;
+            MemberNameValidationMessage = string.Empty;
+            BirthDateValidationMessage = string.Empty;
+            PhoneNumValidationMessage = string.Empty;
+            EmailValidationMessage = string.Empty;
+            HireDateValidationMessage = string.Empty;
+
+            // 유효성 상태 초기화 (기본값 false)
+            IsUsernameValid = false;
+            IsPwdValid = false;
+            IsConfirmPwdValid = false;
+            IsMemberNameValid = false;
+            IsBirthDateValid = false;
+            IsPhoneNumberValid = false;
+            IsEmailValid = false;
+            IsHireDateValid = false;
+        }
+
+        // 회원가입 완료 시 뷰에게 "비밀번호 박스 초기화 해줘!" 신호를 보내는 이벤트 선언
+        public event Action? ClearPasswordsRequested;
+
+        // 이 메서드를 호출하면 이벤트가 실행되고 뷰에서 처리할 수 있게 된다.
+        public void ClearPasswords()
+        {
+            // 이벤트가 구독되어 있으면 실행시킨다.
+            ClearPasswordsRequested?.Invoke();
+        }
+
+
         //뷰에 연결된 버튼과 바인딩 --------------------------------------------
 
         [RelayCommand]
@@ -917,31 +974,80 @@ namespace FreshBox.ViewModels
                 return;
             }
 
+            // 입사일(사용자가 입력칸 자체를 안 건드렸을 경우가 있어서)
+            if (string.IsNullOrWhiteSpace(HireDateString))
+            {
+                IsHireDateValid = true; // 입력 안 했으면 유효한 것으로 간주 (선택 항목이므로)
+                HireDateValidationMessage = string.Empty;
+            }
+
             if (!IsHireDateValid) {
                 MessageBox.Show("입사일을 확인하세요.", "입력 확인");
                 return;
             }
-                
+
+            #region WPF MVVM에서 회원가입 처리 흐름 정리
+            /*
+                ViewModel - 사용자 입력 수집, 유효성 검사, Dto 생성
+                뷰에서 받은 입력값들에 대한 유효성 검사를 진행,
+                전처리를 끝낸 데이터를 바탕으로 MemberSignupDto 객체 생성
+
+                Service 계층 - 비즈니스 로직 처리 (암호화, Entity 변환)
+                MemberSignupDto를 받아서,
+                Pwd를 BCrypt로 해시 처리
+                (비밀번호 암호화를 위해 BCrypt.Net-Next 라이브러리 설치함)
+                Dto → Entity(Model타입)로 변환
+                레파지토리 계층의 메서드 호출
+
+                Repository 계층 - DB 처리 (Insert)
+                받은 Entity(Model)를 DB에 INSERT
+                MySqlCommand를 이용해 INSERT INTO member ... 쿼리를 DB에 보내 실행함
+             */
+            #endregion
+
             // 모든 유효성이 ture이면 실행
             if (CanRegister)
             {
                 // ViewModel에 보관된 입력값을 이용해 Dto객체 생성
-                MemberSignupDto memberSignupDto 
-                    = new MemberSignupDto(Username, Pwd, MemberName,
-        Phone, Email, BirthDate, HireDate);
-                // 흐름 정리
-                // TODO : 서비스 계층의 메서드를 호출
-                // 호출된 서비스 메서드에서 비밀번호 해시처리(BCrypt) 후에
-                // Entity타입(Model)으로 변환 -> 레파지토리 계층의 메서드 호출 
-                // 레파지토리에서 Entity타입으로 DB의 member테이블에 insert시킴
-                // 비밀번호 암호화 하려고 BCrypt.Net-Next(라이브러리) 설치함
+                MemberSignUpDto memberSignupDto 
+                    = new MemberSignUpDto(Username, Pwd, MemberName,
+                                            Phone, Email, BirthDate, HireDate);
+
+                try {
+                    bool result = signUpSvc.MemberSignUp(memberSignupDto);
+                    if (result)
+                    {
+                        MessageBox.Show("회원가입이 완료되었습니다!", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                        ClearAllFieldsAndValidation();//초기화
+                        ClearPasswords(); 
+
+                        // TODO : 회원가입 완료 뷰로 화면 전환 하든지, 로그인 뷰로 이동 시키든 해야함
+                    }
+                    else 
+                    {
+                        MessageBox.Show("회원가입에 실패했습니다. 다시 시도해 주세요.", "실패", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                catch (Exception ex) { 
+                    Debug.WriteLine($"[예외][SignUpViewModel.SignUp] {ex.Message}");
+                    MessageBox.Show(
+                        "⚠️ Error : 서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+                        "오류",
+                        MessageBoxButton.OK, 
+                        MessageBoxImage.Error);
+                    return;
+                }
+
             }
         }
 
         [RelayCommand]
         private void Cancel() {
             /* 취소 버튼 클릭시 실행 될 로직 */
+            ClearAllFieldsAndValidation();//초기화
+            ClearPasswords();
 
+            // TODO : 로그인창으로 화면 전환
         }
 
 
