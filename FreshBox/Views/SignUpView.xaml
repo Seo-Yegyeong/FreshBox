@@ -14,7 +14,7 @@
     <UserControl.DataContext>
         <!-- xmlns: vm 작성하기-->
         <!-- ViewModel 객체 생성 및 연결 -->
-        <vm:SignUpViewModel/>
+        <vm:SignUpViewModel />
     </UserControl.DataContext>
     <Grid Background="White">
         <Label Content="회원가입" HorizontalAlignment="Left" Margin="462,33,0,0" VerticalAlignment="Top"/>
