@@ -4,16 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using FreshBox.Enums;
 
 namespace FreshBox.Models
 {
-    public enum StorageTemp
-    {
-        냉동,
-        냉장,
-        실온
-    }
-
+    
     public class Product
     {
         public int Id { get; set; }
