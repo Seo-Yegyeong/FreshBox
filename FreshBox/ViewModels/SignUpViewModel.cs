@@ -10,6 +10,8 @@ using System.ComponentModel;
 
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using CommunityToolkit.Mvvm.Input;
 using FreshBox.Services;
 using System.Text.RegularExpressions;
@@ -1019,13 +1021,16 @@ namespace FreshBox.ViewModels
                     {
                         MessageBox.Show("회원가입이 완료되었습니다!", "성공", MessageBoxButton.OK, MessageBoxImage.Information);
                         ClearAllFieldsAndValidation();//초기화
-                        ClearPasswords(); 
+                        ClearPasswords();
 
-                        // TODO : 회원가입 완료 뷰로 화면 전환 하든지, 로그인 뷰로 이동 시키든 해야함
+                        // 회원가입 완료되어 로그인 뷰로 이동
+                        ViewNavigationService.Instance.NavigateTo("SignIn");
+                       
                     }
                     else 
                     {
                         MessageBox.Show("회원가입에 실패했습니다. 다시 시도해 주세요.", "실패", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
                     }
                 }
                 catch (Exception ex) { 
@@ -1047,7 +1052,8 @@ namespace FreshBox.ViewModels
             ClearAllFieldsAndValidation();//초기화
             ClearPasswords();
 
-            // TODO : 로그인창으로 화면 전환
+            // 로그인 창으로 화면 전환
+            ViewNavigationService.Instance.NavigateTo("SignIn");
         }
 
 
