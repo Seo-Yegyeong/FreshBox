@@ -52,56 +52,56 @@
             </Grid>
             
         </Grid>
-        <UniformGrid Grid.Column="1" Columns="3" Rows="3" Margin="1">
-            <Border Style="{StaticResource CardStyle}">
+        <WrapPanel Grid.Column="1" Margin="20 0 20 0">
+            <Border  Style="{StaticResource CardStyle}" Width="300" Height="150">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Image Source="/Assets/Product_Arrive.png" Width="50"/>
                     <TextBlock Text="Product arrival" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
                 </StackPanel>
             </Border>
-            <Border Style="{StaticResource CardStyle}">
+            <Border Style="{StaticResource CardStyle}" Width="300" Height="150">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Image Source="/Assets/delivery.png" Width="50"/>
                     <TextBlock Text="Delivery" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
                 </StackPanel>
             </Border>
-            <Border Style="{StaticResource CardStyle}">
+            <Border Style="{StaticResource CardStyle}" Width="300" Height="150">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Image Source="/Assets/Inventory_Registration.png" Width="50"/>
                     <TextBlock Text="Inventory_Registration" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
                 </StackPanel>
             </Border>
-            <Border Style="{StaticResource CardStyle}">
+            <Border Style="{StaticResource CardStyle}" Width="460" Height="285">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="/Assets/chart1.png" Width="50"/>
+                    <TextBlock Text="In-Outcoming statistics" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource CardStyle}" Width="460" Height="285">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                    <Image Source="/Assets/chart2.png" Width="50"/>
+                    <TextBlock Text="commuting statistics" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource CardStyle}" Width="300" Height="150">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Image Source="/Assets/Inventory_Registration.png" Width="50"/>
                     <TextBlock Text="Inventory_Registration" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
                 </StackPanel>
             </Border>
-            <Border Style="{StaticResource CardStyle}">
+            <Border Style="{StaticResource CardStyle}" Width="300" Height="150">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Image Source="/Assets/Inventory_Registration.png" Width="50"/>
                     <TextBlock Text="Inventory_Registration" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
                 </StackPanel>
             </Border>
-            <Border Style="{StaticResource CardStyle}">
+            <Border Style="{StaticResource CardStyle}" Width="300" Height="150">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Image Source="/Assets/Inventory_Registration.png" Width="50"/>
                     <TextBlock Text="Inventory_Registration" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
                 </StackPanel>
             </Border>
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Assets/Inventory_Registration.png" Width="50"/>
-                    <TextBlock Text="Inventory_Registration" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
-                </StackPanel>
-            </Border>
-            <Border Style="{StaticResource CardStyle}">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Assets/Inventory_Registration.png" Width="50"/>
-                    <TextBlock Text="Inventory_Registration" HorizontalAlignment="Center" Margin="5" FontWeight="Bold" FontSize="18"/>
-                </StackPanel>
-            </Border>
-        </UniformGrid>
+        </WrapPanel>
 
     </Grid>
 </UserControl>
