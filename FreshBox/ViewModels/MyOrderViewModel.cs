@@ -87,6 +87,7 @@ namespace FreshBox.ViewModels
                 // #1. Inbound_log에 기록 추가하기
                 // #2. my_order 테이블에서 해당 주문 삭제하기
                 // #3. 유통기한 생성해서 Expiration_log에 기록 추가하기
+
                 /*
                  다음을 고려하기
                     입고 레퍼지토리에서 insert메서드 만들때
@@ -95,6 +96,7 @@ namespace FreshBox.ViewModels
                     둘 다 성공해야 commit되게요
                     하나라도 실패하면 롤백처리
                  */
+
                 MessageBox.Show("입고 처리가 완료되었습니다.");
                 LoadMyOrders();
             }
