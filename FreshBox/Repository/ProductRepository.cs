@@ -8,6 +8,8 @@ using FreshBox.Database;
 using MySql.Data.MySqlClient;
 using FreshBox.Enums;
 using System.Windows;
+using System.Diagnostics;
+using MySqlX.XDevAPI.Common;
 
 namespace FreshBox.Repository
 {
@@ -37,7 +39,7 @@ namespace FreshBox.Repository
                         ProductName = reader.GetString("product_name"),
                         CategoryId = reader.GetInt32("category_id"),
                         Barcode = reader.GetString("barcode"),
-                        Stock = 0,
+                        Stock = reader.GetInt32("stock"),
                         StorageTemp = (StorageTemp)reader.GetInt32("storage_temp"),
                         WarehouseId = reader.GetInt32("warehouse_id")
                     });
@@ -54,7 +56,7 @@ namespace FreshBox.Repository
         {
             MySqlConnection conn = new();
             string query = "INSERT INTO product (product_name, category_id, barcode, stock, storage_temp, warehouse_id) " +
-                           "VALUES (@ProductName, @CategoryId, @Barcode, @Stock, @StorageTemp, @WarehouseId)";
+                           "VALUES (@ProductName, @CategoryId, @Barcode, 0, @StorageTemp, @WarehouseId)";
             int isSuceeded = 0;
             try
             {
@@ -65,7 +67,7 @@ namespace FreshBox.Repository
                 command.Parameters.AddWithValue("@Barcode", product.Barcode);
                 command.Parameters.AddWithValue("@StorageTemp", (int)product.StorageTemp);
                 command.Parameters.AddWithValue("@WarehouseId", product.WarehouseId);
-                isSuceeded = command.ExecuteNonQuery();
+                isSuceeded = command.ExecuteNonQuery(); // returns 1 if successful, 0 if not
             }
             catch (Exception ex)
             {
@@ -172,6 +174,35 @@ namespace FreshBox.Repository
                 _dbManager.CloseConnection(conn);
             }
             return null;
+        }
+
+        public int FindByUsername(string productName)
+        {
+            MessageBox.Show("FindByUsername() !!");
+            MySqlConnection conn = new();
+            string query = "SELECT EXISTS (SELECT 1 FROM product WHERE product_name = @ProductName)";
+            int result;
+            try
+            {
+                conn = _dbManager.GetConnection();
+                var command = new MySqlCommand(query, conn);
+                command.Parameters.AddWithValue("@ProductName", productName);
+
+                result = Convert.ToInt32(command.ExecuteScalar()); //returns 1 if exists, 0 if not
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine($"<Error>\r\n- location: ProductRepository.cs -> FindByUsername()\r\n- message: {ex.Message}");
+                result = -1;
+            }
+            finally
+            {
+                if (conn != null && conn.State == System.Data.ConnectionState.Open)
+                {
+                    _dbManager.CloseConnection(conn);
+                }
+            }
+            return result;
         }
     }
 }

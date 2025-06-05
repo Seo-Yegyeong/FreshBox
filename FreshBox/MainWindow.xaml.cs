@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using FreshBox.ViewModels;
+using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Text;
 using System.Windows;
@@ -23,6 +24,7 @@ namespace FreshBox
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel(); // 뷰모델 연결
         }
 
     }
