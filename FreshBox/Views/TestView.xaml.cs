@@ -12,17 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FreshBox.ViewModels;
 
 namespace FreshBox.Views
 {
     /// <summary>
-    /// Interaction logic for MainVisual.xaml
+    /// Interaction logic for TestView.xaml
     /// </summary>
-    public partial class MainVisualView : UserControl
+    public partial class TestView : UserControl
     {
-        public MainVisualView()
+        public TestView()
         {
             InitializeComponent();
+            this.DataContext = new CategoryViewModel();
         }
     }
 }

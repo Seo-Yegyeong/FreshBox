@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,34 +8,39 @@ using System.Threading.Tasks;
 using FreshBox.Models;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using FreshBox.Services;
+using System.Windows;
 
 namespace FreshBox.ViewModels
 {
-    public class CategoryViewModel : ViewModelBase
+    public partial class CategoryViewModel : ObservableObject
     {
-        private Category _category = new();
+        private readonly CategoryService productService;
 
-        public Category Category
+        public ObservableCollection<Category> Categories { get; set; } = new();
+
+        [ObservableProperty]
+        private string? selectedCategoryId; // 선택된 카테고리
+
+        [ObservableProperty]
+        private int categoryId; // 카테고리 ID
+
+        [ObservableProperty]
+        private string categoryName = string.Empty; // 카테고리 이름
+
+        public CategoryViewModel()
         {
-            get => _category;
-            set
-            {
-                _category = value;
-                OnPropertyChanged();
-            }
+            productService = new CategoryService();
+            LoadCategories();
         }
 
-        public string CategoryName
+        [RelayCommand]
+        private void LoadCategories()
         {
-            get => _category.CategoryName;
-            set
-            {
-                if (_category.CategoryName != value)
-                {
-                    _category.CategoryName = value;
-                    OnPropertyChanged();
-                }
-            }
+            MessageBox.Show("LoadCategories() called");
+            Categories = productService.LoadCategoriesService();
         }
     }
 }
