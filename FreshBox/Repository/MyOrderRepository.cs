@@ -25,14 +25,14 @@ namespace FreshBox.Repository
             Console.WriteLine("GetAllOrders() #1");
             MySqlConnection conn = new();
             var myOrders = new List<MyOrder>();
-            string query = "SELECT * FROM my_order";
+            string query = "SELECT * FROM my_order;";
 
             try
             {
                 Console.WriteLine("GetAllOrders() #2");
                 conn = _dbManager.GetConnection();
-                using var command = new MySqlCommand(query, conn);
-                using var reader = command.ExecuteReader();
+                var command = new MySqlCommand(query, conn);
+                var reader = command.ExecuteReader();
 
 
                 while (reader.Read())
