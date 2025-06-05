@@ -1,4 +1,6 @@
-﻿using MySql.Data.MySqlClient;
+﻿using FreshBox.ViewModels;
+using FreshBox.Views;
+using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Text;
 using System.Windows;
@@ -10,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using FreshBox.Services;
 
 
 namespace FreshBox
@@ -20,33 +22,30 @@ namespace FreshBox
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent(); // XAML 요소 로드
+
+            // MainWindow.xaml에 꽂아넣은 ScreenHolderContentControl을
+            // NavigationService에 연결
+            //  ViewNavigationService 초기화 (ContentControl 지정)
+            
+            //ViewNavigationService.Initialize(ScreenHolderContentControl);
+            //// ScreenHolderContentControl은 WPF MainWindow.xaml 파일에서
+            //// 이미 생성되어 있는 컨트롤 인스턴스
+            //// 그래서 직접 new로 만들 필요 없이 바로 참조해서 넘겨줄 수 있음
+
+            ////화면에 사용할 뷰를 등록
+            //ViewNavigationService.Instance.RegisterView("SignIn",new SignInView());
+            //// ㄴ SignIn이라는 이름으로 SignInView UserControl을 등록함
+            //ViewNavigationService.Instance.RegisterView("SignUp", new SignUpView());
+
+            //// 시작 화면 지정 - 등록한 뷰 이름으로 접근
+            //ViewNavigationService.Instance.NavigateTo("SignIn");
+
+
         }
 
-
-        // DB 연결 테스트 버튼 클릭 이벤트 핸들러예요!
-        private void TestDbConnection_Click(object sender, RoutedEventArgs e)
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
-                {
-                    conn.Open();
-
-                    string query = "SELECT COUNT(*) FROM member";
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    var count = Convert.ToInt32(cmd.ExecuteScalar());
-                    MessageBox.Show($"사용자 수: {count}");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("❌ DB 연결 실패: " + ex.Message);
-            }
-        }
     }
 }

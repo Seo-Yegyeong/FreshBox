@@ -1,79 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FreshBox.Models;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using FreshBox.Repository;
 
 namespace FreshBox.ViewModels
 {
-    public class InboundLogViewModel : ViewModelBase
+    public partial class InboundLogViewModel : ObservableObject
     {
+        private readonly InboundLogRepository _repository;
         private InboundLog _inboundLog = new();
 
-        public InboundLog InboundLog
-        {
-            get => _inboundLog;
-            set
-            {
-                _inboundLog = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<InboundLog> InboundLogs { get; set; } = new();
 
-        public int ProductId
-        {
-            get => _inboundLog.ProductId;
-            set
-            {
-                if (_inboundLog.ProductId != value)
-                {
-                    _inboundLog.ProductId = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        [ObservableProperty]
+        private InboundLog? inboundLog;
 
-        public int Quantity
-        {
-            get => _inboundLog.Quantity;
-            set
-            {
-                if (_inboundLog.Quantity != value)
-                {
-                    _inboundLog.Quantity = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public DateTime InboundAt
-        {
-            get => _inboundLog.InboundAt;
-            set
-            {
-                if (_inboundLog.InboundAt != value)
-                {
-                    _inboundLog.InboundAt = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public int? MemberId
-        {
-            get => _inboundLog.MemberId;
-            set
-            {
-                if (_inboundLog.MemberId != value)
-                {
-                    _inboundLog.MemberId = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
     }
 }

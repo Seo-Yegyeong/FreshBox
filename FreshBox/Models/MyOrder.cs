@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace FreshBox.Models
 {
-    public class InboundLog
+    public class MyOrder
     {
         public int Id { get; set; }
-        public int OrderId { get; set; }
+        public DateTime Order_date { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
-        public DateTime InboundAt { get; set; }
-        public int? MemberId { get; set; }
+
+        // Join한 Product 이름 표시용
+        //public string? ProductName { get; set; }
     }
 }

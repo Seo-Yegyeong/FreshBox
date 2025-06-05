@@ -1,209 +1,127 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FreshBox.Models;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using FreshBox.Services;
+
 
 namespace FreshBox.ViewModels
 {
-    public class ProductViewModel : ViewModelBase
+    public partial class ProductViewModel : ObservableObject
     {
-        private Product _product = new();
+        private readonly ProductService productService = new ProductService();
+        public ObservableCollection<Product> Products { get; set; } = new();
 
-        public Product Product
+        [ObservableProperty]
+        private Product? selectedProduct;
+
+        [ObservableProperty]
+        private Product? newProduct; // 새로 추가할 상품을 위한 속성
+
+        [ObservableProperty]
+        private string productName = string.Empty; // 상품명 입력을 위한 속성
+
+        // ==================================================================== //
+
+
+        private bool isProductNameValid; // 상품명 유효성 검사 결과
+
+        private bool isBarcodeValid; // 바코드 유효성 검사 결과
+
+        private bool isStorageTempValid; // 저장 온도 유효성 검사 결과
+
+        private bool isCategoryValid; // 카테고리 유효성 검사 결과
+
+        private bool isWarehouseValid; // 창고 유효성 검사 결과
+
+        // ==================================================================== //
+
+
+
+        // Product에 대해 처리해야 하는 작업? & 고려해야 하는 요소?
+        // #1. 상품 전체 데이터 반환
+        [RelayCommand]
+        private void LoadProducts()
         {
-            get => _product;
-            set
-            {
-                _product = value;
-                OnPropertyChanged();
-            }
+            Products = productService.LoadProductsService();
         }
 
-        public string ProductName
+        // #2. 상품 추가
+        // - 유효성 검사하기 (예: 필수 입력값 확인, 중복 체크 등)
+        // ProductName (textBox)
+        // - 이미 존재하는 상품명인지 확인 => (Service에 입력값 전달 -> DB에 조회 요청 -> 중복 여부 0과 1로 판단)
+        // - 상품명은 필수 입력값 => 단순히 ViewModel에서 null 체크만 하면 됨
+        public bool CheckNameDuplication(string productName)
         {
-            get => _product.ProductName;
-            set
+            // Service에 입력값 전달 -> DB에 조회 요청 -> 중복 여부 0과 1로 판단
+            bool isDuplicated = productService.IsProductNameDuplicated(productName);
+            if( isDuplicated )
             {
-                if (_product.ProductName != value)
-                {
-                    _product.ProductName = value;
-                    OnPropertyChanged();
-                }
+                isProductNameValid = false; // 중복된 상품명은 유효하지 않음
             }
+            else
+            {
+                isProductNameValid = true; // 중복되지 않은 상품명은 유효함
+            }
+            return isProductNameValid;
         }
 
-        public int CategoryId
+        partial void OnProductNameChanged(string value)
         {
-            get => _product.CategoryId;
-            set
-            {
-                if (_product.CategoryId != value)
-                {
-                    _product.CategoryId = value;
-                    OnPropertyChanged();
-                }
-            }
+            MessageBox.Show("텍스트가 수정되어서 한 번 확인할게요~");
+            CheckNameDuplication(value);
         }
 
-        public string Barcode
+        // CategoryID (ComboBox)
+        // - 선택된 카테고리가 있는지 확인 => 단순히 ViewModel에서 null 체크만 하면 됨
+
+
+        // Barcode (textBox - 수기로 입력받기)
+        // - 바코드는 필수 입력값 => 단순히 ViewModel에서 null 체크만 하면 됨
+        // - 바코드 형식이 올바른지 확인 => (ViewModel에서 정규식으로 형식 검사 -> 올바른 형식인지 0과 1로 판단)
+        // - 바코드 중복 여부 확인 => (Service에 입력값 전달 -> DB에 조회 요청 -> 중복 여부 0과 1로 판단)
+
+
+        // StorageTemp (radioButton)
+        // - 냉장, 냉동, 상온 중 하나를 선택해야 함 => 단순히 ViewModel에서 null 체크만 하면 됨
+
+
+        // 일단 보류
+        // WarehouseId (ComboBox)
+        // - 선택된 창고가 있는지 확인 => 단순히 ViewModel에서 null 체크만 하면 됨
+        // - 냉장, 냉동, 상온과 관련된 창고인지 판별해주어야 함 => 
+
+
+
+        [RelayCommand]
+        private void AddProduct()
         {
-            get => _product.Barcode;
-            set
-            {
-                if (_product.Barcode != value)
-                {
-                    _product.Barcode = value;
-                    OnPropertyChanged();
-                }
-            }
+            //if (newProduct != null)
+            //{
+            //    productService.AddProductService(newProduct);
+            //    LoadProducts(); // 새로 추가한 상품을 반영하기 위해 다시 로드
+            //    NewProduct = new Product(); // 새 상품 입력 필드를 초기화
+            //}
         }
 
-        public string Unit
+        // #3. 상품 수정
+
+        // #4. 상품 삭제
+
+        public void AddNewProduct()
         {
-            get => _product.Unit;
-            set
-            {
-                if (_product.Unit != value)
-                {
-                    _product.Unit = value;
-                    OnPropertyChanged();
-                }
-            }
+            //if (newProduct != null)
+            //{
+            //    _repository.InsertProduct(newProduct);
+            //    LoadProducts(); // 새로 추가한 상품을 반영하기 위해 다시 로드
+            //    NewProduct = new Product(); // 새 상품 입력 필드를 초기화
+            //}
         }
-
-        public decimal Price
-        {
-            get => _product.Price;
-            set
-            {
-                if (_product.Price != value)
-                {
-                    _product.Price = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public DateTime ExpireDate
-        {
-            get => _product.ExpireDate;
-            set
-            {
-                if (_product.ExpireDate != value)
-                {
-                    _product.ExpireDate = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public int Stock
-        {
-            get => _product.Stock;
-            set
-            {
-                if (_product.Stock != value)
-                {
-                    _product.Stock = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string Origin
-        {
-            get => _product.Origin;
-            set
-            {
-                if (_product.Origin != value)
-                {
-                    _product.Origin = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public string Allergens
-        {
-            get => _product.Allergens;
-            set
-            {
-                if (_product.Allergens != value)
-                {
-                    _product.Allergens = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public bool HaccpCertified
-        {
-            get => _product.HaccpCertified;
-            set
-            {
-                if (_product.HaccpCertified != value)
-                {
-                    _product.HaccpCertified = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public DateTime? HaccpCertDate
-        {
-            get => _product.HaccpCertDate;
-            set
-            {
-                if (_product.HaccpCertDate != value)
-                {
-                    _product.HaccpCertDate = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        //public string StorageTemp
-        //{
-        //    get => _product.StorageTemp;
-        //    set
-        //    {
-        //        if (_product.StorageTemp != value)
-        //        {
-        //            _product.StorageTemp = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
-
-        //public int WarehouseId
-        //{
-        //    get => _product.WarehouseId;
-        //    set
-        //    {
-        //        if (_product.WarehouseId != value)
-        //        {
-        //            _product.WarehouseId = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
-
-        //public bool IsDefective
-        //{
-        //    get => _product.IsDefective;
-        //    set
-        //    {
-        //        if (_product.IsDefective != value)
-        //        {
-        //            _product.IsDefective = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
     }
 }

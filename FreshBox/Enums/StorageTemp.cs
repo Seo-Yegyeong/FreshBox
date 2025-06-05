@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FreshBox.Repository
+namespace FreshBox.Enums
 {
-    internal class MySqlDatabaseRepository
+    public enum StorageTemp
     {
-
+        냉동,
+        냉장,
+        실온
     }
 }
