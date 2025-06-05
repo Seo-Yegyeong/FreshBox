@@ -28,5 +28,5 @@
                <Button Content="Add" Command="{Binding AddMyOrderCommand}" Margin="10"/>  
             </StackPanel>  
        </StackPanel>  
-   </Grid>  
+   </Grid>
 </UserControl>

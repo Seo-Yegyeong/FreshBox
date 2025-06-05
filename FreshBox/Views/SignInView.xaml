@@ -8,9 +8,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1440" Background="#fff">
     <!-- SignInViewModel 뷰모델과 바인딩 -->
-    <UserControl.DataContext>
-        <vm:SignInViewModel />
-    </UserControl.DataContext>
+    <!-- <UserControl.DataContext>
+       <vm:SignInViewModel /> 
+    </UserControl.DataContext>-->
     
     <Grid>
         <Grid.ColumnDefinitions>
