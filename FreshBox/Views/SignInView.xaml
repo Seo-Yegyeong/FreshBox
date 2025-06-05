@@ -1,11 +1,17 @@
-﻿<UserControl x:Class="FreshBox.Views.LoginView"
+﻿<UserControl x:Class="FreshBox.Views.SignInView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FreshBox.Views"
+             xmlns:vm="clr-namespace:FreshBox.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1440" Background="#fff">
+    <!-- SignInViewModel 뷰모델과 바인딩 -->
+    <UserControl.DataContext>
+        <vm:SignInViewModel />
+    </UserControl.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -34,7 +40,7 @@
                     <Button Content="ID/PW 찾기" Width="130" Height="50" FontSize="16" Foreground="#000" BorderThickness="0" Background="Transparent" />
                 </Border>
                 <Border CornerRadius="14" BorderThickness="1" BorderBrush="#dedede" Margin="5">
-                    <Button Content="회원가입" Width="130" Height="50" FontSize="16" Background="Transparent" Foreground="#000" BorderThickness="0"/>
+                    <Button Command="{Binding GoToSignUpCommand}" Content="회원가입" Width="130" Height="50" FontSize="16" Background="Transparent" Foreground="#000" BorderThickness="0"/>
                 </Border>
                 <Border CornerRadius="14" BorderThickness="1" Margin="5" BorderBrush="#9EDE55">
                     <Button Content="로그인" Width=" 130" Height="50" FontSize="16" Background="Transparent" Foreground="#000" BorderThickness="0"/>

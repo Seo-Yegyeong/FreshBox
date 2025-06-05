@@ -12,6 +12,9 @@ using MySql.Data.MySqlClient; // MySqlConnection, MySqlCommand 등 MySQL 데이�
 
 namespace FreshBox.Repository
 {
+    // DB 테이블 단위로 레포지토리를 관리
+    // member 테이블이 하는 일을 전부 MemberRepository가 담당
+    // 기능은 Service에서 분리
     public class MemberRepository // 외부 접근 가능하도록 public으로 변경
     {
         // MysqlDatabaseManager 싱글톤 인스턴스 저장용 변수
@@ -359,6 +362,73 @@ namespace FreshBox.Repository
             }
 
             return result;
+        }
+
+
+        /// <summary>
+        /// 사용자 이름(username)을 기반으로 회원 정보를 조회
+        /// 로그인에 사용될 select 메서드
+        /// </summary>
+        /// <param name="username">조회할 사용자 이름</param>
+        /// <returns>회원 정보가 존재하면 Member 객체, 없으면 null</returns>
+        public Member? GetMemberByUserName(string inputUsername)
+        {    
+            //연결 객체 생성
+            MySqlConnection? conn = null;// 이 변수는 null이 될 수 있다고 명시함
+
+            // DB에서 조회된 회원 정보를 담을 객체
+            Member? member = null; 
+
+            //DB로 보낼 쿼리문 : 사용자 이름을 조건으로 회원 정보 조회
+            string query = "SELECT id, username, password FROM member" +
+                             "WHERE username = @username";
+
+            try {
+                conn = dbManager.GetConnection(); // 연결 열기
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                // 쿼리문 날려줄 커맨드 객체 생성
+
+                // 파라미터 추가
+                cmd.Parameters.Add("@username",MySqlDbType.VarChar).Value = inputUsername;
+                
+                MySqlDataReader reader = cmd.ExecuteReader();
+                // 쿼리 실행
+                // 1행 1열만 필요 -> ExecuteScalar()
+                // 1행 다수 열 & 다수 행, 다수 열 필요 -> ExecuteReader()
+
+                if (reader.Read())
+                {
+                    // reader.Read() : 진입 시 읽을 수 있는 행이 있으면 ture
+                    // -> 첫 번째 호출에서 첫 번째 행을 읽음
+                    // 결과 행이 딱 1개만 존재한다고 확신하는 경우에 if사용
+                    // 쿼리 결과 행 여러개인 경우는 while 반복문을 이용해서 여러 행을 순차적으로 읽어오도록 하기
+
+                    int id = reader.GetInt32(0); // 0번째 컬럼에서 정수형(id) 값을 가져옴
+                    string username = reader.GetString(1); // 1번째 컬럼에서 문자열(username) 값을 가져옴
+                    string pwd = reader.GetString(2); // 2번째 컬럼에서 문자열(password) 값을 가져옴
+
+                    member = new Member(id, username, pwd);
+                    // 쿼리 결과값으로 member객체 만들어서 리턴
+
+                    return member;
+                }
+                else {
+                    return member;
+                    //-> 조회한 username에 대해 쿼리 결과행이 없으면 member = null리턴
+                }
+
+
+            }
+            catch (Exception ex) {
+                Debug.WriteLine($"[예외][MemberRepository.GetMemberByUserName()] {ex.Message}");
+                throw; //-> 호출부로 예외 던짐
+            }
+            finally {
+                if (conn != null) { //-> 연결 객체가 null이 아니면 
+                    dbManager.CloseConnection(conn); //-> 연결을 닫고, 리소스 정리함
+                }
+            }
         }
 
 

@@ -134,7 +134,12 @@ namespace FreshBox.Models
             this.HireDate = hireDate;
         }
 
-        public Member() { }
+        public Member(int id, string username, string password) {
+            this.Id = id;
+            this.Username = username;
+            this.Password = password;
+        }
+        public Member() { } // 기본 생성자
 
     }
 }

@@ -18,9 +18,9 @@ namespace FreshBox.Views
     /// <summary>
     /// Interaction logic for MainVisual.xaml
     /// </summary>
-    public partial class MainVisual : UserControl
+    public partial class MainVisualView : UserControl
     {
-        public MainVisual()
+        public MainVisualView()
         {
             InitializeComponent();
         }
