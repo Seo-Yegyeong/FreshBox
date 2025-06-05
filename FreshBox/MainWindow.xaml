@@ -15,6 +15,7 @@
             ScreenHolderContentControl: 화면(UserControl)을 담아 보여주는 컨테이너 역할을 하는 ContentControl
             이거 하나만 메인윈도우에 꽂아놓고 
             NavigationService에서 이 ContentControl의 Content를 변경하여 로그인, 메인 뷰 등 여러 화면을 전환함 -->
-        <ContentControl x:Name="ScreenHolderContentControl"/>
+        <!--<ContentControl x:Name="ScreenHolderContentControl"/>-->
+        <v:MyOrderView DataContext="{Binding MyOrderViewModel}" />
     </Grid>
 </Window>

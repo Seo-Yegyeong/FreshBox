@@ -7,6 +7,7 @@ using System.Configuration;
 using FreshBox.Models;
 using MySql.Data.MySqlClient;
 using FreshBox.Database;
+using System.Windows;
 
 namespace FreshBox.Repository
 {
@@ -22,14 +23,12 @@ namespace FreshBox.Repository
 
         public List<MyOrder> GetAllOrders()
         {
-            Console.WriteLine("GetAllOrders() #1");
             MySqlConnection conn = new();
             var myOrders = new List<MyOrder>();
             string query = "SELECT * FROM my_order;";
 
             try
             {
-                Console.WriteLine("GetAllOrders() #2");
                 conn = _dbManager.GetConnection();
                 var command = new MySqlCommand(query, conn);
                 var reader = command.ExecuteReader();
@@ -45,7 +44,6 @@ namespace FreshBox.Repository
                         Quantity = reader.GetInt32("quantity")
                     });
                 }
-                Console.WriteLine("GetAllOrders() #3");
             }
             catch (Exception ex)
             {
@@ -56,7 +54,6 @@ namespace FreshBox.Repository
             {
                 _dbManager.CloseConnection(conn);
             }
-            Console.WriteLine("GetAllOrders() #4");
             return myOrders;
         }
 
