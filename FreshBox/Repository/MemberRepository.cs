@@ -380,7 +380,7 @@ namespace FreshBox.Repository
             Member? member = null; 
 
             //DB로 보낼 쿼리문 : 사용자 이름을 조건으로 회원 정보 조회
-            string query = "SELECT id, username, password FROM member" +
+            string query = "SELECT id, username, password FROM member " +
                              "WHERE username = @username";
 
             try {
