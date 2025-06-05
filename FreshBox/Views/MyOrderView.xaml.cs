@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-
 namespace FreshBox.Views
 {
     /// <summary>
