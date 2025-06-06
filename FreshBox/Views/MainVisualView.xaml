@@ -148,7 +148,7 @@
                     </StackPanel>
                 </StackPanel>
             </Border>
-            <Button Width="180" Height="85" Background="#9EDE55" Margin="20" BorderThickness="0" HorizontalAlignment="Center" >
+            <Button Command="{Binding SignOutCommand}" Width="180" Height="85" Background="#9EDE55" Margin="20" BorderThickness="0" HorizontalAlignment="Center" >
                 <TextBlock Text="로그아웃" Foreground="#fff" FontSize="24" FontWeight="bold" FontFamily="Noto Sans KR"/>
             </Button>
         </StackPanel>

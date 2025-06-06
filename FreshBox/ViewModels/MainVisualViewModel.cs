@@ -45,6 +45,21 @@ namespace FreshBox.ViewModels
             ViewNavigationService.Instance.NavigateTo("MyOrder");
         }
 
+        /// <summary>
+        /// MainVisualView에서 로그아웃 버튼 클릭 시 실행되는 메서드
+        /// 로그아웃 처리 로직을 담당
+        /// </summary>
+        [RelayCommand]
+        private void SignOut()
+        {
+            // 로그인 세션 초기화
+            LoginSession.GetInstance().Clear();
+
+            //로그인 페이지로 이동
+            ViewNavigationService.Instance.NavigateTo("SignIn");
+        }
+
+
         [RelayCommand]
         private void GotoProductArrival()
         {

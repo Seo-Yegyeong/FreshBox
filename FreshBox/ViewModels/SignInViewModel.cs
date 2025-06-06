@@ -16,7 +16,6 @@ namespace FreshBox.ViewModels
     // SignInView와 바인딩 되어있음
     public partial class SignInViewModel : ObservableObject
     {
-        // 필드 선언
 
         // 로그인 서비스 주입 또는 생성
         private readonly SignInService signInsvc = new SignInService();
@@ -48,7 +47,8 @@ namespace FreshBox.ViewModels
         /// </summary>
         /// <param name="inputUsername">입력한 사용자 아이디</param>
         /// <param name="inputPwd">입력한 비밀번호</param>
-        public void Authenticate(string inputUsername, string inputPwd)
+        /// <returns>로그인 성공 시 true, 실패 시 false 반환</returns>
+        public bool Authenticate(string inputUsername, string inputPwd)
         {
 
             if (string.IsNullOrWhiteSpace(inputUsername)
@@ -56,7 +56,7 @@ namespace FreshBox.ViewModels
             {
                 // username 또는 pwd를 입력 하지 않았을 때 실행
                 MessageBox.Show("아이디 또는 비밀번호를 입력하세요.", "입력 확인");
-                return;
+                return false;
             }
 
             try
@@ -74,6 +74,8 @@ namespace FreshBox.ViewModels
 
                     // 로그인 성공 후 처리 (예: 화면 이동)
                     ViewNavigationService.Instance.NavigateTo("MainVisual");
+
+                    return true;
                 }
                 else
                 {
@@ -84,7 +86,7 @@ namespace FreshBox.ViewModels
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning
                         );
-                    return;
+                    return false;
                 }
             }
             catch (Exception ex)
@@ -95,7 +97,7 @@ namespace FreshBox.ViewModels
                     "ERROR",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-                return;
+                return false;
             }
 
         }
