@@ -40,7 +40,7 @@ namespace FreshBox.ViewModels
 
 
         [RelayCommand]
-        private void GoToProductArrival() {
+        private void GoToMyOrderArrival() {
             // 입고 페이지로 이동
             ViewNavigationService.Instance.NavigateTo("MyOrder");
         }
@@ -50,13 +50,21 @@ namespace FreshBox.ViewModels
         /// 로그아웃 처리 로직을 담당
         /// </summary>
         [RelayCommand]
-        private void SignOut() {
+        private void SignOut()
+        {
             // 로그인 세션 초기화
             LoginSession.GetInstance().Clear();
 
             //로그인 페이지로 이동
             ViewNavigationService.Instance.NavigateTo("SignIn");
+        }
 
+
+        [RelayCommand]
+        private void GotoProductArrival()
+        {
+            // 상품 등록 페이지로 이동 - 지금은 test로 이동하는데, 현승님이 페이지 push해주시면 그걸로 바꿔야 함.
+            ViewNavigationService.Instance.NavigateTo("Test");
         }
     }
 }

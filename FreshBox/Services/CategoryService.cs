@@ -15,7 +15,6 @@ namespace FreshBox.Services
         CategoryRepository CategoryRepo = new CategoryRepository();
         public ObservableCollection<Category> LoadCategoriesService()
         {
-            MessageBox.Show("LoadCategoriesService() called");
             return new ObservableCollection<Category>(CategoryRepo.GetAllCategories());
         }
     }
