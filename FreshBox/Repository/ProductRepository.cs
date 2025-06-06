@@ -24,13 +24,15 @@ namespace FreshBox.Repository
 
         public List<Product> GetAllProducts()
         {
+            MySqlConnection conn;
             var products = new List<Product>();
             string query = "SELECT * FROM product";
+
             try
             {
-                using var conn = _dbManager.GetConnection();
-                using var command = new MySqlCommand(query, conn);
-                using var reader = command.ExecuteReader();
+                conn = _dbManager.GetConnection();
+                var command = new MySqlCommand(query, conn);
+                var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     products.Add(new Product

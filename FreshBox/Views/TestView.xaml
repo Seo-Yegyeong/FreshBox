@@ -12,7 +12,7 @@
         <viewmodels:ProductViewModel x:Key="ProductVM" />
     </UserControl.Resources>
     <Grid>
-        <TextBox Text="{Binding }" VerticalAlignment="Top" Margin="103,95,497,0" Width="200"/>
+        <TextBox Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="103,95,497,0" Width="200"/>
         <ComboBox
             ItemsSource="{Binding Categories}"
             DisplayMemberPath="CategoryName"
