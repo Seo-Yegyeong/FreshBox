@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreshBox.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,14 @@ namespace FreshBox.Views
         public MainVisualView()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainVisualViewModel vm)
+            {
+                vm.LoadUserInfo();
+            }
         }
     }
 }
