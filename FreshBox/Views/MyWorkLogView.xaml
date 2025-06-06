@@ -50,14 +50,14 @@
                 FontWeight="Bold"
                 BorderBrush="#9EDE55"
                 BorderThickness="2"/>
-                <Button Content="수정 요청" FontSize="25"
-            Command="{Binding ViewEditRequestsCommand}"
-            Padding="10,10"
-            Background="White"
-            Foreground="#FF0E8FF5"
-            FontWeight="Bold"
-            BorderBrush="#FF0E8FF5"
-            BorderThickness="2"/>
+                <Button Content="수정 요청" FontSize="25" Margin="0,0,0,0"
+                Command="{Binding ViewEditRequestsCommand}"
+                Padding="10,10"
+                Background="White"
+                Foreground="#FF0E8FF5"
+                FontWeight="Bold"
+                BorderBrush="#FF0E8FF5"
+                BorderThickness="2"/>
             </StackPanel>
 
             <!-- 기록 테이블 StringFormat -->
