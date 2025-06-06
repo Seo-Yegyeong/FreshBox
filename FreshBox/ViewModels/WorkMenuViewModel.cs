@@ -84,5 +84,15 @@ namespace FreshBox.ViewModels
         private void GoToBack() {
             ViewNavigationService.Instance.GoBack();
         }
+
+        /// <summary>
+        /// 출퇴근찍기 버튼 클릭시 호출됨
+        /// 출퇴근 찍기 UserControl(CheckInOutView)로 화면 전환
+        /// </summary>
+        [RelayCommand]
+        private void GoToCheckInOutView() {
+            ViewNavigationService.Instance.NavigateTo("CheckInOut");
+            // 주의) 메인윈도우 뒷코드에 등록이 먼저 되어있어야 함
+        }
     }
 }
