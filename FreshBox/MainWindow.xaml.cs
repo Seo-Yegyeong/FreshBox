@@ -42,6 +42,7 @@ namespace FreshBox
             ViewNavigationService.Instance.RegisterView("SignUp", new SignUpView());
             ViewNavigationService.Instance.RegisterView("MainVisual", new MainVisualView());
             ViewNavigationService.Instance.RegisterView("MyOrder", new MyOrderView());
+            ViewNavigationService.Instance.RegisterView("Test", new TestView());
 
             // 시작 화면 지정 - 등록한 뷰 이름으로 접근
             ViewNavigationService.Instance.NavigateTo("SignIn");
