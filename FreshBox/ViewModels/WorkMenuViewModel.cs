@@ -105,5 +105,17 @@ namespace FreshBox.ViewModels
             ViewNavigationService.Instance.NavigateTo("MyWorkLog");
             // 주의) 메인윈도우 뒷코드에 등록이 먼저 되어있어야 함
         }
+
+        /// <summary>
+        /// 관리자용 : 회사 고유 휴일 등록 버튼 클릭시 호출됨
+        /// CompanyHolidayView로 화면 전환
+        /// </summary>
+        [RelayCommand]
+        private void GoToCompanyHolidayView()
+        {
+            ViewNavigationService.Instance.NavigateTo("CompanyHoliday");
+            // 주의) 메인윈도우 뒷코드에 등록이 먼저 되어있어야 함
+        }
+
     }
 }
