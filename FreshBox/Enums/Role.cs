@@ -11,7 +11,8 @@ namespace FreshBox.Enums
     /// </summary>
     public enum Role
     {
-        Employee, //사원
-        Admin //관리자
+        None,      // 0, 로그아웃 상태, 기본값
+        Employee, // 1, 사원
+        Admin // 2, 관리자
     }
 }
