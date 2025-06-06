@@ -60,7 +60,7 @@
         </Grid>
         <WrapPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Border  Style="{StaticResource CardStyle}" Width="300" Height="150">
-                <Button Command="{Binding GoToProductArrivalCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                <Button Command="{Binding GoToMyOrderArrivalCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image Source="/Assets/Product_Arrive.png" Width="50"/>
                         <TextBlock Text="Product arrival" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
@@ -76,7 +76,7 @@
                 </Button>
             </Border>
             <Border Style="{StaticResource CardStyle}" Width="300" Height="150">
-                <Button Background="Transparent" BorderThickness="0" Cursor="Hand">
+                <Button Background="Transparent" BorderThickness="0" Cursor="Hand" Command="{Binding GotoProductArrivalCommand}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image Source="/Assets/Inventory_Registration.png" Width="50"/>
                         <TextBlock Text="Product Registration" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
