@@ -63,8 +63,15 @@ namespace FreshBox.ViewModels
             {
                 // 서비스 호출 후 결과 처리
                 MemberSignInDto? dto = signInsvc.SignIn(inputUsername, inputPwd);
-                if (dto != null)
+
+                if (dto != null) // 로그인 성공 시 실행
                 {
+                    // 로그인 성공 시 LoginSession에 ID·UserName 저장
+                    LoginSession.GetInstance().SetLoginInfo(dto.Id, dto.Username);
+
+                    // 추가 사용자 정보 DB에서 읽어오기
+                    LoginSession.GetInstance().LoadAdditionalInfo();
+
                     // 로그인 성공 후 처리 (예: 화면 이동)
                     ViewNavigationService.Instance.NavigateTo("MainVisual");
                 }
@@ -72,7 +79,7 @@ namespace FreshBox.ViewModels
                 {
                     // 로그인 실패 처리 (예: 메시지 띄우기)
                     MessageBox.Show(
-                        "입력하신 정보가 일치하지 않습니다.\n다시 확인해주세요.",
+                        "아이디 또는 비밀번호가 올바르지 않습니다.",
                         "입력 오류",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning
