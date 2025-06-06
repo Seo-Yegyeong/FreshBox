@@ -44,9 +44,6 @@ namespace FreshBox.Services
                     return null; // 비밀번호 불일치
                 }
 
-                // 아이디와 비밀번호가 모두 일치한 경우
-                // 로그인한 사용자의 PK(Id)를 static 필드 LoggedInMemberId에 저장하여 애플리케이션 전역에서 참조 가능하도록 함
-                Member.LoggedInMemberId = member.Id;
 
                 // 여기서는 member가 null아님(위의 검사마쳤으니까 예외 안남)
                 MemberSignInDto dto = MemberSignInDto.FromEntity(member);

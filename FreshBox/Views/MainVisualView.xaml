@@ -4,8 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FreshBox.Views"
+             xmlns:vm="clr-namespace:FreshBox.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1440" Background="#fff">
+             d:DesignHeight="800" d:DesignWidth="1440" Background="#fff"
+             Loaded="UserControl_Loaded">
+    <UserControl.DataContext>
+        <vm:MainVisualViewModel />
+    </UserControl.DataContext>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -114,15 +119,15 @@
                     </Button>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="ID" FontSize="18" FontWeight="bold" Margin="0 5 20 5"></TextBlock>
-                        <TextBlock Text="{Binding}"></TextBlock>
+                        <TextBlock Text="{Binding LoginUsername}" FontSize="18" Margin="0 3 20 5"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="사용자" FontFamily="Noto Sans KR" FontSize="18" FontWeight="bold" Margin="0 5 20 5"></TextBlock>
-                        <TextBlock Text="{Binding}"></TextBlock>
+                        <TextBlock Text="{Binding LoginMemberName}" FontSize="18" Margin="0 5 20 5"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="직책" FontFamily="Noto Sans KR" FontSize="18" FontWeight="bold" Margin="0 5 20 5"></TextBlock>
-                        <TextBlock Text="{Binding}"></TextBlock>
+                        <TextBlock Text="{Binding LoginRole}" FontSize="18" Margin="0 5 20 5"></TextBlock>
                     </StackPanel>
                 </StackPanel>
             </Border>
