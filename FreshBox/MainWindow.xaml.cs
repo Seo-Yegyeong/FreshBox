@@ -41,6 +41,8 @@ namespace FreshBox
 
             ViewNavigationService.Instance.RegisterView("SignUp", new SignUpView());
             ViewNavigationService.Instance.RegisterView("MainVisual", new MainVisualView());
+            ViewNavigationService.Instance.RegisterView("WorkMenu", new WorkMenuView());
+
             ViewNavigationService.Instance.RegisterView("MyOrder", new MyOrderView());
             ViewNavigationService.Instance.RegisterView("Test", new TestView());
 
