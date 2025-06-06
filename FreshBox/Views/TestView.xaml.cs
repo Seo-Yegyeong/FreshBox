@@ -24,7 +24,7 @@ namespace FreshBox.Views
         public TestView()
         {
             InitializeComponent();
-            this.DataContext = new CategoryViewModel();
+            this.DataContext = new ProductViewModel();
         }
     }
 }

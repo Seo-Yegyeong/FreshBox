@@ -4,24 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:v="clr-namespace:FreshBox.Views"
-             xmlns:viewmodels="clr-namespace:FreshBox.ViewModels" 
+             xmlns:vm="clr-namespace:FreshBox.ViewModels" 
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <viewmodels:CategoryViewModel x:Key="CategoryVM" />
-        <viewmodels:ProductViewModel x:Key="ProductVM" />
-    </UserControl.Resources>
+    <UserControl.DataContext>
+        <vm:ProductViewModel/>
+    </UserControl.DataContext>
     <Grid>
+        <Button Content="GoBack" Width="100" Height="50" Margin="10,10,0,0"
+                HorizontalAlignment="Left" VerticalAlignment="Top"
+                Command="{Binding GoBackCommand}"/>
         <TextBox x:Name="ProductNameTextBox" HorizontalAlignment="Left" Margin="100,0,0,0"
                      TextWrapping="Wrap" VerticalAlignment="Center" Width="213" Height="50" MaxLength="12"
                      Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}"/>
         <!-- Username 속성을 바인딩 , UpdateSourceTrigger=PropertyChanged 한글자 입력할때마다 실시간으로 뷰모델의 Username속성에 값이 들어감 -->
         <Button Content="Click!" Width="50" Height="50" Margin="650,200,100,200"/>
         <ComboBox
-            ItemsSource="{Binding Categories}"
+            ItemsSource="{Binding CategorySubVM.Categories}"
             DisplayMemberPath="CategoryName"
             SelectedValuePath="ID"
-            SelectedValue="{Binding SelectedCategoryId}"
+            SelectedValue="{Binding CategorySubVM.SelectedCategoryId}"
             Width="200"
             Height="50" Margin="400,200,200,200"/>
     </Grid>
