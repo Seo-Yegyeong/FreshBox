@@ -27,7 +27,7 @@ namespace FreshBox.Database
     {
         /// <summary>
         /// MySQL 서버에 접속하기 위한 정보(연결 문자열)
-        /// 팀플용 계정 정보로 입력하면 됩니다.(Uid : spc , Pwd : spc1234!)
+        /// 팀플용 계정 정보로 입력하면 됩니다.
         /// - Server: DB 서버 주소 (localhost는 내 컴퓨터에서 돌고 있는 MySQL 서버)
         /// - Database: 사용할 데이터베이스 이름
         /// - Uid: 사용자 계정 (MySQL에서 생성한 사용자 ID)

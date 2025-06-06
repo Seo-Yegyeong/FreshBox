@@ -72,6 +72,9 @@ namespace FreshBox.ViewModels
                     // 추가 사용자 정보 DB에서 읽어오기
                     LoginSession.GetInstance().LoadAdditionalInfo();
 
+                    // 권한 변경 후 UI에 바로 반영
+                    WorkMenuViewModel.Instance.RefreshRoleProperties();
+
                     // 로그인 성공 후 처리 (예: 화면 이동)
                     ViewNavigationService.Instance.NavigateTo("MainVisual");
 

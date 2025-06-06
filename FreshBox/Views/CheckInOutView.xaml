@@ -1,0 +1,127 @@
+﻿<UserControl x:Class="FreshBox.Views.CheckInOutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FreshBox.Views"
+             xmlns:vm="clr-namespace:FreshBox.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1440"
+             FontFamily="Noto Sans KR" >
+    <!-- CheckInOutViewModel 뷰모델과 바인딩 -->
+    <UserControl.DataContext>
+        <vm:CheckInOutViewModel />
+    </UserControl.DataContext>
+    
+    <Grid Background="White">
+        <!-- 상단 가로줄 -->
+        <Grid Background="#9EDE55" Height="85" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <!-- 뒤로가기 버튼 -->
+            <Button Command="{Binding GoToBackCommand}" Content="🔙" Grid.Column="1" FontSize="45" VerticalAlignment="Center" Height="70" Width="70" Margin="15,10,10,15" Background="Transparent" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Label Grid.Column="0" Grid.ColumnSpan="3" Content="출퇴근 찍기" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="White" FontFamily="Noto Sans KR" />
+        </Grid>
+
+        <Grid Margin="40" VerticalAlignment="Center">
+            <!-- 본문 영역을 감싸는 Grid: 상단 바 아래에서부터 시작하도록 Margin 사용 -->
+            <Grid Margin="0,100,0,0" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <!-- 제목 행 -->
+                    <RowDefinition Height="50" />
+                    <!-- 데이터 행 (빈 상태) -->
+                    <RowDefinition Height="Auto" />
+                    <!-- 버튼 영역 -->
+                </Grid.RowDefinitions>
+
+                <!-- 제목 행 -->
+                <Grid Grid.Row="0" Height="50">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 출근 셀 테두리 -->
+                    <Border Grid.Column="0" BorderBrush="#888" BorderThickness="1" Background="#EEE">
+                        <TextBlock Text="출근 시간"
+                           FontFamily="Noto Sans KR"
+                           FontSize="25"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" />
+                    </Border>
+
+                    <!-- 퇴근 셀 테두리 -->
+                    <Border Grid.Column="1" BorderBrush="#888" BorderThickness="1" Background="#EEE">
+                        <TextBlock Text="퇴근 시간"
+                           FontFamily="Noto Sans KR"
+                           FontSize="25"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" />
+                    </Border>
+                </Grid>
+
+                <!-- 데이터 행 (처음엔 빈 상태, 뷰모델 바인딩으로 채움) -->
+                <Grid Grid.Row="1" Height="50">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 출근 시간 표시 셀 테두리 -->
+                    <Border Grid.Column="0" BorderBrush="#888" BorderThickness="1" Background="AliceBlue">
+                        <TextBlock Text="{Binding CurrentCheckInTime}"
+                           FontFamily="Noto Sans KR"
+                           FontSize="40"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" />
+                    </Border>
+
+                    <!-- 퇴근 시간 표시 셀 테두리 -->
+                    <Border Grid.Column="1" BorderBrush="#888" BorderThickness="1" Background="AliceBlue">
+                        <TextBlock Text="{Binding CurrentCheckOutTime}"
+                           FontFamily="Noto Sans KR"
+                           FontSize="40"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" />
+                    </Border>
+                </Grid>
+
+                <!-- 버튼 영역 -->
+                <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,70,0,0">
+                    <Button Content="출근"
+                    Command="{Binding CheckInCommand}"
+                    Width="200"
+                    Height="70"
+                    Background="#4CAF50"
+                    Foreground="White"
+                    FontFamily="Noto Sans KR"
+                    FontSize="30"
+                    FontWeight="Bold"
+                    BorderThickness="0"
+                    Margin="0,0,20,0" />
+                    <Button Content="퇴근"
+                    Command="{Binding CheckOutCommand}"
+                    Width="200"
+                    Height="70"
+                    Background="#F44336"
+                    Foreground="White"
+                    FontFamily="Noto Sans KR"
+                    FontSize="30"
+                    FontWeight="Bold"
+                    BorderThickness="0" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+
+    </Grid>
+</UserControl>
