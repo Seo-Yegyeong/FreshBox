@@ -23,7 +23,7 @@
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
             <!-- 사원과 관리자 모두 출퇴근 시간 기록을 할 수 있는 버튼 -->
             <Button Command="{Binding GoToCheckInOutViewCommand}" Content="출퇴근 찍기" Visibility="{Binding IsCommonButtonVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0"/>
-            <Button Content="내 출퇴근 기록 확인" Visibility="{Binding IsCommonButtonVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Button Command="{Binding GoToMyWorkLogViewCommand}" Content="내 출퇴근 기록 확인" Visibility="{Binding IsCommonButtonVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
 
             <!-- 관리자용 : 사원이 제출한 출퇴근 수정 요청을 관리자가 확인하는 페이지 이동 버튼 -->
             <Button Content="수정 요청 확인" Visibility="{Binding IsAdminVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
