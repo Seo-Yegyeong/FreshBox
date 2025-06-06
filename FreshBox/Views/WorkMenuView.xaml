@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FreshBox.Views"
+             xmlns:vm ="clr-namespace:FreshBox.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1440">
+    <UserControl.DataContext>
+        <vm:WorkMenuViewModel/>
+    </UserControl.DataContext>
     <Grid Background="White">
         <!-- 상단 가로줄 -->
         <Grid Background="#9EDE55" Height="85" VerticalAlignment="Top">
@@ -15,22 +19,22 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <!-- 뒤로가기 버튼 -->
-            <Button Content="🔙" Grid.Column="1" FontSize="45" VerticalAlignment="Center" Height="70" Width="70" Margin="15,10,10,15" Background="Transparent" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Button Command="{Binding GoToBackCommand}" Content="🔙" Grid.Column="1" FontSize="45" VerticalAlignment="Center" Height="70" Width="70" Margin="15,10,10,15" Background="Transparent" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
         </Grid>
 
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
             <!-- 사원과 관리자 모두 출퇴근 시간 기록을 할 수 있는 버튼 -->
-            <Button Content="출퇴근 찍기" Height="40" FontSize="16" Margin="0,0,0,10" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
-            <Button Content="내 출퇴근 기록 확인" Height="40" FontSize="16" Margin="0,0,0,10" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Button Content="출퇴근 찍기" Height="50" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Button Content="내 출퇴근 기록 확인" Height="50" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
 
             <!-- 관리자용 : 사원이 제출한 출퇴근 수정 요청을 관리자가 확인하는 페이지 이동 버튼 -->
-            <Button Content="수정 요청 확인" Height="40" FontSize="16" Margin="0,0,0,10" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Button Content="수정 요청 확인" Height="50" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
             <!-- 관리자용: 전사원 출퇴근 로그 기록 확인 페이지 이동 버튼 -->
-            <Button Content="전사원 출퇴근 로그 기록 보기" Height="40" FontSize="16" Margin="0,0,0,10" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Button Content="전사원 출퇴근 로그 기록 보기" Height="50" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
             <!-- 관리자용: 회사에서 허용된 와이파이 정보를 등록하는 페이지 이동 버튼 -->
-            <Button Content="와이파이 등록 페이지" Height="40" FontSize="16" Margin="0,0,0,10" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Button Content="와이파이 등록 페이지" Height="50" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
             <!-- 관리자용: 회사 고유 휴일을 등록 및 관리하는 페이지 이동 버튼 -->
-            <Button Content="회사 고유 휴일 등록" Height="40" FontSize="16" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Button Content="회사 고유 휴일 등록" Height="50" FontSize="20" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
 
         </StackPanel>
     </Grid>
