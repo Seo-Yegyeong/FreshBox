@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreshBox.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace FreshBox.Views
         public WorkMenuView()
         {
             InitializeComponent();
+            this.DataContext = WorkMenuViewModel.Instance;
         }
     }
 }
