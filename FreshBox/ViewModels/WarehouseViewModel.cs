@@ -28,6 +28,11 @@ namespace FreshBox.ViewModels
         [ObservableProperty]
         private StorageTemp tempControl;
 
+        [ObservableProperty]
+        private StorageTemp selectedTempControl;
+
+        private IEnumerable<StorageTemp> storageTempTypes => Enum.GetValues(typeof(StorageTemp)).Cast<StorageTemp>();
+
         public WarehouseViewModel()
         {
             LoadWarehouses();
