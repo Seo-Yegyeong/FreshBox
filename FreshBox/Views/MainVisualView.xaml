@@ -38,7 +38,7 @@
                             </Viewbox>
                         </StackPanel>
                     </Button>
-                    <Button BorderThickness="0" Margin="20" Style="{StaticResource NavButtonStyle}">
+                    <Button Command="{Binding GoToWorkLogCommand}" BorderThickness="0" Margin="20" Style="{StaticResource NavButtonStyle}">
                         <StackPanel Orientation="Horizontal">
                             <Viewbox  Width="50" Height="50">
                                 <Image Source="/Assets/userCheck_white.png" Stretch="Uniform"/>
