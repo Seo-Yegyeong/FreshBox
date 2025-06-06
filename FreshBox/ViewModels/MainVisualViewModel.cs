@@ -59,6 +59,16 @@ namespace FreshBox.ViewModels
             ViewNavigationService.Instance.NavigateTo("SignIn");
         }
 
+        /// <summary>
+        /// MainVisualView에서 왼쪽 사이드 3번째 버튼 누르면 실행되는 메서드
+        /// 출퇴근 메뉴 뷰 페이지로 화면 전환
+        /// </summary>
+        [RelayCommand]
+        private void GoToWorkLog()
+        {
+            // 출퇴근 메뉴 뷰 페이지로 이동
+            ViewNavigationService.Instance.NavigateTo("WorkMenu");
+        }
 
         [RelayCommand]
         private void GotoProductArrival()
