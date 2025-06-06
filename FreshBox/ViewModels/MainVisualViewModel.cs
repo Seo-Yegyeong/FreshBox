@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FreshBox.Enums;
 using FreshBox.Services;
 using System;
@@ -37,5 +38,11 @@ namespace FreshBox.ViewModels
             LoginRole = session.LoggedInRole.ToString();
         }
 
+
+        [RelayCommand]
+        private void GoToProductArrival() {
+            // 입고 페이지로 이동
+            ViewNavigationService.Instance.NavigateTo("MyOrder");
+        }
     }
 }
