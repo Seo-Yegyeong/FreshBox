@@ -39,9 +39,18 @@ namespace FreshBox.Views
 
             // ViewModel의 로그인 서비스 메서드 직접 호출
             var vm = this.DataContext as SignInViewModel;
+           
             if (vm != null)
             {
-                vm.Authenticate(username, password);
+                bool success = vm.Authenticate(username, password);
+                //SignInViewModel의 Authenticate메서드 직접 호출함
+
+                if (success)
+                {
+                    // 로그인 성공 시에만 비우기
+                    PasswordBox.Password = string.Empty;
+                    UserName.Text = string.Empty;
+                }
             }
         }
 
