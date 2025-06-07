@@ -117,5 +117,17 @@ namespace FreshBox.ViewModels
             // 주의) 메인윈도우 뒷코드에 등록이 먼저 되어있어야 함
         }
 
+
+        /// <summary>
+        /// 관리자용 : 출퇴근 기준 시간 설정 버튼 클릭시 호출됨
+        /// WorkTimeSettignsView로 화면 전환
+        /// </summary>
+        [RelayCommand]
+        private void GoToWorkTimeSettignsView()
+        {
+            ViewNavigationService.Instance.NavigateTo("WorkTimeSettigns");
+            // 주의) 메인윈도우 뒷코드에 등록이 먼저 되어있어야 함
+        }
+
     }
 }

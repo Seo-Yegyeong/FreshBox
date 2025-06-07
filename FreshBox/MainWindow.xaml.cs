@@ -45,6 +45,7 @@ namespace FreshBox
             ViewNavigationService.Instance.RegisterView("CheckInOut", new CheckInOutView());
             ViewNavigationService.Instance.RegisterView("MyWorkLog", new MyWorkLogView());
             ViewNavigationService.Instance.RegisterView("CompanyHoliday", new CompanyHolidayView());
+            ViewNavigationService.Instance.RegisterView("WorkTimeSettigns", new WorkTimeSettignsView());
 
             ViewNavigationService.Instance.RegisterView("MyOrder", new MyOrderView());
             ViewNavigationService.Instance.RegisterView("AddProduct", new AddProductView());
