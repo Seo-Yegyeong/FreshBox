@@ -5,29 +5,39 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
             xmlns:viewModels="clr-namespace:FreshBox.ViewModels"  
             mc:Ignorable="d"  
-            d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="10">
-        <StackPanel Margin="10">
+            d:DesignHeight="800" d:DesignWidth="1440" Background="#fff">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="10" Grid.Row="0">
             <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                <TextBlock Text="상품명:" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Width="100" Text="{Binding InputProductName, Mode=TwoWay}" Margin="10"/>
-                <TextBlock Text="수량:" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Width="100" Text="{Binding InputQuantity, Mode=TwoWay}" Margin="10"/>
-                <Button x:Name="입고" Content="입고" Background="#9EDE55" MinWidth="100" Margin="20, 10, 10, 10" Command="{Binding InboundMyOrderCommand}"/>
-                <Button Content="Reload Data" Command="{Binding LoadMyOrdersCommand}" Margin="20, 10, 10, 10" />
-            </StackPanel>
-
-            <StackPanel>
-                <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding MyOrders}"  
-                   SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"  
-                   Height="300" Margin="0 0 0 10">
-                </DataGrid>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Add" Command="{Binding AddMyOrderCommand}" Margin="10"/>
+                <TextBlock Text="상품명:" VerticalAlignment="Center" Margin="10" FontSize="16" FontWeight="Medium" FontFamily="Noto Sans KR"/>
+                <TextBox Width="200" Height="30" Text="{Binding InputProductName, Mode=TwoWay}" Margin="10" />
+                <TextBlock Text="수량:" VerticalAlignment="Center" Margin="10" FontSize="16" FontWeight="Medium" FontFamily="Noto Sans KR"/>
+                <TextBox Width="200" Height="30" Text="{Binding InputQuantity, Mode=TwoWay}" Margin="10" />
+                <Button x:Name="입고" Content="입고" Background="#9EDE55" MinWidth="100" Margin="20, 10, 10, 10" Command="{Binding InboundMyOrderCommand}" 
+                        Foreground="#fff" FontSize="16" FontWeight="Medium" FontFamily="Noto Sans KR" Width="150" Height="30"/>
+                <Button  Command="{Binding LoadMyOrdersCommand}" Margin="20, 10, 10, 10" Background="#eee" Width="50" Height="30">
+                    <Image Source="/Assets/reload.png" Width="20" Height="20"/>
+                </Button>
             </StackPanel>
         </StackPanel>
+
+        <Grid Grid.Row="1">
+            <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding MyOrders}"  
+                   SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"  
+                   VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0 0 0 10">
+            </DataGrid>
+        </Grid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button  Command="{Binding AddMyOrderCommand}" Margin="10" BorderThickness="0" Width="30" Height="30" Background="Transparent" >
+                <Image Source="/Assets/add.png" Width="20" Height="20"/>
+            </Button>
+        </StackPanel>
+
     </Grid>
 </UserControl>
 
