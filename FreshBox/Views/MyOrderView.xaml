@@ -15,11 +15,14 @@
         <StackPanel Margin="10" Grid.Row="0">
             <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
                 <TextBlock Text="상품명:" VerticalAlignment="Center" Margin="10" FontSize="16" FontWeight="Medium" FontFamily="Noto Sans KR"/>
-                <TextBox Width="200" Text="{Binding InputProductName, Mode=TwoWay}" Margin="10" />
-                <TextBlock Text="수량:" VerticalAlignment="Center" Margin="10"/>
-                <TextBox Width="100" Text="{Binding InputQuantity, Mode=TwoWay}" Margin="10"/>
-                <Button x:Name="입고" Content="입고" Background="#9EDE55" MinWidth="100" Margin="20, 10, 10, 10" Command="{Binding InboundMyOrderCommand}" Foreground="#fff"/>
-                <Button Content="Reload Data" Command="{Binding LoadMyOrdersCommand}" Margin="20, 10, 10, 10" Background="#dedede" FontSize="16" />
+                <TextBox Width="200" Height="30" Text="{Binding InputProductName, Mode=TwoWay}" Margin="10" />
+                <TextBlock Text="수량:" VerticalAlignment="Center" Margin="10" FontSize="16" FontWeight="Medium" FontFamily="Noto Sans KR"/>
+                <TextBox Width="200" Height="30" Text="{Binding InputQuantity, Mode=TwoWay}" Margin="10" />
+                <Button x:Name="입고" Content="입고" Background="#9EDE55" MinWidth="100" Margin="20, 10, 10, 10" Command="{Binding InboundMyOrderCommand}" 
+                        Foreground="#fff" FontSize="16" FontWeight="Medium" FontFamily="Noto Sans KR" Width="150" Height="30"/>
+                <Button  Command="{Binding LoadMyOrdersCommand}" Margin="20, 10, 10, 10" Background="#eee" Width="50" Height="30">
+                    <Image Source="/Assets/reload.png" Width="20" Height="20"/>
+                </Button>
             </StackPanel>
         </StackPanel>
 
@@ -30,7 +33,9 @@
             </DataGrid>
         </Grid>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Add" Command="{Binding AddMyOrderCommand}" Margin="10"/>
+            <Button  Command="{Binding AddMyOrderCommand}" Margin="10" BorderThickness="0" Width="30" Height="30" Background="Transparent" >
+                <Image Source="/Assets/add.png" Width="20" Height="20"/>
+            </Button>
         </StackPanel>
 
     </Grid>
