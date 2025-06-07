@@ -11,6 +11,7 @@ using FreshBox.ViewModels;
 using FreshBox.Models;
 using FreshBox.Services;
 using System.Security.Cryptography.X509Certificates;
+using FreshBox.Enums;
 
 
 namespace FreshBox.ViewModels
@@ -18,9 +19,13 @@ namespace FreshBox.ViewModels
     public partial class ProductViewModel : ObservableObject
     {
         private readonly ProductService productService = new ProductService();
-        public ObservableCollection<Product> Products { get; set; } = new();
+        public ObservableCollection<Product> Products { get; set; } = [];
 
+        // ==================================================================== //
+        // 카테고리와 창고를 선택할 수 있는 ViewModel을 포함
         public CategoryViewModel CategorySubVM { get; } = new CategoryViewModel();
+        public WarehouseViewModel WarehouseSubVM { get; } = new WarehouseViewModel();
+        
 
         [ObservableProperty]
         private Product? selectedProduct;
@@ -30,6 +35,15 @@ namespace FreshBox.ViewModels
 
         [ObservableProperty]
         private string productName = string.Empty; // 상품명 입력을 위한 속성
+
+        [ObservableProperty]
+        private int productStock; // 수량 입력을 위한 속성
+
+        [ObservableProperty]
+        private string? productBarcode; // 바코드 입력을 위한 속성
+
+        [ObservableProperty]
+        private StorageTemp storageTemp; // 저장 온도 선택을 위한 속성 (냉장, 냉동, 상온 중 하나를 선택)
 
         // ==================================================================== //
 
