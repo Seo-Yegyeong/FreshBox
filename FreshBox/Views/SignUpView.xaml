@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:FreshBox.Views"
              xmlns:vm="clr-namespace:FreshBox.ViewModels" 
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1440" Background="#fff">
+             d:DesignHeight="800" d:DesignWidth="1440" Background="#fff" FontFamily="Noto Sans KR">
     <!-- UserControl : 화면에 보이는 UI 조각(작은 화면 부품) 하나를 만드는 틀 -->
     <!-- DataContext : 이 UserControl에서 "사용할 데이터와 기능들이 있는 곳"을 연결하는 역할. 
             예를 들어, 뷰모델(화면 뒤에 데이터를 처리하는 클래스)이 어디인지 연결해주는 '배선' 같은 역할 -->
@@ -18,7 +18,7 @@
     </UserControl.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="20" HorizontalAlignment="Center" >
-            <TextBlock Text="회원가입" FontSize="32" FontWeight="DemiBold" FontFamily="Noto Sans KR" HorizontalAlignment="Center" Margin="0 20 0 40" />
+            <TextBlock Text="회원가입" FontSize="32" FontWeight="DemiBold" FontFamily="Noto Sans KR" HorizontalAlignment="Center" Margin="0 5 0 23" />
             <StackPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -28,8 +28,8 @@
                     <Label Content="아이디*" FontSize="16" Grid.Column="0" FontFamily="Noto Sans KR" FontWeight="Medium"/>
                 <!-- 사용자가 입력한 값을 뷰모델의 Username 속성과 연결 -->
                     <Border Grid.Column="1" CornerRadius="15" Height="34" BorderBrush="#d9d9d9" BorderThickness="1"> 
-                        <TextBox x:Name="UsernameTextBox" BorderThickness="0" Background="Transparent"
-                            TextWrapping="Wrap"  Width="300" Height="34" MaxLength="12"  
+                        <TextBox x:Name="UsernameTextBox" BorderThickness="0" Background="Transparent" Padding="10,5"
+                            TextWrapping="Wrap"  Width="300" Height="34" MaxLength="12" FontSize="15" 
                             Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}">
             <!-- Username 속성을 바인딩 , UpdateSourceTrigger=PropertyChanged 한글자 입력할때마다 실시간으로 뷰모델의 Username속성에 값이 들어감
                 생략 시 포커스를 잃을 때 한 번 반영, 설정 시 한 글자 입력할 때마다 바로 반영됨
@@ -37,8 +37,8 @@
                         </TextBox>
                     </Border>
                 </Grid>
-            
-                <TextBlock x:Name="UsernameValidationMessageTextBlock"  TextWrapping="Wrap" Text="{Binding UsernameValidationMessage}" Width="278" />
+
+                <TextBlock x:Name="UsernameValidationMessageTextBlock"  TextWrapping="Wrap" Text="{Binding UsernameValidationMessage}" Width="278" Padding="0,10" FontSize="13"/>
             </StackPanel>
         <!-- 비밀번호는 WPF에서 직접 바인딩이 안됨 -->
         <!-- hp:PasswordBoxBindingHelper.BoundPassword를 통해 ViewModel의 Pwd 속성과 양방향 바인딩 설정 -->
@@ -50,11 +50,11 @@
                     </Grid.ColumnDefinitions>
                     <Label Content="비밀번호*" Grid.Column="0" FontSize="16" FontWeight="Medium" FontFamily="Noto Sans KR"/>
                     <Border Grid.Column="1" Height="34" BorderBrush="#d9d9d9" CornerRadius="15" Background="#fff" BorderThickness="1">
-                        <PasswordBox x:Name="PwdBox" PasswordChanged="PwdBox_PasswordChanged" Background="Transparent"  BorderThickness="0"  Width="300" Height="34" MaxLength="20" />
+                        <PasswordBox x:Name="PwdBox" PasswordChanged="PwdBox_PasswordChanged" Background="Transparent"  BorderThickness="0"  Width="300" Height="34" MaxLength="20" Padding="10,5" FontSize="15" />
                     </Border>
                     <!-- 비밀번호 입력 유효성 메시지 영역 -->
                 </Grid>
-                <TextBlock Text="{Binding PwdValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29"/>
+                <TextBlock Text="{Binding PwdValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
             </StackPanel>
 
             <StackPanel>
@@ -65,11 +65,11 @@
                     </Grid.ColumnDefinitions>
                     <Label Content="비밀번호 확인*" Grid.Column="0"  FontFamily="Noto Sans KR" FontSize="16" FontWeight="Medium"/>
                     <Border Grid.Column="1" BorderThickness="1" BorderBrush="#d9d9d9" Background="#fff" Height="34" CornerRadius="15" >
-                        <PasswordBox x:Name="ConfirmPwdBox" PasswordChanged="ConfirmPwdBox_PasswordChanged"  Background="Transparent" BorderThickness="0" MaxLength="20" />
+                        <PasswordBox x:Name="ConfirmPwdBox" PasswordChanged="ConfirmPwdBox_PasswordChanged"  Background="Transparent" BorderThickness="0" MaxLength="20" Padding="10,5" FontSize="15" />
                     </Border>
                 </Grid>
                 <!-- 비밀번호 확인 유효성 메시지 영역 -->
-                <TextBlock Text="{Binding PwdConfirmValidationMessage}"   TextWrapping="Wrap"  Width="294" Height="29"/>
+                <TextBlock Text="{Binding PwdConfirmValidationMessage}" TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
             </StackPanel>
         <!-- 바인딩 시킬 때 UpdateSourceTrigger=PropertyChanged 필수!, 그래야 입력 시 마다 바로 바로 반영됨-->
             <StackPanel>
@@ -80,10 +80,10 @@
                     </Grid.ColumnDefinitions>
                     <Label Content="이름*" FontSize="16" Grid.Column="0" FontFamily="Noto Sans KR"  FontWeight="Medium"/>
                     <Border Grid.Column="1" CornerRadius="15" BorderBrush="#d9d9d9" BorderThickness="1" Height="34" >
-                        <TextBox Text="{Binding MemberName, UpdateSourceTrigger=PropertyChanged}" MaxLength="10"  TextWrapping="Wrap" Background="Transparent" BorderThickness="0"  Width="300"/>
+                        <TextBox Text="{Binding MemberName, UpdateSourceTrigger=PropertyChanged}" MaxLength="10"  TextWrapping="Wrap" Background="Transparent" BorderThickness="0"  Width="300" Padding="10,5" FontSize="15"/>
                     </Border>
-                </Grid> 
-                <TextBlock Text="{Binding MemberNameValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29"/>
+                </Grid>
+                <TextBlock Text="{Binding MemberNameValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
             </StackPanel>
             <!--DatePicker의 SelectedDate와 바인딩하면, 사용자가 날짜를 선택할 때 자동으로 BirthDate에 값이 들어감(BirthDate가 바뀌면 DatePicker가 자동으로 업데이트, Mode=TwoWay 양방향 동기화) -->
             <StackPanel>
@@ -94,10 +94,10 @@
                     </Grid.ColumnDefinitions>
                     <Label FontFamily="Noto Sans KR" FontSize="16" FontWeight="Medium" Content="생년월일*" Grid.Column="0"/>
                     <Border Grid.Column="1" CornerRadius="15" Height="34" BorderBrush="#d9d9d9" BorderThickness="1">
-                        <TextBox Text="{Binding BirthDateString, UpdateSourceTrigger=PropertyChanged}" MaxLength="8"  TextWrapping="Wrap" Background="Transparent" BorderThickness="0"  Width="300"/>
+                        <TextBox Text="{Binding BirthDateString, UpdateSourceTrigger=PropertyChanged}" MaxLength="8"  TextWrapping="Wrap" Background="Transparent" BorderThickness="0"  Width="300" Padding="10,5" FontSize="15"/>
                     </Border>
-                 </Grid> 
-                <TextBlock Text="{Binding BirthDateValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29"/>
+                 </Grid>
+                <TextBlock Text="{Binding BirthDateValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
             </StackPanel>
             <StackPanel>
                 <Grid>
@@ -107,11 +107,11 @@
                     </Grid.ColumnDefinitions>
                     <Label Content="휴대폰 번호*" Grid.Column="0" FontSize="16" FontFamily="Noto Sans KR"  FontWeight="Medium"/>
                     <Border Grid.Column="1" Height="34" BorderBrush="#d9d9d9" BorderThickness="1" CornerRadius="15">
-                        <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" MaxLength="11"  TextWrapping="Wrap"   Width="300" Background="Transparent" BorderThickness="0"/>
+                        <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" MaxLength="11"  TextWrapping="Wrap"   Width="300" Background="Transparent" BorderThickness="0" Padding="10,5" FontSize="15"/>
                     </Border>
                 </Grid>
-                
-                <TextBlock Text="{Binding PhoneNumValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29"/>
+
+                <TextBlock Text="{Binding PhoneNumValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
             </StackPanel>
 
             <StackPanel>
@@ -122,11 +122,11 @@
                     </Grid.ColumnDefinitions>
                     <Label Content="이메일*"  FontSize="16" FontWeight="Medium" FontFamily="Noto Sans KR" Grid.Column="0"/>
                     <Border CornerRadius="15" Grid.Column="1" BorderBrush="#d9d9d9" BorderThickness="1" Height="34">
-                        <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" MaxLength="80"  TextWrapping="Wrap"  Width="300" Background="Transparent" BorderThickness="0"/>
+                        <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" MaxLength="80"  TextWrapping="Wrap"  Width="300" Background="Transparent" BorderThickness="0" Padding="10,5" FontSize="15"/>
                     </Border>
                 </Grid>
-                
-                <TextBlock Text="{Binding EmailValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29"/>
+
+                <TextBlock Text="{Binding EmailValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
             </StackPanel>
 
             <StackPanel>
@@ -137,21 +137,21 @@
                     </Grid.ColumnDefinitions>
                     <Label Content="입사일(선택)" FontSize="16" Grid.Column="0" FontFamily="Noto Sans KR" FontWeight="Light" />
                     <Border Grid.Column="1" CornerRadius="15" BorderBrush="#d9d9d9" BorderThickness="1" Height="34">
-                        <TextBox Text="{Binding HireDateString, UpdateSourceTrigger=PropertyChanged}" MaxLength="8"  TextWrapping="Wrap"  Width="300" Background="Transparent" BorderThickness="0"/>
+                        <TextBox Text="{Binding HireDateString, UpdateSourceTrigger=PropertyChanged}" MaxLength="8"  TextWrapping="Wrap"  Width="300" Background="Transparent" BorderThickness="0" Padding="10,5" FontSize="15"/>
                     </Border>
                 </Grid>
-                <TextBlock Text="{Binding HireDateValidationMessage}" TextWrapping="Wrap"  Width="294" Height="29"/>
+                <TextBlock Text="{Binding HireDateValidationMessage}" TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 5"/>
             </StackPanel>
             <!-- ViewModel에 [RelayCommand]로 정의된 메서드에 연결 -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 30">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Content="회원가입" Command="{Binding SignUpCommand}" Grid.Column="0" Width="150" Height="30" Background="#9EDE55" BorderThickness="0" Foreground="#fff" FontFamily="Noto Sans KR" FontSize="14" Margin="20"/>
-                <Button Content="취소" Command="{Binding CancelCommand}" Grid.Column="1" Width="150" Height="30"  Background="#d9d9d9" BorderThickness="0" Margin="20" FontSize="14" FontFamily="Noto Sans KR" />
+                    <Button Content="회원가입" Command="{Binding SignUpCommand}" Grid.Column="0" Width="150" Height="31" Background="#9EDE55" BorderThickness="0" Foreground="#fff" FontFamily="Noto Sans KR" FontWeight="DemiBold" FontSize="15" Margin="20" Style="{StaticResource MaterialDesignRaisedButton}"/>
+                    <Button Content="취소" Command="{Binding CancelCommand}" Grid.Column="1" Width="150" Height="31"  Background="#c0c0c0" BorderThickness="0" Foreground="#fff" Margin="20" FontSize="15" FontWeight="DemiBold" FontFamily="Noto Sans KR" Style="{StaticResource MaterialDesignRaisedButton}" />
                 </Grid>
              </StackPanel>
          </StackPanel>
