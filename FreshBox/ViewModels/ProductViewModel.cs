@@ -25,7 +25,7 @@ namespace FreshBox.ViewModels
         // 카테고리와 창고를 선택할 수 있는 ViewModel을 포함
         public CategoryViewModel CategorySubVM { get; } = new CategoryViewModel();
         public WarehouseViewModel WarehouseSubVM { get; } = new WarehouseViewModel();
-
+        
 
         [ObservableProperty]
         private Product? selectedProduct;
