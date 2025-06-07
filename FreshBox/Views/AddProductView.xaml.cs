@@ -12,17 +12,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FreshBox.ViewModels;
 
 namespace FreshBox.Views
 {
     /// <summary>
-    /// Interaction logic for ProductView.xaml
+    /// Interaction logic for AddProductView.xaml
     /// </summary>
-    public partial class ProductView : UserControl
+    public partial class AddProductView : UserControl
     {
-        public ProductView()
+        public AddProductView()
         {
             InitializeComponent();
+            this.DataContext = new ProductViewModel();
+            this.Resources["EnumEqualsMultiConverter"] = new FreshBox.Converter.EnumEqualsMultiConverter();
         }
     }
 }

@@ -180,7 +180,6 @@ namespace FreshBox.Repository
 
         public int FindByUsername(string productName)
         {
-            MessageBox.Show("FindByUsername() !!");
             MySqlConnection conn = new();
             string query = "SELECT EXISTS (SELECT 1 FROM product WHERE product_name = @ProductName)";
             int result;
