@@ -42,8 +42,8 @@
                 <ComboBox Width="110" Height="auto" Margin="0,0,10,0" FontSize="20"
                   ItemsSource="{Binding AvailableMonths}"
                   SelectedItem="{Binding SelectedMonth}" />
-                <Button Content="조회" FontSize="25" Margin="0,0,10,0"
-                Command="{Binding FilterCommand}"
+                <Button Content="조회" FontSize="25" Margin="0,0,10,0" Height="60" Width="auto"
+                Command="{Binding FilterCommand}" Style="{StaticResource MaterialDesignRaisedButton}"
                 Padding="10,10"
                 Background="White"
                 Foreground="#9EDE55"
@@ -51,8 +51,8 @@
                 BorderBrush="#9EDE55"
                 BorderThickness="2"/>
                 <Button Content="수정 요청" FontSize="25" Margin="0,0,0,0"
-                Command="{Binding ViewEditRequestsCommand}"
-                Padding="10,10"
+                Command="{Binding ViewEditRequestsCommand}" Height="60" Width="auto"
+                Padding="10,10" Style="{StaticResource MaterialDesignRaisedButton}"
                 Background="White"
                 Foreground="#FF0E8FF5"
                 FontWeight="Bold"
