@@ -1,79 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using CommunityToolkit.Mvvm.Collections;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FreshBox.Models;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using FreshBox.Services;
+using FreshBox.Enums;
 
 namespace FreshBox.ViewModels
 {
-    public class WarehouseViewModel : ViewModelBase
+    public partial class WarehouseViewModel : ObservableObject
     {
-        private Warehouse _warehouse = new();
+        private readonly WarehouseService warehouseService = new WarehouseService();
 
-        public Warehouse Warehouse
+        public ObservableCollection<Warehouse> Warehouses { get; set; } = new();
+
+        [ObservableProperty]
+        private int id;
+
+        [ObservableProperty]
+        private string location = string.Empty;
+
+        [ObservableProperty]
+        private StorageTemp tempControl;
+
+        public WarehouseViewModel()
         {
-            get => _warehouse;
-            set
-            {
-                _warehouse = value;
-                OnPropertyChanged();
-            }
+            LoadWarehouses();
         }
 
-        public string WarehouseName
+        [RelayCommand]
+        private void LoadWarehouses()
         {
-            get => _warehouse.WarehouseName;
-            set
-            {
-                if (_warehouse.WarehouseName != value)
-                {
-                    _warehouse.WarehouseName = value;
-                    OnPropertyChanged();
-                }
-            }
+            Warehouses = warehouseService.LoadWarehousesService();
         }
-
-        public string Location
-        {
-            get => _warehouse.Location;
-            set
-            {
-                if (_warehouse.Location != value)
-                {
-                    _warehouse.Location = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        //public string TempControl
-        //{
-        //    get => _warehouse.TempControl;
-        //    set
-        //    {
-        //        if (_warehouse.TempControl != value)
-        //        {
-        //            _warehouse.TempControl = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
-
-        //public int Capacity
-        //{
-        //    get => _warehouse.Capacity;
-        //    set
-        //    {
-        //        if (_warehouse.Capacity != value)
-        //        {
-        //            _warehouse.Capacity = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
     }
 }

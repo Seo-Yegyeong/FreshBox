@@ -4,18 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FreshBox.Views"
+             xmlns:vm="clr-namespace:FreshBox.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1440" Background="#fff">
+             d:DesignHeight="800" d:DesignWidth="1440" Background="#fff"
+             Loaded="UserControl_Loaded">
+    <UserControl.DataContext>
+        <vm:MainVisualViewModel />
+    </UserControl.DataContext>
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
-        <Grid  Grid.Column="0"   Background="#222">
+        <Grid  Grid.Column="0" Background="#222">
             <Grid VerticalAlignment="Center" >
-                
+
                 <StackPanel HorizontalAlignment="Center">
                     <Image Source="/Assets/logo_white.png" Width="50" Height="50" Margin="20" />
                     <Button BorderThickness="0" Margin="20" Style="{StaticResource NavButtonStyle}">
@@ -32,7 +38,7 @@
                             </Viewbox>
                         </StackPanel>
                     </Button>
-                    <Button BorderThickness="0" Margin="20" Style="{StaticResource NavButtonStyle}">
+                    <Button Command="{Binding GoToWorkLogCommand}" BorderThickness="0" Margin="20" Style="{StaticResource NavButtonStyle}">
                         <StackPanel Orientation="Horizontal">
                             <Viewbox  Width="50" Height="50">
                                 <Image Source="/Assets/userCheck_white.png" Stretch="Uniform"/>
@@ -46,66 +52,82 @@
                             </Viewbox>
                         </StackPanel>
                     </Button>
-                 
-                 
+
+
                 </StackPanel>
             </Grid>
-            
+
         </Grid>
-        <WrapPanel Grid.Column="1" Margin="20 0 20 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <WrapPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Border  Style="{StaticResource CardStyle}" Width="300" Height="150">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Assets/Product_Arrive.png" Width="50"/>
-                    <TextBlock Text="Product arrival" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
-                </StackPanel>
+                <Button Command="{Binding GoToMyOrderArrivalCommand}" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="/Assets/Product_Arrive.png" Width="50"/>
+                        <TextBlock Text="Product arrival" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
+                    </StackPanel>
+                </Button>
             </Border>
             <Border Style="{StaticResource CardStyle}" Width="300" Height="150">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Assets/delivery.png" Width="50"/>
-                    <TextBlock Text="Delivery" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
-                </StackPanel>
+                <Button Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="/Assets/delivery.png" Width="50"/>
+                        <TextBlock Text="Delivery" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
+                    </StackPanel>
+                </Button>
             </Border>
             <Border Style="{StaticResource CardStyle}" Width="300" Height="150">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Assets/Inventory_Registration.png" Width="50"/>
-                    <TextBlock Text="Inventory_Registration" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
-                </StackPanel>
+                <Button Background="Transparent" BorderThickness="0" Cursor="Hand" Command="{Binding GotoProductArrivalCommand}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="/Assets/Inventory_Registration.png" Width="50"/>
+                        <TextBlock Text="Product Registration" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
+                    </StackPanel>
+                </Button>
             </Border>
             <Border Style="{StaticResource CardStyle}" Width="460" Height="285">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Assets/chart1.png" Width="50"/>
-                    <TextBlock Text="In-Outcoming statistics" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
-                </StackPanel>
+                <Button Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="/Assets/chart1.png" Width="50"/>
+                        <TextBlock Text="In-Outcoming statistics" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
+                    </StackPanel>
+                </Button>
             </Border>
             <Border Style="{StaticResource CardStyle}" Width="460" Height="285">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
-                    <Image Source="/Assets/chart2.png" Width="50"/>
-                    <TextBlock Text="commuting statistics" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
-                </StackPanel>
+                <Button Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+                        <Image Source="/Assets/chart2.png" Width="50"/>
+                        <TextBlock Text="commuting statistics" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
+                    </StackPanel>
+                </Button>
             </Border>
             <Border Style="{StaticResource CardStyle}" Width="300" Height="150">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Assets/temperature.png" Width="50"/>
-                    <TextBlock Text="Temperature" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
-                </StackPanel>
+                <Button Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="/Assets/temperature.png" Width="50"/>
+                        <TextBlock Text="Temperature" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
+                    </StackPanel>
+                </Button>
             </Border>
             <Border Style="{StaticResource CardStyle}" Width="300" Height="150">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Assets/legal.png" Width="50"/>
-                    <TextBlock Text="Expiration date" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
-                </StackPanel>
+                <Button Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="/Assets/legal.png" Width="50"/>
+                        <TextBlock Text="Expiration date" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
+                    </StackPanel>
+                </Button>
             </Border>
             <Border Style="{StaticResource CardStyle}" Width="300" Height="150">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Image Source="/Assets/defect.png" Width="50"/>
-                    <TextBlock Text="Defective" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
-                </StackPanel>
+                <Button Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="/Assets/defect.png" Width="50"/>
+                        <TextBlock Text="Defective" HorizontalAlignment="Center" Margin="0 8 0 8" FontWeight="Bold" FontSize="18"/>
+                    </StackPanel>
+                </Button>
             </Border>
         </WrapPanel>
-        <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.ColumnSpan="2">
             <Border Style="{StaticResource StatCardStyle}" Width="220" Height="400" BorderThickness="0">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" >
-                    <TextBlock Text="사용자 정보" FontSize="24" FontWeight="bold" FontFamily="Noto Sans KR"/>
+                    <TextBlock Text="사용자 정보" HorizontalAlignment="Center" FontSize="24" FontWeight="bold" FontFamily="Noto Sans KR"/>
                     <Button Width="100" Height="60" Margin="0 20 0 20" Background="Transparent" BorderThickness="0">
                         <Image Source="/Assets/character.png" Width="30" Height="30" VerticalAlignment="Center" />
                         <Button.Effect>
@@ -114,19 +136,19 @@
                     </Button>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="ID" FontSize="18" FontWeight="bold" Margin="0 5 20 5"></TextBlock>
-                        <TextBlock Text="{Binding}"></TextBlock>
+                        <TextBlock Text="{Binding LoginUsername}" FontSize="18" Margin="0 3 20 5"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="사용자" FontFamily="Noto Sans KR" FontSize="18" FontWeight="bold" Margin="0 5 20 5"></TextBlock>
-                        <TextBlock Text="{Binding}"></TextBlock>
+                        <TextBlock Text="{Binding LoginMemberName}" FontSize="18" Margin="0 5 20 5"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="직책" FontFamily="Noto Sans KR" FontSize="18" FontWeight="bold" Margin="0 5 20 5"></TextBlock>
-                        <TextBlock Text="{Binding}"></TextBlock>
+                        <TextBlock Text="{Binding LoginRole}" FontSize="18" Margin="0 5 20 5"></TextBlock>
                     </StackPanel>
                 </StackPanel>
             </Border>
-            <Button Width="220" Height="85" Background="#9EDE55" Margin="20" BorderThickness="0">
+            <Button Command="{Binding SignOutCommand}" Width="180" Height="85" Background="#9EDE55" Margin="20" BorderThickness="0" HorizontalAlignment="Center" >
                 <TextBlock Text="로그아웃" Foreground="#fff" FontSize="24" FontWeight="bold" FontFamily="Noto Sans KR"/>
             </Button>
         </StackPanel>

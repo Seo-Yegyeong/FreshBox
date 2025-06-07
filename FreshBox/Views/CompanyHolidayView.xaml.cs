@@ -12,19 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using FreshBox.ViewModels;
 
 namespace FreshBox.Views
 {
     /// <summary>
-    /// Interaction logic for TestView.xaml
+    /// CompanyHolidayView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class TestView : UserControl
+    public partial class CompanyHolidayView : UserControl
     {
-        public TestView()
+        public CompanyHolidayView()
         {
             InitializeComponent();
-            this.DataContext = new ProductViewModel();
         }
     }
 }

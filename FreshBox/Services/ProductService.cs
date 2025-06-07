@@ -33,7 +33,7 @@ namespace FreshBox.Services
             return new ObservableCollection<Product>(ProductRepo.GetAllProducts());
         }
 
-        internal bool IsProductNameDuplicated(string productName)
+        public bool IsProductNameDuplicated(string productName)
         {
             try
             {

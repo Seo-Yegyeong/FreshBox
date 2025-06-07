@@ -3,49 +3,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FreshBox.Models;
 using FreshBox.Database;
 using MySql.Data.MySqlClient;
-using FreshBox.Models;
-using System.Windows;
 
 namespace FreshBox.Repository
 {
-    public class CategoryRepository
+    public class WarehouseRepository
     {
-        private readonly MysqlDatabaseManager _dbManager;
-        public CategoryRepository()
+        MysqlDatabaseManager _dbManager;
+
+        public WarehouseRepository()
         {
             _dbManager = MysqlDatabaseManager.GetInstance();
         }
 
-        public List<Category> GetAllCategories()
+        public List<Warehouse> GetAllWarehouses()
         {
             MySqlConnection conn = new();
-            var categories = new List<Category>();
-            string query = "SELECT id, category_name FROM category order by id;";
+            var warehouses = new List<Warehouse>();
+            string query = "SELECT id, location, temp_control FROM warehouse";
 
             try
             {
                 conn = _dbManager.GetConnection();
                 var command = new MySqlCommand(query, conn);
                 var reader = command.ExecuteReader();
-
                 while (reader.Read())
                 {
-                    categories.Add(
-                        new Category(reader.GetInt32("id"), reader.GetString("category_name"))
-                    );
+                    warehouses.Add(new Warehouse(
+                        reader.GetInt32("id"),
+                        reader.GetString("location"),
+                        reader.GetString("temp_control")
+                    ));
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"<Error>\r\n- location: CategoryRepository.cs -> GetAllCategories()\r\n- message: {ex.Message}");
+                Console.WriteLine($"<Error>\r\n- location: WarehouseRepository.cs -> GetAllWarehouses()\r\n- message: {ex.Message}");
             }
             finally
             {
                 _dbManager.CloseConnection(conn);
             }
-            return categories;
+            return warehouses;
         }
     }
 }

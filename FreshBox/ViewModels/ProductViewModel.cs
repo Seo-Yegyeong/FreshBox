@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FreshBox.ViewModels;
 using FreshBox.Models;
 using FreshBox.Services;
+using System.Security.Cryptography.X509Certificates;
 
 
 namespace FreshBox.ViewModels
@@ -17,6 +19,8 @@ namespace FreshBox.ViewModels
     {
         private readonly ProductService productService = new ProductService();
         public ObservableCollection<Product> Products { get; set; } = new();
+
+        public CategoryViewModel CategorySubVM { get; } = new CategoryViewModel();
 
         [ObservableProperty]
         private Product? selectedProduct;
@@ -42,6 +46,13 @@ namespace FreshBox.ViewModels
 
         // ==================================================================== //
 
+
+        public ProductViewModel()
+        {
+            
+        // 상품 목록을 초기화
+            LoadProducts();
+        }
 
 
         // Product에 대해 처리해야 하는 작업? & 고려해야 하는 요소?
@@ -98,6 +109,12 @@ namespace FreshBox.ViewModels
         // - 냉장, 냉동, 상온과 관련된 창고인지 판별해주어야 함 => 
 
 
+        [RelayCommand]
+        private void GoBack()
+        {
+            // 뒤로가기 버튼 클릭 시 이전 화면으로 이동
+            ViewNavigationService.Instance.GoBack();
+        }
 
         [RelayCommand]
         private void AddProduct()

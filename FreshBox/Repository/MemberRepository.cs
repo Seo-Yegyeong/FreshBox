@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using FreshBox.Database; // MysqlDatabaseManager 싱글톤 인스턴스를 사용하기 위해 필요
+using FreshBox.Enums;
 using FreshBox.Models;
 using MySql.Data.MySqlClient; // MySqlConnection, MySqlCommand 등 MySQL 데이터베이스 작업 관련 클래스 사용 위해 필요
 
@@ -380,7 +381,7 @@ namespace FreshBox.Repository
             Member? member = null; 
 
             //DB로 보낼 쿼리문 : 사용자 이름을 조건으로 회원 정보 조회
-            string query = "SELECT id, username, password FROM member" +
+            string query = "SELECT id, username, password FROM member " +
                              "WHERE username = @username";
 
             try {
@@ -408,6 +409,8 @@ namespace FreshBox.Repository
                     string username = reader.GetString(1); // 1번째 컬럼에서 문자열(username) 값을 가져옴
                     string pwd = reader.GetString(2); // 2번째 컬럼에서 문자열(password) 값을 가져옴
 
+                    reader.Close();// 리더를 닫음
+
                     member = new Member(id, username, pwd);
                     // 쿼리 결과값으로 member객체 만들어서 리턴
 
@@ -431,6 +434,83 @@ namespace FreshBox.Repository
             }
         }
 
+        /// <summary>
+        /// 로그인한 id로 사용자의 정보를 가져오는 메서드 
+        /// member테이블의 id, username, member_name, role, phone, email, birth_date, created_at, hire_date
+        /// </summary>
+        /// <param name="LoggedInMemberId">로그인한 사용자의 id</param>
+        /// <returns>로그인한 사용자의 정보를 가진 member 객체, 조회되지 않으면(+예외) null 반환</returns>
+        public Member? GetMemberById(int LoggedInMemberId) {
+
+            string query = "SELECT id, username, member_name, role, phone, email, " +
+                "birth_date, created_at, hire_date " +
+                "FROM member WHERE id = @id";
+            
+            MySqlConnection? conn = null;
+
+            try
+            {
+                conn = dbManager.GetConnection();// 연결 열기
+                MySqlCommand  cmd = new MySqlCommand(query, conn);
+                // DB에 쿼리 날려주는 커맨드 객체 생성
+                
+                cmd.Parameters.Add("@id",MySqlDbType.Int32).Value = LoggedInMemberId;
+                //파라미터 추가
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                // 쿼리 실행
+                // MySqlDataReader는 MySQL 데이터베이스에서 SELECT 쿼리 결과를 읽을 때 사용하는 객체
+                // 데이터 한 줄 한 줄을 순차적으로 읽어들이는 "스트리밍 방식" 리더
+                // Read() 다음 행(row)으로 이동. 읽을 수 있으면 true 반환.
+                
+                if (reader.Read()) { //쿼리문의 결과가 행 1개 열 여러개이기 때문에 if사용함
+                                     // 여러 행 반환일 경우 while문 사용
+
+                    //reader.GetOrdinal("컬럼명") : 지정한 컬럼명이 몇번째 열인지 알려주는 메서드
+                    int id = reader.GetInt32(reader.GetOrdinal("id"));
+                    string username = reader.GetString(reader.GetOrdinal("username"));
+                    string memberName = reader.GetString(reader.GetOrdinal("member_name"));
+                    string roleStr = reader.GetString(reader.GetOrdinal("role"));
+                    string phone = reader.GetString(reader.GetOrdinal("phone"));
+                    string email = reader.GetString(reader.GetOrdinal("email"));
+                    DateTime birthDay = reader.GetDateTime(reader.GetOrdinal("birth_date"));
+                    DateTime createdAt = reader.GetDateTime(reader.GetOrdinal("created_at"));
+                    DateTime? hireDate = reader.IsDBNull(reader.GetOrdinal("hire_date"))
+                         ? null
+                         : reader.GetDateTime(reader.GetOrdinal("hire_date"));
+                    // hireDate는 선택 입력이기 때문에 null이 될 수 있어서
+                    // reader.IsDBNull(인덱스) : 해당 열 값이 DB에서 NULL인지 확인 (true/false)
+                    // IsDBNull이 true면 null 반환, 아니면 GetDateTime으로 날짜값 가져옴
+
+                    reader.Close();// 리더를 닫음
+
+                    Role role = (Role)Enum.Parse(typeof(Role), roleStr, ignoreCase: true);
+                    // 문자열 -> Enum
+                    // Enum.Parse(typeof(EnumType), "문자열값", ignoreCase: true/false)
+                    // typeof(EnumType) : 변환할 열거형 타입 정보를 전달
+                    // "문자열값" : 변환하려는 문자열
+                    // ignoreCase : 대소문자 구분 여부 (true면 무시, false면 엄격하게 구분)
+
+                    // 생성자 호출하면서 프로퍼티 할당
+                    Member member = new Member(id,username,memberName,role,phone,email,birthDay,createdAt,hireDate);
+
+                    return member;
+                };
+
+                return null;
+            }
+            
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[예외][MemberRepository.GetMemberById]{ex.Message}");
+                return null;
+            }
+            finally {
+                if (conn != null) { 
+                    dbManager.CloseConnection(conn);
+                }
+            }
+        }
 
 
     }
