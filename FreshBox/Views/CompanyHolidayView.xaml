@@ -52,11 +52,11 @@
             <!-- 등록 버튼 -->
             <Button Content="휴일 등록"
                     Command="{Binding AddHolidayCommand}"
-                    FontSize="30"
+                    FontSize="30" Height="60" Width="auto"
                     Padding="15,5"
                     Background="#2196F3"
                     Foreground="White"
-                    FontWeight="Bold"
+                    FontWeight="Bold" Style="{StaticResource MaterialDesignRaisedButton}"
                     BorderBrush="#1976D2"
                     BorderThickness="0"/>
         </StackPanel>
