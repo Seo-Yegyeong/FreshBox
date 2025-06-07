@@ -99,7 +99,8 @@ namespace FreshBox.ViewModels
 
         partial void OnProductNameChanged(string value)
         {
-            MessageBox.Show("텍스트가 수정되어서 한 번 확인할게요~");
+            if (string.IsNullOrEmpty(productName))
+                return;
             CheckNameDuplication(value);
         }
 
