@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:FreshBox.Views"
              xmlns:vm="clr-namespace:FreshBox.ViewModels" 
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1440">
+             d:DesignHeight="800" d:DesignWidth="1440" Background="#fff">
     <!-- UserControl : 화면에 보이는 UI 조각(작은 화면 부품) 하나를 만드는 틀 -->
     <!-- DataContext : 이 UserControl에서 "사용할 데이터와 기능들이 있는 곳"을 연결하는 역할. 
             예를 들어, 뷰모델(화면 뒤에 데이터를 처리하는 클래스)이 어디인지 연결해주는 '배선' 같은 역할 -->
@@ -16,9 +16,9 @@
         <!-- ViewModel 객체 생성 및 연결 -->
         <vm:SignUpViewModel />
     </UserControl.DataContext>
-    <Grid Background="White">
-        <Label Content="회원가입" HorizontalAlignment="Left" Margin="462,33,0,0" VerticalAlignment="Top"/>
-        <Label Content="아이디*" FontSize="25" HorizontalAlignment="Left" Margin="318,99,0,0" VerticalAlignment="Top"/>
+    <StackPanel Margin="30" HorizontalAlignment="Center">
+        <Label Content="회원가입" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+        <Label Content="아이디*" FontSize="25" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
         <!-- 사용자가 입력한 값을 뷰모델의 Username 속성과 연결 -->
         <TextBox x:Name="UsernameTextBox" HorizontalAlignment="Left" Margin="462,103,0,0" 
                  TextWrapping="Wrap" VerticalAlignment="Top" Width="178" Height="34" MaxLength="12"
@@ -66,5 +66,5 @@
         <!-- ViewModel에 [RelayCommand]로 정의된 메서드에 연결 -->
         <Button Content="회원가입" Command="{Binding SignUpCommand}" HorizontalAlignment="Left" Margin="380,633,0,0" VerticalAlignment="Top"/>
         <Button Content="취소" Command="{Binding CancelCommand}" HorizontalAlignment="Left" Margin="500,633,0,0" VerticalAlignment="Top"/>
-    </Grid>
+    </StackPanel>
 </UserControl>
