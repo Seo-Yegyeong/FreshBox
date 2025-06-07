@@ -20,7 +20,7 @@
             <Label Grid.Column="0" Grid.ColumnSpan="3" Content="메뉴" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="White" FontFamily="Noto Sans KR" />
         </Grid>
 
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,50,0,0" Width="300">
             <!-- 사원과 관리자 모두 출퇴근 시간 기록을 할 수 있는 버튼 -->
             <Button Command="{Binding GoToCheckInOutViewCommand}" Content="출퇴근 찍기" Visibility="{Binding IsCommonButtonVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" Style="{StaticResource MaterialDesignRaisedButton}"/>
             <Button Command="{Binding GoToMyWorkLogViewCommand}" Content="내 출퇴근 기록 확인" Visibility="{Binding IsCommonButtonVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" Style="{StaticResource MaterialDesignRaisedButton}" />
