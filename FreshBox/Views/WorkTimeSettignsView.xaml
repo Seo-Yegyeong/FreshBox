@@ -26,7 +26,7 @@
             <Label Grid.Column="0" Grid.ColumnSpan="3" Content="출퇴근 기준 시간 설정" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="White" FontFamily="Noto Sans KR" />
         </Grid>
 
-        <StackPanel VerticalAlignment="Center" Margin="0,30,0,0" Width="550" HorizontalAlignment="Center">
+        <StackPanel VerticalAlignment="Center" Margin="0,30,0,0" Width="500" HorizontalAlignment="Center">
             <!-- 출근 가능 시작 시간 -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,30" VerticalAlignment="Center">
                 <Label Content="출근 가능 시간 : " FontSize="30" Width="250" VerticalAlignment="Center" />
