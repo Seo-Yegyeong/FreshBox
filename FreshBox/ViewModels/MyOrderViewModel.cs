@@ -141,9 +141,3 @@ namespace FreshBox.ViewModels
         }
     }
 }
-
-
-
-
-
-
