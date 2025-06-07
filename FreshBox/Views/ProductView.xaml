@@ -10,13 +10,11 @@
     <Grid Margin="100">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Title -->
+            
             <RowDefinition Height="Auto"/>
-            <!-- Input Fields -->
+            
             <RowDefinition Height="Auto"/>
-            <!-- Radio + Combo + Button -->
-            <RowDefinition Height="Auto"/>
-            <!-- Logo -->
+                        <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Title -->
@@ -45,21 +43,19 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- 라디오 버튼 세로 스택 -->
+          
             <StackPanel Grid.Column="0" Orientation="Vertical" Margin="10,0,50,0" VerticalAlignment="Center">
                 <RadioButton Content="냉동" GroupName="Storage" Foreground="Black" Margin="0,5" IsChecked="True"/>
                 <RadioButton Content="냉장" GroupName="Storage" Foreground="Black" Margin="0,5"/>
                 <RadioButton Content="실온" GroupName="Storage" Foreground="Black" Margin="0,5"/>
             </StackPanel>
 
-            <!-- 콤보박스 -->
-            <ComboBox Background="#fff" Grid.Column="1" Width="250" Height="50" VerticalContentAlignment="Center" FontSize="14" Margin="0,0,50,0" VerticalAlignment="Center">
+            <ComboBox  Grid.Column="1" Width="300" Height="50" VerticalContentAlignment="Center" FontSize="14" Margin="200,0,200,0" VerticalAlignment="Center">
                 <ComboBoxItem Content="과일"/>
                 <ComboBoxItem Content="야채"/>
                 <ComboBoxItem Content="음료"/>
             </ComboBox>
 
-            <!-- 등록 버튼 -->
             <Button Grid.Column="2" Width="200" Height="50" Padding="30,0"
             Content="등록" FontSize="16" Foreground="White"
             Background="#A4E64F" FontWeight="Bold"

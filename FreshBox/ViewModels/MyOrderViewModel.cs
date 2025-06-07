@@ -37,7 +37,6 @@ namespace FreshBox.ViewModels
         [RelayCommand]
         private void LoadMyOrders() // 이때 ProductID를 가지고 Product_name을 가져와서 출력해주자!
         {
-            MessageBox.Show("LoadMyOrders() called");
             MyOrders = [.. _repository.GetAllOrders()];
             // 여기서 [.. ] 문법은 컬렉션 표현식이며, spread 연산자라고 한다.
             // _repository.GetAllOrders()에서 얻은 컬렉션을 새로운 List로 복사하여 대입하는 효과
@@ -87,6 +86,7 @@ namespace FreshBox.ViewModels
                 // #1. Inbound_log에 기록 추가하기
                 // #2. my_order 테이블에서 해당 주문 삭제하기
                 // #3. 유통기한 생성해서 Expiration_log에 기록 추가하기
+
                 /*
                  다음을 고려하기
                     입고 레퍼지토리에서 insert메서드 만들때
@@ -95,6 +95,7 @@ namespace FreshBox.ViewModels
                     둘 다 성공해야 commit되게요
                     하나라도 실패하면 롤백처리
                  */
+
                 MessageBox.Show("입고 처리가 완료되었습니다.");
                 LoadMyOrders();
             }
