@@ -88,29 +88,141 @@ FreshBox/
 <br />
 
 ## 📘 주요 기능 상세 설명
-### 회원 관리
-- 회원 가입  
-  - 중복 검사  
-  - 유효성 검사  
-  - 비밀번호 암호화
-  - DB INSERT  
-- 로그인  
-- 로그아웃  
+### 1. 회원 관리
 
-### 상품 관리
-- DB 샘플 데이터 SELECT 후 UI 바인딩  
-- 등록 버튼 클릭 시 DB INSERT  
+#### 1-1. 회원 가입
+- **중복 검사**  
+  - 검사 대상: 아이디(username), 휴대폰번호(phone), 이메일(email)  
+  - MySQL DB에서 `SELECT EXISTS` 쿼리로 중복 여부 확인  
+  - 쿼리 예시:  
+    ```sql
+    SELECT EXISTS (SELECT 1 FROM member WHERE username = @username);
+    SELECT EXISTS (SELECT 1 FROM member WHERE phone = @phone);
+    SELECT EXISTS (SELECT 1 FROM member WHERE email = @email);
+    ```  
+  - 중복 시 UI에서 즉시 알림
 
-### 주문 및 입고 관리
-- 주문 내역 조회  
-- 입고 처리  
+- **유효성 검사**  
+  - `SignUpViewModel` 클래스에서 구현 (ObservableObject 상속)  
+  - 텍스트박스와 바인딩하여 입력값 변경 시 실시간 검사  
+  - 주요 검사 내용:  
+    - 아이디: 6~12자 영문/숫자, 공백 불가, 중복 검사  
+    - 비밀번호: 10~20자, 2가지 이상 문자 조합 필수, 확인과 일치 검사  
+    - 이름: 한글/영문 1~10자, 공백 불가  
+    - 필요시 자동 자름 및 오류 메시지 출력
 
-### UI 및 네비게이션
-- 로그인 사용자 정보 메인 화면 출력  
+- **비밀번호 암호화**  
+  - 평문 저장 금지  
+  - SHA-256, BCrypt 등 해시 알고리즘 적용 권장
+
+- **DB INSERT**  
+  - 모든 검사 통과 후 회원 정보 DB에 삽입  
+  - 정상 처리 시 INSERT 쿼리 실행
+
+<br />
+
+### 2. 상품 관리
+
+- **DB 데이터 조회 및 UI 바인딩**  
+  - `ProductRepository.GetAllProducts()` 메서드로 MySQL에서 상품 목록 SELECT  
+  - 조회된 상품 리스트를 UI에 바인딩하여 화면에 출력
+
+- **상품 등록 (INSERT)**  
+  - 등록 버튼 클릭 시 `ProductRepository.InsertProduct(Product product)` 호출  
+  - 입력한 상품 정보를 파라미터로 받아 DB에 INSERT 쿼리 실행  
+  - INSERT 쿼리 예:  
+    ```sql
+    INSERT INTO product (product_name, category_id, barcode, stock, storage_temp, warehouse_id)
+    VALUES (@ProductName, @CategoryId, @Barcode, 0, @StorageTemp, @WarehouseId);
+    ```
+  - 성공 시 1 반환, 실패 시 0 반환
+
+- **예외 처리 및 DB 연결 관리**  
+  - 쿼리 실행 중 예외 발생 시 콘솔에 에러 메시지 출력  
+  - 모든 DB 작업 후 커넥션은 반드시 닫음  
+
+- **기타 기능**  
+  - 상품 수정, 삭제, 이름으로 상품 조회 등 메서드 포함  
+  - 중복 상품명 체크 메서드로 상품명 중복 방지 가능
+
+<br />
+
+### 3. 주문 및 입고 관리
+
+#### 3-1. 주문 내역 조회 및 관리
+- **주문 내역 조회**  
+  - MySQL DB의 `my_order` 테이블에서 주문 데이터 조회  
+  - 주문 ID, 주문 날짜, 상품 ID, 수량 등 주요 정보 포함  
+  - 조회 결과를 UI에 바인딩하여 리스트 형태로 표시
+
+- **주문 내역 수정 (UpdateMyOrder)**  
+  - 주문 날짜, 상품 ID, 수량 등의 정보를 수정 가능  
+  - SQL 파라미터 바인딩으로 SQL 인젝션 방지  
+  - 수정 성공 시 DB에 업데이트 쿼리 실행
+
+- **주문 내역 삭제 (DeleteMyOrder)**  
+  - 주문 ID를 기준으로 해당 주문을 삭제  
+  - 삭제 시 연관된 입고 내역 등 데이터 무결성 고려 필요
+
+- **상품명으로 상품 ID 조회 (GetProductIdByName)**  
+  - 입력된 상품명으로 DB에서 상품 ID를 조회  
+  - 실패 시 -1 반환, 오류 처리 포함
+
+#### 3-2. 입고 처리 및 입고 로그 관리
+- **입고 로그 삽입 (InsertInboundLog)**  
+  - 입고 발생 시 현재 시간, 주문 ID, 상품 ID, 수량 정보를 `INBOUND_LOG` 테이블에 기록  
+  - SQL 파라미터 사용으로 보안 강화 (구현 중)  
+  - DB 커넥션 관리 및 예외 처리 포함
+
+- **입고 로그 조회 및 UI 바인딩**  
+  - `InboundLogViewModel`에서 입고 로그 컬렉션 관리  
+  - UI와 데이터 바인딩을 통해 실시간 입고 내역 확인 가능
+
+- **DB 연결 관리**  
+  - `MysqlDatabaseManager` 싱글톤으로 DB 연결 획득 및 종료  
+  - 모든 DB 작업 후 연결을 반드시 닫아 자원 누수 방지
+
+- **예외 처리**  
+  - 쿼리 실행 중 발생하는 예외는 콘솔에 상세 메시지 출력  
+ 
+<br />  
+
+### 4. UI 및 화면 전환(네비게이션)
+#### 4-1. NavigationService 클래스 구현 및 싱글턴 패턴 적용
+- WPF 기본 `NavigationService`가 UserControl 전환을 지원하지 않아, 커스텀 `INavigationService` 인터페이스 정의   
+- `INavigationService` 인터페이스 구현  
+  - `NavigateTo(string viewName)`: 지정 뷰로 전환  
+  - 이전 뷰 이름을 스택에 저장해 `GoBack()` 호출 시 복귀   
+  - 싱글턴 패턴 적용으로 애플리케이션 전역에서 단일 인스턴스 공유
 - 메인 화면 내 동적 페이지 전환 (단일 MainWindow 기반)  
-- `INavigationService` 인터페이스 정의  
-- `NavigationService` 클래스 구현 및 싱글턴 패턴 적용  
-- 권한에 따른 버튼 가시성 처리
+- **초기화**  
+  - 메인 윈도우 코드비하인드에 `<ContentControl x:Name="ScreenHolderContentControl"/>` 추가  
+  - 앱 시작 시 `ViewNavigationService.Initialize(ScreenHolderContentControl)` 호출  
+- **뷰 등록**  
+  - `RegisterView(string viewName, UserControl view)`로 뷰 이름과 인스턴스를 내부 딕셔너리에 등록  
+- **화면 전환**  
+  - 등록된 뷰 이름으로 `NavigateTo()` 호출 → `ContentControl.Content` 속성 변경  
+  - 이전 뷰 이름은 스택에 저장 → `GoBack()` 호출 시 팝하여 복귀  
+- **예외 처리**  
+  - 초기화 미실행 또는 등록되지 않은 뷰 전환 시 예외 발생
+
+#### 4-2. 로그인 사용자 정보 메인 화면 출력  
+- **전역 로그인 세션 관리**
+  - `LoginSession` 싱글턴 클래스 사용
+  - 로그인 성공 시 사용자 ID, 이름 등 최소 정보 저장
+  - 이후 `LoadAdditionalInfo()`를 통해 권한 및 실명 추가 조회
+
+- **ViewModel 연동 (MVVM 패턴 기반)**
+  - `MainVisualViewModel`에서 `LoadUserInfo()` 호출
+  - `LoginSession`에 저장된 로그인 정보를 ViewModel에 로딩
+  - 아래 3가지 바인딩 프로퍼티로 UI에 정보 출력
+    - `LoginUsername` (사용자 ID)
+    - `LoginMemberName` (이름)
+    - `LoginRole` (권한)
+
+- **실시간 바인딩 처리**
+  - ViewModel은 `INotifyPropertyChanged`를 통해 값 변경 시 View에 자동 반영
+  - 사용자가 로그인할 때마다 메인 화면에 즉시 정보 갱신됨
 
 <br />  
 
