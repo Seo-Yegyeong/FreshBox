@@ -12,6 +12,7 @@ using FreshBox.Models;
 using FreshBox.Services;
 using System.Security.Cryptography.X509Certificates;
 using FreshBox.Enums;
+using System.Windows.Controls;
 
 
 namespace FreshBox.ViewModels
@@ -38,7 +39,7 @@ namespace FreshBox.ViewModels
 
         [ObservableProperty]
         private int productStock; // 수량 입력을 위한 속성
-
+        
         [ObservableProperty]
         private string? productBarcode; // 바코드 입력을 위한 속성
 
@@ -90,19 +91,20 @@ namespace FreshBox.ViewModels
         // ProductName (textBox)
         // - 이미 존재하는 상품명인지 확인 => (Service에 입력값 전달 -> DB에 조회 요청 -> 중복 여부 0과 1로 판단)
         // - 상품명은 필수 입력값 => 단순히 ViewModel에서 null 체크만 하면 됨
-        public bool CheckNameDuplication(string productName)
+        public void CheckNameDuplication(string productName)
         {
             // Service에 입력값 전달 -> DB에 조회 요청 -> 중복 여부 0과 1로 판단
             bool isDuplicated = productService.IsProductNameDuplicated(productName);
             if( isDuplicated )
             {
                 isProductNameValid = false; // 중복된 상품명은 유효하지 않음
+                productNameValidationMessage = productName + "은(는) 이미 존재하는 상품명입니다.";
             }
             else
             {
+                productNameValidationMessage = productName + "은(는) 사용 가능한 상품명입니다.";
                 isProductNameValid = true; // 중복되지 않은 상품명은 유효함
             }
-            return isProductNameValid;
         }
 
         partial void OnProductNameChanged(string value)
@@ -157,7 +159,9 @@ namespace FreshBox.ViewModels
         [RelayCommand]
         private void AddProduct()
         {
-            MessageBox.Show($"Name : {ProductName}, TargetStock: {ProductStock}, Barcode: {ProductBarcode}, CategoryID: {CategorySubVM.SelectedCategoryId}, Warehouse: {WarehouseSubVM.SelectedTempControl}","AddProduct()", MessageBoxButton.OK);
+            MessageBox.Show($"Name : {ProductName}, TargetStock: {ProductStock}, Barcode: {ProductBarcode}, CategoryID: {CategorySubVM.SelectedCategoryId}, Warehouse: {selectedStorageTemp}","AddProduct()", MessageBoxButton.OK);
+
+            NewProduct = new Product(ProductName, CategorySubVM.SelectedCategoryId, ProductBarcode, selectedStorageTemp);
             //if (newProduct != null)
             //{
             // productService.AddProductService(newProduct);
