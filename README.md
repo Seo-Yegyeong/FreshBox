@@ -1,7 +1,20 @@
 # 📦 FreshBox
 > **공장의 자동화를 위한 식품 유통 관리 및 사원 관리 시스템**
 
-<br />
+<br />  
+
+## 개발 스택
+
+- **언어:** C#, XAML
+- **프레임워크:** .NET WPF
+- **디자인 패턴:** MVVM 패턴
+- **데이터베이스:** MySQL
+- **버전 관리:** Git, GitFlow 브랜치 전략
+- **툴:** Visual Studio, MySQL Workbench
+- **라이브러리:**
+  - CommunityToolkit.Mvvm
+
+<br />  
 
 ## 개발 동기 (Why?)
 
