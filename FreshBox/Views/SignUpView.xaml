@@ -96,7 +96,7 @@
                         <TextBox Text="{Binding BirthDateString, UpdateSourceTrigger=PropertyChanged}" MaxLength="8"  TextWrapping="Wrap" Background="Transparent" BorderThickness="0"  Width="300" Padding="10,5" FontSize="15"/>
                     </Border>
                  </Grid>
-                <TextBlock Text="{Binding BirthDateValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding BirthDateValidationMessage}"  TextWrapping="Wrap"  Width="303" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8" HorizontalAlignment="Right"/>
             </StackPanel>
             <StackPanel>
                 <Grid>
@@ -110,7 +110,7 @@
                     </Border>
                 </Grid>
 
-                <TextBlock Text="{Binding PhoneNumValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding PhoneNumValidationMessage}"  TextWrapping="Wrap"  Width="305" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8" HorizontalAlignment="Right"/>
             </StackPanel>
 
             <StackPanel>

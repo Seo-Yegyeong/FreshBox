@@ -530,7 +530,7 @@ namespace FreshBox.ViewModels
             // 빈문자열 또는 공백으로만 이루어졌는지 검사(공백 포함된것은 못잡음)
             if (string.IsNullOrWhiteSpace(value)) { 
                 IsBirthDateValid= false; // 유효하지 않음
-                BirthDateValidationMessage = "생년월일을 입력해주세요. (예시) 19980801";
+                BirthDateValidationMessage = "생년월일을 입력해주세요. (예) 19980801";
                 //사용자 UI에 안내 메세지 띄움
                 return;
             }
@@ -546,7 +546,7 @@ namespace FreshBox.ViewModels
             // ^ : 문자열 시작, $ : 문자열 끝, \d : 숫자 0~9, {8} : 8자리
             if (!Regex.IsMatch(value, @"^\d{8}$")) {
                 IsBirthDateValid = false;
-                BirthDateValidationMessage = "년월일 형식의 8자리로 입력해주세요. (예시) 19980801";
+                BirthDateValidationMessage = "년월일 형식의 8자리로 입력해주세요. (예) 19980801";
                 return;
             }
 
