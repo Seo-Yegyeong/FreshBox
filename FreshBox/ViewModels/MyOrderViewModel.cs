@@ -37,7 +37,6 @@ namespace FreshBox.ViewModels
         [RelayCommand]
         private void LoadMyOrders() // 이때 ProductID를 가지고 Product_name을 가져와서 출력해주자!
         {
-            MessageBox.Show("LoadMyOrders() called");
             MyOrders = [.. _repository.GetAllOrders()];
             // 여기서 [.. ] 문법은 컬렉션 표현식이며, spread 연산자라고 한다.
             // _repository.GetAllOrders()에서 얻은 컬렉션을 새로운 List로 복사하여 대입하는 효과
@@ -142,9 +141,3 @@ namespace FreshBox.ViewModels
         }
     }
 }
-
-
-
-
-
-

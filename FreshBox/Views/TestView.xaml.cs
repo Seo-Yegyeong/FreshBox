@@ -24,7 +24,8 @@ namespace FreshBox.Views
         public TestView()
         {
             InitializeComponent();
-            this.DataContext = new CategoryViewModel();
+            this.DataContext = new ProductViewModel();
+            this.Resources["EnumConverter"] = new FreshBox.Converter.EnumConverter();
         }
     }
 }

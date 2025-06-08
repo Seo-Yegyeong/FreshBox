@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="FreshBox.Views.CompanyHolidayView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:FreshBox.Views"
+             xmlns:vm="clr-namespace:FreshBox.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1440" FontFamily="Noto Sans KR">
+    <!-- CompanyHolidayViewModel 뷰모델과 바인딩 -->
+    <UserControl.DataContext>
+        <vm:CompanyHolidayViewModel />
+    </UserControl.DataContext>
+    
+    <Grid Background="White">
+        <!-- 상단 가로줄 -->
+        <Grid Background="#9EDE55" Height="85" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <!-- 뒤로가기 버튼 -->
+            <Button Command="{Binding GoToBackCommand}" Content="🔙" Grid.Column="1" FontSize="45" VerticalAlignment="Center" Height="70" Width="70" Margin="15,10,10,15" Background="Transparent" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Label Grid.Column="0" Grid.ColumnSpan="3" Content="회사 고유 휴일 등록" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="White" FontFamily="Noto Sans KR" />
+        </Grid>
+
+        <!-- 등록 폼 -->
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="0,120,0,0">
+
+            <!-- 날짜 선택 -->
+            <DatePicker SelectedDate="{Binding HolidayDate}"
+                        FontSize="30"
+                        Width="300"
+                        Margin="0,0,20,0"/>
+
+            <!-- 사유 입력 -->
+            <TextBox Text="{Binding HolidayReason}"
+                     FontSize="40"
+                     Width="400"
+                     Height="60"
+                     Margin="0,0,20,0" MaxLength="200"
+                     VerticalContentAlignment="Center"
+                     materialDesign:HintAssist.Hint="휴일 사유 입력" 
+                     Padding="10,0,10,0" 
+                     Style="{StaticResource MaterialDesignFilledTextBox}" />
+
+            <!-- 등록 버튼 -->
+            <Button Content="휴일 등록"
+                    Command="{Binding AddHolidayCommand}"
+                    FontSize="30" Height="60" Width="auto"
+                    Padding="15,5"
+                    Background="#2196F3"
+                    Foreground="White"
+                    FontWeight="Bold" Style="{StaticResource MaterialDesignRaisedButton}"
+                    BorderBrush="#1976D2"
+                    BorderThickness="0"/>
+        </StackPanel>
+
+        <!-- 등록된 휴일 리스트 (선택사항) -->
+        <DataGrid ItemsSource="{Binding CompanyHolidays}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  Margin="50,200,50,30"
+                  FontSize="25">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="날짜"
+                                    Binding="{Binding Date, StringFormat=d}"
+                                    Width="*"/>
+                <DataGridTextColumn Header="사유"
+                                    Binding="{Binding Reason}"
+                                    Width="3*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+    </Grid>
+</UserControl>

@@ -24,13 +24,15 @@ namespace FreshBox.Repository
 
         public List<Product> GetAllProducts()
         {
+            MySqlConnection conn;
             var products = new List<Product>();
             string query = "SELECT * FROM product";
+
             try
             {
-                using var conn = _dbManager.GetConnection();
-                using var command = new MySqlCommand(query, conn);
-                using var reader = command.ExecuteReader();
+                conn = _dbManager.GetConnection();
+                var command = new MySqlCommand(query, conn);
+                var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     products.Add(new Product
@@ -41,7 +43,6 @@ namespace FreshBox.Repository
                         Barcode = reader.GetString("barcode"),
                         Stock = reader.GetInt32("stock"),
                         StorageTemp = (StorageTemp)reader.GetInt32("storage_temp"),
-                        WarehouseId = reader.GetInt32("warehouse_id")
                     });
                 }
             }
@@ -66,7 +67,6 @@ namespace FreshBox.Repository
                 command.Parameters.AddWithValue("@CategoryId", product.CategoryId);
                 command.Parameters.AddWithValue("@Barcode", product.Barcode);
                 command.Parameters.AddWithValue("@StorageTemp", (int)product.StorageTemp);
-                command.Parameters.AddWithValue("@WarehouseId", product.WarehouseId);
                 isSuceeded = command.ExecuteNonQuery(); // returns 1 if successful, 0 if not
             }
             catch (Exception ex)
@@ -97,7 +97,6 @@ namespace FreshBox.Repository
                 command.Parameters.AddWithValue("@Barcode", product.Barcode);
                 command.Parameters.AddWithValue("@Stock", product.Stock);
                 command.Parameters.AddWithValue("@StorageTemp", (int)product.StorageTemp);
-                command.Parameters.AddWithValue("@WarehouseId", product.WarehouseId);
                 isSuceeded = command.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -156,8 +155,7 @@ namespace FreshBox.Repository
                         CategoryId = reader.GetInt32("category_id"),
                         Barcode = reader.GetString("barcode"),
                         Stock = reader.GetInt32("stock"),
-                        StorageTemp = (StorageTemp)reader.GetInt32("storage_temp"),
-                        WarehouseId = reader.GetInt32("warehouse_id")
+                        StorageTemp = (StorageTemp)reader.GetInt32("storage_temp")
                     };
                 }
                 else
@@ -178,7 +176,6 @@ namespace FreshBox.Repository
 
         public int FindByUsername(string productName)
         {
-            MessageBox.Show("FindByUsername() !!");
             MySqlConnection conn = new();
             string query = "SELECT EXISTS (SELECT 1 FROM product WHERE product_name = @ProductName)";
             int result;

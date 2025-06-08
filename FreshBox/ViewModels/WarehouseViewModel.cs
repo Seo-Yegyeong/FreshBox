@@ -1,79 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Collections.ObjectModel;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
+//using CommunityToolkit.Mvvm.Collections;
+//using CommunityToolkit.Mvvm.ComponentModel;
+//using CommunityToolkit.Mvvm.Input;
+//using FreshBox.Models;
+//using FreshBox.Services;
+//using FreshBox.Enums;
 
-using FreshBox.Models;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+//namespace FreshBox.ViewModels
+//{
+//    public partial class WarehouseViewModel : ObservableObject
+//    {
+//        private readonly WarehouseService warehouseService = new WarehouseService();
 
-namespace FreshBox.ViewModels
-{
-    public class WarehouseViewModel : ViewModelBase
-    {
-        private Warehouse _warehouse = new();
+//        public ObservableCollection<Warehouse> Warehouses { get; set; } = new();
 
-        public Warehouse Warehouse
-        {
-            get => _warehouse;
-            set
-            {
-                _warehouse = value;
-                OnPropertyChanged();
-            }
-        }
+//        [ObservableProperty]
+//        private int id;
 
-        public string WarehouseName
-        {
-            get => _warehouse.WarehouseName;
-            set
-            {
-                if (_warehouse.WarehouseName != value)
-                {
-                    _warehouse.WarehouseName = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+//        [ObservableProperty]
+//        private StorageTemp selectedTempControl;
 
-        public string Location
-        {
-            get => _warehouse.Location;
-            set
-            {
-                if (_warehouse.Location != value)
-                {
-                    _warehouse.Location = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+//        public IEnumerable<StorageTemp> StorageTempTypes => Enum.GetValues(typeof(StorageTemp)).Cast<StorageTemp>();
 
-        //public string TempControl
-        //{
-        //    get => _warehouse.TempControl;
-        //    set
-        //    {
-        //        if (_warehouse.TempControl != value)
-        //        {
-        //            _warehouse.TempControl = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
+//        public WarehouseViewModel()
+//        {
+//            LoadWarehouses();
+//        }
 
-        //public int Capacity
-        //{
-        //    get => _warehouse.Capacity;
-        //    set
-        //    {
-        //        if (_warehouse.Capacity != value)
-        //        {
-        //            _warehouse.Capacity = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
-    }
-}
+//        [RelayCommand]
+//        private void LoadWarehouses()
+//        {
+//            Warehouses = warehouseService.LoadWarehousesService();
+//        }
+//    }
+//}

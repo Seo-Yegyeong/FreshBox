@@ -33,7 +33,7 @@ namespace FreshBox.Services
             return new ObservableCollection<Product>(ProductRepo.GetAllProducts());
         }
 
-        internal bool IsProductNameDuplicated(string productName)
+        public bool IsProductNameDuplicated(string productName)
         {
             try
             {
@@ -41,12 +41,10 @@ namespace FreshBox.Services
 
                 if (result == 0) // 중복 없음
                 {
-                    MessageBox.Show(productName + "은(는) 사용 가능한 상품명입니다.", "상품명 중복 검사", MessageBoxButton.OK, MessageBoxImage.Information);
                     return false;
                 }
                 else if (result == 1) // DB에 중복된 username 있음
                 {
-                    MessageBox.Show(productName + "은(는) 이미 존재하는 상품명입니다.", "상품명 중복 검사", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return true;
                 }
                 else

@@ -13,11 +13,9 @@ namespace FreshBox.Models
     /// </summary>
     public class Member
     {
-        // public 속성만 정의
-        //-> 컴파일러가 자동으로 내부에 private 필드를 생성
-
-        public static int LoggedInMemberId { get; set; } = -1;  // 로그인 안 된 상태 초기값
-        // -> 로그인 성공 시 LoggedInMemberId 저장
+        //  public static int LoggedInMemberId { get; set; } = -1;  // 로그인 안 된 상태 초기값
+        // -> 로그인 성공 시 LoggedInMemberId 저장 => 주석처리함
+        //  ㄴ LoginSession.cs에서 관리하기로 결정
 
         #region (예시)
         // LoginService.cs 로그인 성공 시 LoggedInMemberId 저장 (예시)
@@ -57,6 +55,10 @@ namespace FreshBox.Models
             // 예를 들어, 파라미터에 memberId 넣기
         }*/
         #endregion
+
+
+        // public 속성만 정의
+        //-> 컴파일러가 자동으로 내부에 private 필드를 생성
 
         /// <summary>
         /// id 컬럼과 매핑됨 (PK, Auto Increment)
@@ -131,6 +133,21 @@ namespace FreshBox.Models
             this.Phone = phone;
             this.Email = email;
             this.BirthDate = birthDate;
+            this.HireDate = hireDate;
+        }
+
+        public Member(int id, string username, string memberName, Role role,
+            string phone, string email, DateTime birthDate, DateTime createdAt,
+            DateTime? hireDate = null)
+        {
+            this.Id = id;
+            this.Username = username;
+            this.MemberName = memberName;
+            this.Role = role;
+            this.Phone = phone;
+            this.Email = email;
+            this.BirthDate = birthDate;
+            this.CreatedAt = CreatedAt;
             this.HireDate = hireDate;
         }
 

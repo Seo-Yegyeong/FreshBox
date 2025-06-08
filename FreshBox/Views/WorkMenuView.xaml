@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="FreshBox.Views.WorkMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FreshBox.Views"
+             xmlns:vm ="clr-namespace:FreshBox.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1440">
+    <Grid Background="White">
+        <!-- 상단 가로줄 -->
+        <Grid Background="#9EDE55" Height="85" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <!-- 뒤로가기 버튼 -->
+            <Button Command="{Binding GoToBackCommand}" Content="🔙" Grid.Column="1" FontSize="45" VerticalAlignment="Center" Height="70" Width="70" Margin="15,10,10,15" Background="Transparent" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Label Grid.Column="0" Grid.ColumnSpan="3" Content="메뉴" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="White" FontFamily="Noto Sans KR" />
+        </Grid>
+
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,50,0,0" Width="300">
+            <!-- 사원과 관리자 모두 출퇴근 시간 기록을 할 수 있는 버튼 -->
+            <Button Command="{Binding GoToCheckInOutViewCommand}" Content="출퇴근 찍기" Visibility="{Binding IsCommonButtonVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" Style="{StaticResource MaterialDesignRaisedButton}"/>
+            <Button Command="{Binding GoToMyWorkLogViewCommand}" Content="내 출퇴근 기록 확인" Visibility="{Binding IsCommonButtonVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" Style="{StaticResource MaterialDesignRaisedButton}" />
+
+            <!-- 관리자용 : 사원이 제출한 출퇴근 수정 요청을 관리자가 확인하는 페이지 이동 버튼 -->
+            <Button Content="수정 요청 확인" Visibility="{Binding IsAdminVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" Style="{StaticResource MaterialDesignRaisedButton}" />
+            <!-- 관리자용: 전사원 출퇴근 로그 기록 확인 페이지 이동 버튼 -->
+            <Button Content="전사원 출퇴근 로그 기록 보기" Visibility="{Binding IsAdminVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" Style="{StaticResource MaterialDesignRaisedButton}" />
+            <!-- 관리자용 : 출퇴근 찍는 시간을 설정하는 페이지 이동 버튼 -->
+            <Button Content="출퇴근 기준 시간 설정" Command="{Binding GoToWorkTimeSettignsViewCommand}" Visibility="{Binding IsAdminVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" Style="{StaticResource MaterialDesignRaisedButton}" />
+            <!-- 관리자용: 회사 고유 휴일을 등록 및 관리하는 페이지 이동 버튼 -->
+            <Button Content="회사 고유 휴일 등록" Command="{Binding GoToCompanyHolidayViewCommand}" Visibility="{Binding IsAdminVisible}" Height="60" FontSize="20" Margin="0,0,0,15" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" Style="{StaticResource MaterialDesignRaisedButton}" />
+            <!-- 관리자용: 회사에서 허용된 와이파이 정보를 등록하는 페이지 이동 버튼 -->
+            <Button Content="와이파이 등록 페이지" Visibility="{Binding IsAdminVisible}" Height="60" FontSize="20" Background="#222" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" Style="{StaticResource MaterialDesignRaisedButton}" />
+
+        </StackPanel>
+    </Grid>
+</UserControl>

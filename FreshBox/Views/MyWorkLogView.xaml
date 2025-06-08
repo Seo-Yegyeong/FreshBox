@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="FreshBox.Views.MyWorkLogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FreshBox.Views"
+             xmlns:vm="clr-namespace:FreshBox.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1440" FontFamily="Noto Sans KR">
+    <!-- MyWorkLogViewModel 뷰모델과 바인딩 -->
+    <UserControl.DataContext>
+        <vm:MyWorkLogViewModel />
+    </UserControl.DataContext>
+
+    <Grid Background="White">
+        <!-- 상단 가로줄 -->
+        <Grid Background="#9EDE55" Height="85" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <!-- 뒤로가기 버튼 -->
+            <Button Command="{Binding GoToBackCommand}" Content="🔙" Grid.Column="1" FontSize="45" VerticalAlignment="Center" Height="70" Width="70" Margin="15,10,10,15" Background="Transparent" Foreground="#fff" FontWeight="bold" FontFamily="Noto Sans KR" BorderThickness="0" />
+            <Label Grid.Column="0" Grid.ColumnSpan="3" Content="내 출퇴근 기록 확인" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="White" FontFamily="Noto Sans KR" />
+        </Grid>
+
+        <!-- MyWorkLogView 본문 영역: 연·월 필터 + 조회 버튼 + 기록 테이블 -->
+        <Grid Margin="20,100,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- 필터 행 -->
+                <RowDefinition Height="*"/>
+                <!-- 테이블 행 -->
+            </Grid.RowDefinitions>
+
+            <!-- 필터 행: 연도, 월 선택 및 조회 버튼 -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,20">
+                <ComboBox Width="150" Height="auto" Margin="0,0,10,0" FontSize="20"
+                  ItemsSource="{Binding AvailableYears}"
+                  SelectedItem="{Binding SelectedYear}" />
+                <ComboBox Width="110" Height="auto" Margin="0,0,10,0" FontSize="20"
+                  ItemsSource="{Binding AvailableMonths}"
+                  SelectedItem="{Binding SelectedMonth}" />
+                <Button Content="조회" FontSize="25" Margin="0,0,10,0" Height="60" Width="auto"
+                Command="{Binding FilterCommand}" Style="{StaticResource MaterialDesignRaisedButton}"
+                Padding="10,10"
+                Background="White"
+                Foreground="#9EDE55"
+                FontWeight="Bold"
+                BorderBrush="#9EDE55"
+                BorderThickness="2"/>
+                <Button Content="수정 요청" FontSize="25" Margin="0,0,0,0"
+                Command="{Binding ViewEditRequestsCommand}" Height="60" Width="auto"
+                Padding="10,10" Style="{StaticResource MaterialDesignRaisedButton}"
+                Background="White"
+                Foreground="#FF0E8FF5"
+                FontWeight="Bold"
+                BorderBrush="#FF0E8FF5"
+                BorderThickness="2"/>
+            </StackPanel>
+
+            <!-- 기록 테이블 StringFormat -->
+            <!-- d: 짧은 날짜 패턴(예: 2025-06-07) -->
+            <!-- D: 긴 날짜 패턴(예: Saturday, June 07, 2025) -->
+            <!-- t: 짧은 시간 패턴(예: 14:30) -->
+            <!-- T: 긴 시간 패턴(예: 14:30:00) -->
+            <DataGrid Grid.Row="1"
+              ItemsSource="{Binding FilteredLogs}"
+              AutoGenerateColumns="False"
+              HeadersVisibility="Column"
+              CanUserAddRows="False"
+              IsReadOnly="True"
+              FontSize="25">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="날짜"
+                                Binding="{Binding WorkDate, StringFormat=d}"
+                                Width="300"/>
+                    <DataGridTextColumn Header="출근 시간"
+                                Binding="{Binding CheckIn, StringFormat=T}"
+                                Width="300"/>
+                    <DataGridTextColumn Header="퇴근 시간"
+                                Binding="{Binding CheckOut, StringFormat=T}"
+                                Width="300"/>
+                    <DataGridTextColumn Header="근무 시간(분)"
+                                Binding="{Binding WorkDuration}"
+                                Width="240"/>
+                    <DataGridTextColumn Header="상태"
+                                Binding="{Binding Status}"
+                                Width="230"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+    </Grid>
+</UserControl>

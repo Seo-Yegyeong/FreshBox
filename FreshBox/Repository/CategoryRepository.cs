@@ -20,8 +20,6 @@ namespace FreshBox.Repository
 
         public List<Category> GetAllCategories()
         {
-            MessageBox.Show("GetAllCategories() called", "Category Repository", MessageBoxButton.OK, MessageBoxImage.Information);
-
             MySqlConnection conn = new();
             var categories = new List<Category>();
             string query = "SELECT id, category_name FROM category order by id;";

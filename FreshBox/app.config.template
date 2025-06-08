@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<!-- 데이터베이스 연결 문자열 섹션 -->
+	<connectionStrings>
+		<add name="MySqlConnection"
+			 connectionString="Server=localhost; Database=FreshBox; Uid=여기에_계정아이디; Pwd=여기에_비밀번호; Port=3306; Charset=utf8;"
+			 providerName="MySql.Data.MySqlClient" />
+	</connectionStrings>
+</configuration>
+
+<!-- 
+	1. 이 프로젝트는 app.config를 필요로 합니다.
+	2. app.config.template 파일을 복사해 app.config로 이름을 바꿉니다.
+	3. 연결 정보를 본인 환경에 맞게 수정하세요. 
+	
+	connectionString="Server=localhost; -> 서버 주소 (localhost는 현재 컴퓨터를 의미합니다) 
+	Database=FreshBox; -> 사용할 데이터베이스 이름
+	Uid=여기에_계정아이디; -> 로그인 계정 ID (예: root 등)
+	Pwd=여기에_비밀번호; -> 로그인 비밀번호
+	Port=3306; -> 포트 번호 (MySQL 기본값: 3306)
+	Charset=utf8;" -> 문자 인코딩 방식 (한글 저장 시 UTF-8 권장)
+	
+	providerName="MySql.Data.MySqlClient" ->  MySQL 클라이언트용 provider 이름 (수정하지 마세요) 
+-->

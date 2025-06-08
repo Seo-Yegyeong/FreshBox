@@ -10,12 +10,80 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Assets\add.png" />
+      <None Remove="Assets\back.png" />
+      <None Remove="Assets\character.png" />
+      <None Remove="Assets\chart1.png" />
+      <None Remove="Assets\chart2.png" />
+      <None Remove="Assets\defect.png" />
+      <None Remove="Assets\delivery.png" />
       <None Remove="Assets\favicon.ico" />
+      <None Remove="Assets\Inventory_Registration.png" />
+      <None Remove="Assets\legal.png" />
       <None Remove="Assets\Logo.png" />
+      <None Remove="Assets\logo_white.png" />
+      <None Remove="Assets\Product_Arrive.png" />
+      <None Remove="Assets\Product_white.png" />
+      <None Remove="Assets\reload.png" />
+      <None Remove="Assets\Search_white.png" />
+      <None Remove="Assets\Stock_white.png" />
+      <None Remove="Assets\temperature.png" />
+      <None Remove="Assets\userCheck_white.png" />
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="Assets\add.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\back.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\character.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\chart1.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\chart2.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\defect.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\delivery.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
       <Content Include="Assets\favicon.ico">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\Inventory_Registration.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\legal.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\logo_white.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\Product_Arrive.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\Product_white.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\reload.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\Search_white.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\Stock_white.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\temperature.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Assets\userCheck_white.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
@@ -49,9 +117,9 @@
 	
 	
     <ItemGroup>
-      <Resource Include="Assets\Logo.png">
-        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      </Resource>
+      <Content Include="Assets\Logo.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>
