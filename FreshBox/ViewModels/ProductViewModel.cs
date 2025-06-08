@@ -43,8 +43,10 @@ namespace FreshBox.ViewModels
         private string? productBarcode; // 바코드 입력을 위한 속성
 
         [ObservableProperty]
-        private StorageTemp storageTemp; // 저장 온도 선택을 위한 속성 (냉장, 냉동, 상온 중 하나를 선택)
+        private StorageTemp selectedStorageTemp; // 저장 온도 선택을 위한 속성 (냉장, 냉동, 상온 중 하나를 선택)
 
+
+        partial void OnSelectedStorageTempChanged(string value);
 
         // ==================================================================== //
 
@@ -60,6 +62,11 @@ namespace FreshBox.ViewModels
         private bool isWarehouseValid; // 창고 유효성 검사 결과
 
         // ==================================================================== //
+
+        [ObservableProperty]
+        private string productNameValidationMessage = string.Empty;
+
+
 
 
         public ProductViewModel()
@@ -104,6 +111,21 @@ namespace FreshBox.ViewModels
                 return;
             CheckNameDuplication(value);
         }
+
+        partial void OnSelectedStorageTempChanged(string value)
+        {
+
+            MessageBox.Show("OnSelectedStorageTempChanged()");
+
+            SelectedStorageTemp = value switch
+            {
+                "냉장" => StorageTemp.냉장,
+                "냉동" => StorageTemp.냉동,
+                "실온" => StorageTemp.실온,
+                _ => throw new Exception("Error: 잘못된 옵션입니다."),
+            };
+        }
+
 
         // CategoryID (ComboBox)
         // - 선택된 카테고리가 있는지 확인 => 단순히 ViewModel에서 null 체크만 하면 됨

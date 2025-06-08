@@ -6,10 +6,11 @@
              xmlns:local="clr-namespace:FreshBox.Views"
              xmlns:vm="clr-namespace:FreshBox.ViewModels"
              xmlns:convert="clr-namespace:FreshBox.Converter"
+             xmlns:enum="clr-namespace:FreshBox.Enums"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1440" Background="#fff">
     <UserControl.Resources>
-      <!--  <convert:EnumEqualsMultiConverter x:Key="EnumEqualsMultiConverter" /> -->
+        <convert:EnumConverter x:Key="EnumConverter"/>
     </UserControl.Resources>
 
     <Grid Margin="100">
@@ -22,10 +23,10 @@
         </Grid.RowDefinitions>
         
         <!-- Title -->
-        <Button  Width="100" Height="50" Margin="10,10,0,0"  
-        HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" BorderThickness="0"
-        Command="{Binding GoBackCommand}">
-            <Image Source="/Assets/back.png" Width="50" Height="50"/>
+        <Button  Width="100" Height="50" Margin="10,10,0,0"
+                 HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" BorderThickness="0"
+                 Command="{Binding GoBackCommand}">
+        <Image Source="/Assets/back.png" Width="50" Height="50"/>
         </Button>
         <TextBlock Grid.Row="0" Text="Product registration"
                    FontSize="28" FontWeight="Bold"
@@ -44,6 +45,7 @@
                 <TextBox x:Name="ProductNameTextBox"
                      Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"
                      Grid.Column="0" Height="50" Margin="10" FontSize="14" VerticalContentAlignment="Center" />
+                <TextBlock x:Name="ProductNameValidationMessageTextBlock"  TextWrapping="Wrap" Text="{Binding ProductNameValidationMessage}" Width="278" />
             </StackPanel>
             <StackPanel Grid.Column="1" >
                 <Label Content="목표 재고량" FontSize="14" FontFamily="Noto Sans KR" FontWeight="Medium"/>
@@ -66,23 +68,11 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0" VerticalAlignment="Center">
-                <ItemsControl ItemsSource="{Binding WarehouseSubVM.StorageTempTypes}" Margin="100, 100">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <RadioButton Content="{Binding}" Margin="0,5" GroupName="WarehouseGroup">
-                                <RadioButton.IsChecked>
-                                    <MultiBinding Converter="{StaticResource EnumEqualsMultiConverter}" Mode="TwoWay">
-                                        <Binding Path="DataContext.WarehouseSubVM.selectedTempControl"
-                                                RelativeSource="{RelativeSource AncestorType=UserControl}" />
-                                        <Binding Path="." />
-                                        <!-- 현재 항목 (Enum 값) -->
-                                    </MultiBinding>
-                                </RadioButton.IsChecked>
-                            </RadioButton>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+            <StackPanel Grid.Column="0" Orientation="Vertical"  Margin="0" VerticalAlignment="Center">
+                <RadioButton Content="실온" IsChecked="{Binding SelectedStorageTemp, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static enum:StorageTemp.실온}}"/>
+                <RadioButton Content="냉장" IsChecked="{Binding SelectedStorageTemp, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static enum:StorageTemp.냉장}}"/>
+                <RadioButton Content="냉동" IsChecked="{Binding SelectedStorageTemp, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumConverter}, ConverterParameter={x:Static enum:StorageTemp.냉동}}"/>
+                <TextBlock Text="{Binding SelectedStorageTemp}"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="100 0" VerticalAlignment="Center" >
                 <Label Content="품목" FontSize="14" FontWeight="Medium" FontFamily="Noto Sans KR"/>
@@ -98,9 +88,11 @@
             </StackPanel>
 
             <Button Grid.Column="2" Width="200" Height="50" Padding="30,0" Margin="100 20 100 0"
-            Content="등록" FontSize="16" Foreground="White"
-            Background="#A4E64F" FontWeight="Bold"
-            BorderBrush="Transparent" Cursor="Hand" VerticalAlignment="Center"/>
+                    Content="등록" FontSize="16" Foreground="White"
+                    Background="#A4E64F" FontWeight="Bold"
+                    BorderBrush="Transparent" Cursor="Hand" VerticalAlignment="Center"
+                    Command="{Binding AddProductCommand}"
+                    />
         </Grid>
 
         <!-- Logo and Text -->
