@@ -3,9 +3,10 @@
 
 <br />  
 
-## 개발 스택
+## 🛠️ 개발 스택
 
 - **언어:** C#, XAML
+  
 - **프레임워크:** .NET WPF
 - **디자인 패턴:** MVVM 패턴
 - **데이터베이스:** MySQL
@@ -13,10 +14,25 @@
 - **툴:** Visual Studio, MySQL Workbench
 - **라이브러리:**
   - CommunityToolkit.Mvvm
+    - MVVM 패턴 구현을 지원하는 라이브러리
+  - BCrypt.Net-Next (v4.0.3)
+    - 비밀번호 해싱 라이브러리로, 안전한 암호 저장과 인증에 사용(BCrypt 알고리즘을 기반)
+  - LiveChartsCore.SkiaSharpView.WPF
+    - WPF 환경에서 고성능 차트 렌더링을 지원하는 라이브러리
+  - MaterialDesignColors
+    - Material Design 컬러 팔레트를 제공하여 UI 디자인 시 일관된 색상 사용에 도움
+  - MaterialDesignThemes
+    - Material Design 스타일의 WPF 테마 및 컨트롤 세트를 제공하여 깔끔하고 현대적인 UI 구현에 도움
+  - Microsoft.Xaml.Behaviors.Wpf
+    - XAML에서 행동(Behavior)과 트리거(Trigger)를 사용할 수 있게 하는 라이브러리(MVVM 패턴에서 UI와 로직 분리에 유용)
+  - MySql.Data
+    - MySQL 데이터베이스와 .NET 애플리케이션 간 연결 및 조작을 지원하는 공식 라이브러리
+  - System.Configuration.ConfigurationManager
+    - 앱 설정 파일(App.config, Web.config)을 읽고 쓰는 데 사용
 
 <br />  
 
-## 개발 동기 (Why?)
+## ❔ 개발 동기 (Why?)
 
 1. 출퇴근 기록의 불편함 개선  
 2. 물류에 필요한 자동화 관리 (사용자의 편리성)  
@@ -24,14 +40,14 @@
 
 <br />
 
-## 프로젝트 목적 (What?)
+## ❔ 프로젝트 목적 (What?)
 
 1. 재고 관리를 좀 더 편하게 하고  
 2. 출퇴근 관리를 용이하게 하기 위해  
 
 <br />
 
-## 주요 기능 (How?)
+## ❔ 주요 기능 (How?)
 
 1. 회원 가입 → 사원과 관리자를 분리  
 2. 상품 등록  
@@ -40,18 +56,18 @@
 
 <br />
 
-## 타겟층
+## 👤 타겟층
 쇼핑몰, 유통회사 등에서 회원 및 재고 관리를 담당하는 공장주, 관리자, 사원 등 실무자  
 
 <br />  
 
-## UI 설계
+## 🖍️ UI 설계
 
 [화면 설계서 - Notion 링크](https://www.notion.so/20c9879dac8681378f28e48e6a7346c7)  
 
 <br />
 
-## 폴더 구조 (CommunityToolkit.Mvvm 라이브러리 적용)
+## 🗂️ 폴더 구조 (CommunityToolkit.Mvvm 라이브러리 적용)
 
 ```jsx
 FreshBox/
@@ -71,7 +87,7 @@ FreshBox/
 
 <br />
 
-## 주요 기능 상새 소개
+## 📘 주요 기능 상세 설명
 ### 회원 관리
 - 회원 가입  
   - 중복 검사  
