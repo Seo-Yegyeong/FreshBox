@@ -164,6 +164,11 @@
 
 <br />
 
+## 📊 데이터 흐름도 
+![](readme_images/데이터흐름도(현승님제작).png) 
+
+<br />  
+
 ## 🗂️ 폴더 구조 (CommunityToolkit.Mvvm 라이브러리 적용)
 
 ```jsx
