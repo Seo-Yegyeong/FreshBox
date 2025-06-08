@@ -16,15 +16,13 @@ namespace FreshBox.Models
         public string Barcode { get; set; } = string.Empty;
         public int Stock { get; set; }
         public StorageTemp StorageTemp { get; set; }
-        public int WarehouseId { get; set; }
 
-        public Product(string productName, int categoryId, string barcode, StorageTemp storageTemp, int warehouseId)
+        public Product(string productName, int categoryId, string barcode, StorageTemp storageTemp)
         {
             ProductName = productName;
             CategoryId = categoryId;
             Barcode = barcode;
             StorageTemp = storageTemp;
-            WarehouseId = warehouseId;
         }
 
         // 기본 생성자도 함께 명시적으로 추가 (선택사항이지만 권장)

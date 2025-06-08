@@ -43,7 +43,6 @@ namespace FreshBox.Repository
                         Barcode = reader.GetString("barcode"),
                         Stock = reader.GetInt32("stock"),
                         StorageTemp = (StorageTemp)reader.GetInt32("storage_temp"),
-                        WarehouseId = reader.GetInt32("warehouse_id")
                     });
                 }
             }
@@ -68,7 +67,6 @@ namespace FreshBox.Repository
                 command.Parameters.AddWithValue("@CategoryId", product.CategoryId);
                 command.Parameters.AddWithValue("@Barcode", product.Barcode);
                 command.Parameters.AddWithValue("@StorageTemp", (int)product.StorageTemp);
-                command.Parameters.AddWithValue("@WarehouseId", product.WarehouseId);
                 isSuceeded = command.ExecuteNonQuery(); // returns 1 if successful, 0 if not
             }
             catch (Exception ex)
@@ -99,7 +97,6 @@ namespace FreshBox.Repository
                 command.Parameters.AddWithValue("@Barcode", product.Barcode);
                 command.Parameters.AddWithValue("@Stock", product.Stock);
                 command.Parameters.AddWithValue("@StorageTemp", (int)product.StorageTemp);
-                command.Parameters.AddWithValue("@WarehouseId", product.WarehouseId);
                 isSuceeded = command.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -158,8 +155,7 @@ namespace FreshBox.Repository
                         CategoryId = reader.GetInt32("category_id"),
                         Barcode = reader.GetString("barcode"),
                         Stock = reader.GetInt32("stock"),
-                        StorageTemp = (StorageTemp)reader.GetInt32("storage_temp"),
-                        WarehouseId = reader.GetInt32("warehouse_id")
+                        StorageTemp = (StorageTemp)reader.GetInt32("storage_temp")
                     };
                 }
                 else

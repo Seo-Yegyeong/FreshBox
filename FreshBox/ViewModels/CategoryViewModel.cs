@@ -23,10 +23,7 @@ namespace FreshBox.ViewModels
         private ObservableCollection<Category> categories = [];
 
         [ObservableProperty]
-        private string? selectedCategoryId; // 선택된 카테고리
-
-        [ObservableProperty]
-        private int categoryId; // 카테고리 ID
+        private int selectedCategoryId; // 선택된 카테고리
 
         [ObservableProperty]
         private string categoryName = string.Empty; // 카테고리 이름
@@ -40,7 +37,7 @@ namespace FreshBox.ViewModels
         [RelayCommand]
         private void LoadCategories()
         {
-            categories = productService.LoadCategoriesService();
+            Categories = productService.LoadCategoriesService();
         }
     }
 }
