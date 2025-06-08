@@ -143,7 +143,7 @@
     - 총 10개 테이블 설계 및 불필요 테이블(불량품 기록 등) 제거
     - 테이블 간 관계(PK/FK) 설정 및 **SQL 기반 스키마 전체 작성**
   - 데이터 흐름 정의
-  - + 추가 테이블 설계 및 쿼리 작성:
+  - ➕ 추가 테이블 설계 및 쿼리 작성:
     - `work_time_settings`, `work_log_edit_requests`, `company_holidays`, `allowed_wifi`
 
 <br />
