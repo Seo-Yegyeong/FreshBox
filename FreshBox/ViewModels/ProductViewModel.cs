@@ -24,7 +24,7 @@ namespace FreshBox.ViewModels
         // ==================================================================== //
         // 카테고리와 창고를 선택할 수 있는 ViewModel을 포함
         public CategoryViewModel CategorySubVM { get; } = new CategoryViewModel();
-        public WarehouseViewModel WarehouseSubVM { get; } = new WarehouseViewModel();
+        //public WarehouseViewModel WarehouseSubVM { get; } = new WarehouseViewModel();
         
 
         [ObservableProperty]
@@ -44,6 +44,7 @@ namespace FreshBox.ViewModels
 
         [ObservableProperty]
         private StorageTemp storageTemp; // 저장 온도 선택을 위한 속성 (냉장, 냉동, 상온 중 하나를 선택)
+
 
         // ==================================================================== //
 
@@ -134,9 +135,11 @@ namespace FreshBox.ViewModels
         [RelayCommand]
         private void AddProduct()
         {
+            MessageBox.Show($"Name : {ProductName}, TargetStock: {ProductStock}, Barcode: {ProductBarcode}, CategoryID: {CategorySubVM.SelectedCategoryId}, Warehouse: {WarehouseSubVM.SelectedTempControl}","AddProduct()", MessageBoxButton.OK);
             //if (newProduct != null)
             //{
-            //    productService.AddProductService(newProduct);
+            // productService.AddProductService(newProduct);
+            //    _repository.InsertProduct(newProduct);
             //    LoadProducts(); // 새로 추가한 상품을 반영하기 위해 다시 로드
             //    NewProduct = new Product(); // 새 상품 입력 필드를 초기화
             //}
@@ -144,16 +147,8 @@ namespace FreshBox.ViewModels
 
         // #3. 상품 수정
 
-        // #4. 상품 삭제
+            // #4. 상품 삭제
 
-        public void AddNewProduct()
-        {
-            //if (newProduct != null)
-            //{
-            //    _repository.InsertProduct(newProduct);
-            //    LoadProducts(); // 새로 추가한 상품을 반영하기 위해 다시 로드
-            //    NewProduct = new Product(); // 새 상품 입력 필드를 초기화
-            //}
-        }
+
     }
 }
