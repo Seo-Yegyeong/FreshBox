@@ -37,8 +37,7 @@
                         </TextBox>
                     </Border>
                 </Grid>
-
-                <TextBlock x:Name="UsernameValidationMessageTextBlock"  TextWrapping="Wrap" Text="{Binding UsernameValidationMessage}" Width="278" Padding="0,10" FontSize="13"/>
+                <TextBlock x:Name="UsernameValidationMessageTextBlock"  TextWrapping="Wrap" Text="{Binding UsernameValidationMessage}" Width="300" Padding="0,10" FontSize="13" HorizontalAlignment="Right"/>
             </StackPanel>
         <!-- 비밀번호는 WPF에서 직접 바인딩이 안됨 -->
         <!-- hp:PasswordBoxBindingHelper.BoundPassword를 통해 ViewModel의 Pwd 속성과 양방향 바인딩 설정 -->
@@ -54,7 +53,7 @@
                     </Border>
                     <!-- 비밀번호 입력 유효성 메시지 영역 -->
                 </Grid>
-                <TextBlock Text="{Binding PwdValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
+                <TextBlock Text="{Binding PwdValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8" HorizontalAlignment="Right"/>
             </StackPanel>
 
             <StackPanel>
@@ -69,7 +68,7 @@
                     </Border>
                 </Grid>
                 <!-- 비밀번호 확인 유효성 메시지 영역 -->
-                <TextBlock Text="{Binding PwdConfirmValidationMessage}" TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
+                <TextBlock Text="{Binding PwdConfirmValidationMessage}" TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8" HorizontalAlignment="Right"/>
             </StackPanel>
         <!-- 바인딩 시킬 때 UpdateSourceTrigger=PropertyChanged 필수!, 그래야 입력 시 마다 바로 바로 반영됨-->
             <StackPanel>
@@ -83,7 +82,7 @@
                         <TextBox Text="{Binding MemberName, UpdateSourceTrigger=PropertyChanged}" MaxLength="10"  TextWrapping="Wrap" Background="Transparent" BorderThickness="0"  Width="300" Padding="10,5" FontSize="15"/>
                     </Border>
                 </Grid>
-                <TextBlock Text="{Binding MemberNameValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
+                <TextBlock Text="{Binding MemberNameValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8" HorizontalAlignment="Right"/>
             </StackPanel>
             <!--DatePicker의 SelectedDate와 바인딩하면, 사용자가 날짜를 선택할 때 자동으로 BirthDate에 값이 들어감(BirthDate가 바뀌면 DatePicker가 자동으로 업데이트, Mode=TwoWay 양방향 동기화) -->
             <StackPanel>
@@ -97,7 +96,7 @@
                         <TextBox Text="{Binding BirthDateString, UpdateSourceTrigger=PropertyChanged}" MaxLength="8"  TextWrapping="Wrap" Background="Transparent" BorderThickness="0"  Width="300" Padding="10,5" FontSize="15"/>
                     </Border>
                  </Grid>
-                <TextBlock Text="{Binding BirthDateValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
+                <TextBlock Text="{Binding BirthDateValidationMessage}"  TextWrapping="Wrap"  Width="303" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8" HorizontalAlignment="Right"/>
             </StackPanel>
             <StackPanel>
                 <Grid>
@@ -111,7 +110,7 @@
                     </Border>
                 </Grid>
 
-                <TextBlock Text="{Binding PhoneNumValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
+                <TextBlock Text="{Binding PhoneNumValidationMessage}"  TextWrapping="Wrap"  Width="305" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8" HorizontalAlignment="Right"/>
             </StackPanel>
 
             <StackPanel>
@@ -126,7 +125,7 @@
                     </Border>
                 </Grid>
 
-                <TextBlock Text="{Binding EmailValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8"/>
+                <TextBlock Text="{Binding EmailValidationMessage}"  TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 8" HorizontalAlignment="Right"/>
             </StackPanel>
 
             <StackPanel>
@@ -140,7 +139,7 @@
                         <TextBox Text="{Binding HireDateString, UpdateSourceTrigger=PropertyChanged}" MaxLength="8"  TextWrapping="Wrap"  Width="300" Background="Transparent" BorderThickness="0" Padding="10,5" FontSize="15"/>
                     </Border>
                 </Grid>
-                <TextBlock Text="{Binding HireDateValidationMessage}" TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 5"/>
+                <TextBlock Text="{Binding HireDateValidationMessage}" TextWrapping="Wrap"  Width="294" Height="29" Padding="0,10" FontSize="13" Margin="0 0 0 5" HorizontalAlignment="Right"/>
             </StackPanel>
             <!-- ViewModel에 [RelayCommand]로 정의된 메서드에 연결 -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0">

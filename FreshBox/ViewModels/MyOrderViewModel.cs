@@ -1,13 +1,14 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using FreshBox.Models;
+using FreshBox.Repository;
+using FreshBox.Services;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using FreshBox.Models;
-using System.Collections.ObjectModel;
-using FreshBox.Repository;
 using System.Windows;
 namespace FreshBox.ViewModels
 {
@@ -138,6 +139,13 @@ namespace FreshBox.ViewModels
             //                 $"상품 ID: {SelectedOrder.ProductId}\n" +
             //                 $"수량: {SelectedOrder.Quantity}\n" +
             //                 "입고 처리를 진행합니다.";
+        }
+
+        [RelayCommand]
+        private void GoBack()
+        {
+            // 뒤로가기 버튼 클릭 시 이전 화면으로 이동
+            ViewNavigationService.Instance.GoBack();
         }
     }
 }
