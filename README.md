@@ -1,80 +1,116 @@
-# 🍏 FreshBox
+# 📦 FreshBox
+> **공장의 자동화를 위한 식품 유통 관리 및 사원 관리 시스템**
 
-<br><br>
+<br />
 
-**FreshBox**는 식품 유통 과정을 효율적으로 관리할 수 있는 스마트 시스템입니다.  
-신선식품의 입고부터 출고, 유통 경로, 재고 상태까지 실시간으로 추적하고 관리함으로써  
-**신선도 유지**, **물류 최적화**, **운영 효율 향상**을 목표로 합니다.
+## 개발 동기 (Why?)
 
-<br><br>
+1. 출퇴근 기록의 불편함 개선  
+2. 물류에 필요한 자동화 관리 (사용자의 편리성)  
+3. 스마트팩토리 관련 프로젝트 경험을 위해  
 
----
+<br />
 
-## 🔧 주요 기능
+## 프로젝트 목적 (What?)
 
-- 🧑‍💼 **사원 관리**: 사원의 출퇴근 관리
-- 📦 **재고 관리**: 실시간 식료품 재고 확인 및 자동 갱신  
-- 🚛 **물류 추적**: 유통 경로 및 운송 상태 실시간 확인  
-- 🧊 **신선도 모니터링**: 온도/습도 기반 콜드체인 관리  
-- 🗂️ **거래 이력 관리**: 공급업체 및 거래처 정보 저장  
-- 📊 **데이터 시각화**: 유통 현황 및 통계 대시보드 제공
+1. 재고 관리를 좀 더 편하게 하고  
+2. 출퇴근 관리를 용이하게 하기 위해  
 
-<br><br>
+<br />
 
----
+## 주요 기능 (How?)
 
-## 🛠️ 사용 기술 스택
+1. 회원 가입 → 사원과 관리자를 분리  
+2. 상품 등록  
+3. 사용자 편의성을 고려한 편리한 UX/UI  
+4. 입고 정보 관리  
 
-- **Frontend**: WPF / MVVM / XAML
-- **Backend**: C# / .NET Framework / MySQL
-- **Architecture**: MVVM Pattern  
-- **Deployment**: (  )  
-- **기타**: REST API, JWT 인증, (IoT 센서 연동 등)
+<br />
 
-<br><br>
+## 타겟층
+쇼핑몰, 유통회사 등에서 회원 및 재고 관리를 담당하는 공장주, 관리자, 사원 등 실무자  
 
----
+<br />  
 
-## 🚀 기대 효과
+## UI 설계
 
-- 식품 유통 경로의 **투명성 확보**  
-- 재고 과잉 또는 부족 방지를 통한 **운영비 절감**  
-- 신선 식품의 **품질 유지 및 낭비 감소**
+[화면 설계서 - Notion 링크](https://www.notion.so/20c9879dac8681378f28e48e6a7346c7)  
 
-<br><br>
+<br />
 
----
+## 폴더 구조 (CommunityToolkit.Mvvm 라이브러리 적용)
 
-## 📁 폴더 구조 예시
-FreshBox/<br>
-├── Assets/<br>
-├── Models/<br>
-├── Repository/<br>
-├── Services/<br>
-├── ViewModels/<br>
-├── Views/<br>
-├── App.xaml<br>
-├── AssemblyInfo.cs<br>
-└── MainWindow.xaml<br>
+```jsx
+FreshBox/
+├── Assets/
+├── Converter/
+├── Database/
+├── DTOs/
+├── Enums/
+├── Interfaces/
+├── Models/
+├── Repository/
+├── Services/
+├── ViewModels/
+├── Views/
+└── Dependencies/
+```
 
-<br><br>
+<br />
 
----
+## 주요 기능 소개
+### 회원 관리
+- 회원 가입  
+  - 중복 검사  
+  - 유효성 검사  
+  - 비밀번호 암호화
+  - DB INSERT  
+- 로그인  
+- 로그아웃  
 
-## 📌 개발자
+### 상품 관리
+- DB 샘플 데이터 SELECT 후 UI 바인딩  
+- 등록 버튼 클릭 시 DB INSERT  
 
-**예경**<br>
-📧 Github ID: Seo-Yegyeong <br>
-📚 포트폴리오: [] <br>
-📎 블로그: [https://blog.naver.com/seeker0503] <br>
+### 주문 및 입고 관리
+- 주문 내역 조회  
+- 입고 처리  
 
-**마리** <br>
-📧 이메일: [your-email@example.com]  <br>
-📎 포트폴리오: [https://yourportfolio.com] <br>
+### UI 및 네비게이션
+- 로그인 사용자 정보 메인 화면 출력  
+- 메인 화면 내 동적 페이지 전환 (단일 MainWindow 기반)  
+- `INavigationService` 인터페이스 정의  
+- `NavigationService` 클래스 구현 및 싱글턴 패턴 적용  
+- 권한에 따른 버튼 가시성 처리
+
+<br />  
+
+## 협업 방식
+
+### GitFlow 브랜치 전략 및 PR 활용
+```
+💡main ← 최종 배포용, 항상 안정적
+└─ develop ← 개발 통합본
+├─ feature/기능명 ← 기능별 작업
+├─ fix/버그명 ← 버그 수정
+├─ hotfix/긴급패치 ← 운영 중 긴급 패치
+└─ release/버전명 ← 배포 준비
+```
+
+<br />  
+
+### 역할 분담
+
+| **이름** | **역할 및 담당 분야** |
+| -------- | --------------------- |
+| 서예경   | 리더, 프로젝트 생성 및 버전 관리, 백엔드 상품·재고 관리 |
+| 최마리   | 산출물 문서 작성 및 관리, 백엔드 회원·출퇴근 관리      |
+| 박현승   | 발표, 디자인(로고·와이어프레임), 프론트엔드 UX/UI 디자인 |
 
 
-**현승** <br>
-📧 이메일: [your-email@example.com]  <br>
-📎 포트폴리오: [https://yourportfolio.com] <br>
 
----
+<br />  
+
+
+
+
