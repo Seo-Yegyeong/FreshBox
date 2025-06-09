@@ -58,5 +58,25 @@ namespace FreshBox.Services
                 throw; // 호출부로 예외 던짐
             }
         }
+
+        internal void AddProductService(Product newProduct)
+        {
+            try
+            {
+                if(ProductRepo.InsertProduct(newProduct) == 1)
+                {
+                    MessageBox.Show("상품 등록이 완료되었습니다.");
+                }
+                else
+                {
+                    MessageBox.Show("상품 등록에 실패하였습니다.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error: {ex.Message}");
+                throw; // 호출부로 예외 던짐
+            }
+        }
     }
 }

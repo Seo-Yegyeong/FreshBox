@@ -17,11 +17,12 @@ namespace FreshBox.Models
         public int Stock { get; set; }
         public StorageTemp StorageTemp { get; set; }
 
-        public Product(string productName, int categoryId, string barcode, StorageTemp storageTemp)
+        public Product(string productName, int categoryId, string barcode, int stock, StorageTemp storageTemp)
         {
             ProductName = productName;
             CategoryId = categoryId;
             Barcode = barcode;
+            Stock = stock;
             StorageTemp = storageTemp;
         }
 

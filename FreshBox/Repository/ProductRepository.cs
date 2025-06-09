@@ -56,8 +56,8 @@ namespace FreshBox.Repository
         public int InsertProduct(Product product)
         {
             MySqlConnection conn = new();
-            string query = "INSERT INTO product (product_name, category_id, barcode, stock, storage_temp, warehouse_id) " +
-                           "VALUES (@ProductName, @CategoryId, @Barcode, 0, @StorageTemp, @WarehouseId)";
+            string query = "INSERT INTO product (product_name, category_id, barcode, target_stock, storage_temp) " +
+                           "VALUES (@ProductName, @CategoryId, @Barcode, @TargetStock, @StorageTemp)";
             int isSuceeded = 0;
             try
             {
@@ -66,7 +66,8 @@ namespace FreshBox.Repository
                 command.Parameters.AddWithValue("@ProductName", product.ProductName);
                 command.Parameters.AddWithValue("@CategoryId", product.CategoryId);
                 command.Parameters.AddWithValue("@Barcode", product.Barcode);
-                command.Parameters.AddWithValue("@StorageTemp", (int)product.StorageTemp);
+                command.Parameters.AddWithValue("@TargetStock", product.Stock);
+                command.Parameters.AddWithValue("@StorageTemp", product.StorageTemp.ToString());
                 isSuceeded = command.ExecuteNonQuery(); // returns 1 if successful, 0 if not
             }
             catch (Exception ex)

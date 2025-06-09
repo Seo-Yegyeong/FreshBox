@@ -38,16 +38,18 @@ namespace FreshBox.ViewModels
         private string productName = string.Empty; // 상품명 입력을 위한 속성
 
         [ObservableProperty]
-        private int productStock; // 수량 입력을 위한 속성
+        private string productStock; // 수량 입력을 위한 속성
         
         [ObservableProperty]
-        private string? productBarcode; // 바코드 입력을 위한 속성
+        private string productBarcode = string.Empty; // 바코드 입력을 위한 속성
 
         [ObservableProperty]
         private StorageTemp selectedStorageTemp; // 저장 온도 선택을 위한 속성 (냉장, 냉동, 상온 중 하나를 선택)
 
 
         partial void OnSelectedStorageTempChanged(string value);
+
+        //partial void OnProductStockChanged(string value);
 
         // ==================================================================== //
 
@@ -56,17 +58,17 @@ namespace FreshBox.ViewModels
 
         private bool isBarcodeValid; // 바코드 유효성 검사 결과
 
-        private bool isStorageTempValid; // 저장 온도 유효성 검사 결과
+        private bool isTargetStockValid; // 목표 재고량 유효성 검사 결과
 
-        private bool isCategoryValid; // 카테고리 유효성 검사 결과
-
-        private bool isWarehouseValid; // 창고 유효성 검사 결과
+        private bool isStorageTempValid; // 창고 유효성 검사 결과
 
         // ==================================================================== //
 
         [ObservableProperty]
         private string productNameValidationMessage = string.Empty;
 
+        [ObservableProperty]
+        private string productStockValidationMessage = string.Empty;
 
 
 
@@ -98,11 +100,11 @@ namespace FreshBox.ViewModels
             if( isDuplicated )
             {
                 isProductNameValid = false; // 중복된 상품명은 유효하지 않음
-                productNameValidationMessage = productName + "은(는) 이미 존재하는 상품명입니다.";
+                ProductNameValidationMessage = productName + "은(는) 이미 존재하는 상품명입니다.";
             }
             else
             {
-                productNameValidationMessage = productName + "은(는) 사용 가능한 상품명입니다.";
+                ProductNameValidationMessage = productName + "은(는) 사용 가능한 상품명입니다.";
                 isProductNameValid = true; // 중복되지 않은 상품명은 유효함
             }
         }
@@ -112,6 +114,27 @@ namespace FreshBox.ViewModels
             if (string.IsNullOrEmpty(productName))
                 return;
             CheckNameDuplication(value);
+        }
+
+        partial void OnProductStockChanged(string value)
+        {
+            bool canConvertToInt = int.TryParse(value, out int temp);
+            if (canConvertToInt == false)
+            {
+                ProductStockValidationMessage = "숫자를 입력하세요.";
+                isTargetStockValid = false;
+            }
+            else if (temp < 100)
+            {
+                ProductStockValidationMessage = "목표 재고량은 100 이상이어야 합니다!";
+                isTargetStockValid = false;
+            }
+            else
+            {
+                ProductStockValidationMessage = "";
+                isTargetStockValid = true;
+            }
+            
         }
 
         partial void OnSelectedStorageTempChanged(string value)
@@ -126,6 +149,12 @@ namespace FreshBox.ViewModels
                 "실온" => StorageTemp.실온,
                 _ => throw new Exception("Error: 잘못된 옵션입니다."),
             };
+        }
+
+        partial void OnProductBarcodeChanged(string value)
+        {
+            if (string.IsNullOrEmpty(value)) isBarcodeValid = false;
+            else isBarcodeValid = true;
         }
 
 
@@ -161,7 +190,13 @@ namespace FreshBox.ViewModels
         {
             MessageBox.Show($"Name : {ProductName}, TargetStock: {ProductStock}, Barcode: {ProductBarcode}, CategoryID: {CategorySubVM.SelectedCategoryId}, Warehouse: {selectedStorageTemp}","AddProduct()", MessageBoxButton.OK);
 
-            NewProduct = new Product(ProductName, CategorySubVM.SelectedCategoryId, ProductBarcode, selectedStorageTemp);
+            if (isProductNameValid && isTargetStockValid && isBarcodeValid && isStorageTempValid != null && CategorySubVM.SelectedCategoryId != null)
+            {
+
+                NewProduct = new Product(ProductName, CategorySubVM.SelectedCategoryId, ProductBarcode, int.Parse(ProductStock), SelectedStorageTemp);
+                productService.AddProductService(NewProduct);
+            }
+            
             //if (newProduct != null)
             //{
             // productService.AddProductService(newProduct);
