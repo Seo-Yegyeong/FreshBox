@@ -404,7 +404,7 @@ FreshBox/
 ## ✉️ 문의 및 연락처
 
 - 팀 리더: 서예경  
-- 이메일: seoye6618@gmail.com
+- 이메일: jumptosky53@gmail.com
 
   
 <br />  
