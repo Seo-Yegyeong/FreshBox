@@ -76,7 +76,7 @@ WPF 기반 FreshBox 프로젝트의 상세 문서를 확인 하실 수 있습니
 
 | 서예경 (리더)                          | 최마리                                                                | 박현승                                                                |
 |:-------------------------------------:|:---------------------------------------------------------------------:|:---------------------------------------------------------------------:|
-| ![Seo Yekyung](readme_images/s.png) | ![Choi Mari](readme_images/c.png)                                  | ![Park Hyunseung](readme_images/p.png)                         |
+| ![Seo Yegyeong](readme_images/s.png) | ![Choi Mari](readme_images/c.png)                                  | ![Park Hyunseung](readme_images/p.png)                         |
 | [@Seo-Yegyeong](https://github.com/Seo-Yegyeong) | [@ChoiMari](https://github.com/ChoiMari)                        | [@hyuns54](https://github.com/hyuns54)                    |
 
 <br />  
